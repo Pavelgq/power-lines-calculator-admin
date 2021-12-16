@@ -29,6 +29,7 @@ export const Authentication = (): JSX.Element => {
         if (!response) {
             return 
         }
+        console.log(response);
         setToken(response.token);
         setIsSuccesSubmit(true)
     }, [response, setToken])
