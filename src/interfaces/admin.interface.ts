@@ -4,12 +4,6 @@ export interface AdminDataInterface {
   status: 'admin' | 'guest';
 }
 
-export interface AdminAnswerInterface {
-  token?: string;
-  key?: string;
-  message: string;
-}
-
 export interface AdminLoginInterface {
   login: string;
   password: string;

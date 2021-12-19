@@ -1,10 +1,10 @@
-export interface actionCreateInterface {
+export interface ActionCreateInterface {
   client_id: number;
   type: 'calculation' | 'save' | 'load';
   data: JSON;
 }
 
-export interface actionFullInterface {
+export interface ActionFullInterface {
     client_id: number
     type: 'calculation' | 'save' | 'load';
     date: Date;

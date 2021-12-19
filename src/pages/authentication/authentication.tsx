@@ -11,13 +11,13 @@ export const Authentication = (): JSX.Element => {
   const [login, setLogin] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isSuccesSubmit, setIsSuccesSubmit] = useState(false);
-  const {response, isLoading, error, doFetch} = useFetch(apiUrl);
+  const {post, response, isLoading, error} = useFetch(apiUrl);
   const [token, setToken] = useLocalStorage('token');
 
   const handleSubmit = (event: any) => {
         event.preventDefault()
         const user = {login, password};
-        doFetch({
+        post({
             method: 'POST',
             data: {
                 ...user
@@ -34,9 +34,12 @@ export const Authentication = (): JSX.Element => {
         setIsSuccesSubmit(true)
     }, [response, setToken])
 
-    // if (isSuccesSubmit) {
-    //     return <Navigate replace to='/clients' />
-    // }
+    if (isSuccesSubmit) {
+        return <Navigate
+          to={`/clients`}
+          replace
+        />
+    }
 
   return (
     <div>

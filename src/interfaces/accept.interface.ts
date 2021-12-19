@@ -1,11 +1,11 @@
-export interface acceptTokenInterface {
+export interface AcceptTokenInterface {
   acceptToken: string;
 }
 
-export interface acceptDateInterface {
+export interface AcceptDateInterface {
   validDate: Date;
 }
 
-export interface acceptKeyInterface {
+export interface AcceptKeyInterface {
   key: string
 }

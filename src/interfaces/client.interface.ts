@@ -1,4 +1,4 @@
-export interface clientDataInterface {
+export interface ClientDataInterface {
   first_name: string,
   last_name: string,
   company: string,

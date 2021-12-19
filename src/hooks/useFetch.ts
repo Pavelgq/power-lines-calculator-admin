@@ -1,24 +1,34 @@
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import useLocalStorage from './useLocalStorage';
 
 interface FetchInterface {
-    isLoading: boolean
-    response: any
-    error: Error | null
-    doFetch: (optiob:Object) => void
+    isLoading: boolean;
+    response: any;
+    error: Error | null;
+    get: (option: AxiosRequestConfig) => void;
+    post: (option: AxiosRequestConfig) => void;
 }
 
-const useFetch = (url: string, option = {}): FetchInterface => {
+const useFetch = (url: string): FetchInterface => {
   const baseUrl = 'https://hidden-inlet-89012.herokuapp.com/api/v1';
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [response, setResponse] = useState<Object>({});
+  const [response, setResponse] = useState<JSON>();
   const [error, setError] = useState(null);
-  const [options, setOptions] = useState(option);
+  const [options, setOptions] = useState<AxiosRequestConfig>();
   const [token] = useLocalStorage('token');
   
  const doFetch = useCallback((fetchOptions = {}) => {
     setOptions(fetchOptions)
+    setIsLoading(true)
+  }, [])
+
+  const get = useCallback(() => {
+    setIsLoading(true);
+  },[])
+
+  const post = useCallback((fetchOptions: AxiosRequestConfig = {}) => {
+    setOptions({...fetchOptions, method: 'post'});
     setIsLoading(true)
   }, [])
 
@@ -58,7 +68,8 @@ const useFetch = (url: string, option = {}): FetchInterface => {
     isLoading,
     response,
     error,
-    doFetch,
+    get,
+    post,
   }
 }
 
