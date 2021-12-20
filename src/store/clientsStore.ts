@@ -17,7 +17,11 @@ export const clientsSlice = createSlice({
     getClientsFailure: (state) => {
       //TODO: Что будем делать с ошибкой
       state.isLoading = false;
-    }
+    },
+    createClientSuccess: (state, action) => {
+      state.isLoading = false;
+    },
+    
   }
 })
 
