@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store'
 
 import useFetch from '../../hooks/useFetch';
-import { getClientsFetch } from '../../store/clientsStore';
+import { createClientsFetch, getClientsFetch } from '../../store/clientsStore';
 import styles from './authentication.module.css';
 import useLocalStorage from '../../hooks/useLocalStorage';
 
@@ -30,9 +30,21 @@ export const Clients = (): JSX.Element => {
   }, [dispatch])
   console.log(clients)
 
+  const handleSubmit = () => {
+    console.log('submit')
+    dispatch(createClientsFetch({
+      "first_name": "Pavel1",
+      "last_name": "Gord1",
+      "company": "ZEU1",
+      "office_position": "123421",
+      "phone_number": "8999999942",
+      "email": "afsdf23@dsf34a.ru"
+    }))
+  }
+
   return (
     <div>
-      {clients}
+      <button type='submit' onSubmit={handleSubmit}>Создать</button>
     </div>
   )
 }
