@@ -11,7 +11,7 @@ export interface AdminLoginInterface {
 
 export interface AdminFullInterface {
   id: number;
-  status: 'admin' | 'guest';
+  status?: 'admin' | 'guest';
   login: string;
   token: string;
 }

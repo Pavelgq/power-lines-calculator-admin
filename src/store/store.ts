@@ -3,7 +3,7 @@ import adminReducer from './adminStore';
 import clientsReducer from './clientsStore';
 import createSagaMiddleware from 'redux-saga';
 import clientsSaga from '../sagas/clientsSaga';
-import adminSaga from '../sagas/adminSaga';
+import rootSaga from '../sagas/rootSaga';
 
 const saga = createSagaMiddleware();
 
@@ -15,7 +15,7 @@ export const store = configureStore({
   middleware: [saga]
 });
 
-saga.run(adminSaga);
+saga.run(rootSaga);
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;

@@ -11,8 +11,6 @@ import { RootState } from '../../store/store';
 import styles from './authentication.module.css';
 
 export const Authentication = (): JSX.Element => {
-  // const apiUrl = '/admin/login';
-
   const [login, setLogin] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isSuccesSubmit, setIsSuccesSubmit] = useState(false);
@@ -25,7 +23,7 @@ export const Authentication = (): JSX.Element => {
 
   const handleSubmit = (event: any) => {
         event.preventDefault()
-        dispatch(loginAdmin({ login, password, token}));
+        dispatch(loginAdmin({ login, password}));
         
     }
 
@@ -35,55 +33,64 @@ export const Authentication = (): JSX.Element => {
       }
     }, [auth])
 
-    // if (state.auth) {
-    //     return <Navigate
-    //       to={`/clients`}
-    //       replace
-    //     />
-    // }
+    if (auth) {
+        return <Navigate
+          to={`/clients`}
+          replace
+        />
+    }
 
   return (
     <Grid  
       container
+      spacing={2}
       direction="column"
-      justifyContent="center"
       alignItems="center"
     >
-      <Typography variant="h5" component="h2">
-        Авторизация
-      </Typography>
-      
-      <form onSubmit={handleSubmit}>
+      <Grid item>
+        <Typography variant="h5" component="h2">
+          Авторизация
+        </Typography>
+      </Grid>
+      <Grid item>
+        <form onSubmit={handleSubmit}>
         <Grid 
           container 
-
+          spacing = {2}
           direction="column"
           justifyContent="center"
           alignItems="center"
         >
-           <TextField  
-            label="Логин" 
-            variant="outlined" 
-            autoFocus
-            type='text'
-            value={login}
-            onChange={e => setLogin(e.target.value)}
+          <Grid item xs={6} md={8}>
+            <TextField  
+              label="Логин" 
+              variant="outlined" 
+              autoFocus
+              type='text'
+              value={login}
+              onChange={e => setLogin(e.target.value)}
             />
-          <TextField  
-            label="Пароль" 
-            variant="outlined" 
-            autoFocus
-            type='password'
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            /> 
-            <Grid>
-              <Button type='submit' variant="outlined">Войти</Button>
+          </Grid>
+           <Grid item>
+              <TextField  
+                label="Пароль" 
+                variant="outlined" 
+                type='password'
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+              /> 
+           </Grid>
+          
+            <Grid item justifyContent="flex-end">
+                <Button type='submit' variant="outlined">Войти</Button>
             </Grid>
           
         </Grid>
        
       </form>
+      </Grid>
+      
+      
     </Grid>
   )
 }

@@ -51,8 +51,6 @@ export const clientsSlice = createSlice({
     deleteClientFailure: (state, action) => {
       state.isLoading = false;
     },
-    
-    
   }
 })
 

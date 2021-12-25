@@ -21,7 +21,6 @@ export const adminSlice = createSlice({
   reducers: {
     loginAdmin: (state, action) => {
       state.info = action.payload;
-      state.auth = true;
     },
     logoutAdmin: (state, action) => {
       state.info = null;
@@ -36,6 +35,7 @@ export const adminSlice = createSlice({
     getAdminSuccess: (state, action) => {
       state.info = action.payload;
       state.isLoading = false;
+      state.auth = true;
     },
     getAdminFailure: (state, action) => {
       state.error = action.payload;

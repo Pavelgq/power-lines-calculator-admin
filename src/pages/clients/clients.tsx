@@ -8,22 +8,13 @@ import styles from './authentication.module.css';
 import useLocalStorage from '../../hooks/useLocalStorage';
 
 
-interface Post {
-  first_name: string
-  last_name: string
-  company: string
-  office_position: string
-  phone_number: string
-  email: string
-}
-
 export const Clients = (): JSX.Element => {
   const [token] = useLocalStorage('token');
   const clients = useSelector((state: RootState) => state.clients.data);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getClientsFetch({headers: { token }}));
+    dispatch(getClientsFetch({token}));
     return () => {
 
     }

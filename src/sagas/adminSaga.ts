@@ -3,7 +3,8 @@ import { call, put, takeEvery, fork, all } from 'redux-saga/effects'
 
 import { Admin } from '../api/admin'
 import { createAdminSuccess ,createAdminFailure, getAdminFailure, getAdminSuccess, profileAdmin, logoutAdmin  } from '../store/adminStore';
-import { AdminLoginInterface } from '../interfaces/admin.interface';
+import { AdminDataInterface, AdminFullInterface, AdminLoginInterface } from '../interfaces/admin.interface';
+import { AxiosResponseHeaders } from 'axios';
 
 function* loginAdminWorker(action : {
     payload: any;
@@ -12,10 +13,10 @@ function* loginAdminWorker(action : {
   try {
     const admin = new Admin();
     
-    const { token, ...authData} = action.payload;
-    console.log('work', authData)
-    const adminData = yield call(admin.login, authData, token);
-    const formatingAdminData = yield adminData.json();
+    const { ...authData } = action.payload;
+    const adminData: AxiosResponseHeaders = yield call(admin.login, authData);
+    const formatingAdminData: AdminDataInterface = yield adminData.data;
+    console.log('admin data in saga', formatingAdminData)
     yield put(getAdminSuccess(formatingAdminData));
   } catch(e) {
     yield put(getAdminFailure(e));
@@ -31,8 +32,9 @@ function* createAdminFetchWorker(action: {
     const admin = new Admin();
 
     const { token, id} = action.payload;
-    const candidate = yield call(admin.getAdmin, id, token);
-    const res = yield candidate.json();
+    const candidate: AxiosResponseHeaders = yield call(admin.getAdmin, id, token);
+
+    const res: AdminFullInterface = yield candidate.data;
     console.log(res);
     yield put(createAdminSuccess(res));
   } catch (e) {

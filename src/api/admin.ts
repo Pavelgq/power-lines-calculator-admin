@@ -2,8 +2,8 @@ import { AdminLoginInterface } from "../interfaces/admin.interface"
 import { apiInstance } from "./instance"
 
 export class Admin  {
-  login ({ login, password }: AdminLoginInterface, token: string) {
-    const api = apiInstance({ token });
+  login ({ login, password }: AdminLoginInterface) {
+    const api = apiInstance({});
 
     return api.post('/admin/login', { login, password });
   };
