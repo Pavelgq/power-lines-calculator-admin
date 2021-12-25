@@ -1,35 +1,34 @@
-import { ClientDataInterface } from "../interfaces/client.interface"
-import { apiInstance } from "./instance"
+import { ClientDataInterface } from "../interfaces/client.interface";
+import { apiInstance } from "./instance";
 
 export class Client {
-  getAllClients = ( token: string ) => {
-    const api = apiInstance({ token })
+  getAllClients = (token: string) => {
+    const api = apiInstance({ token });
 
-    return api.get('/client/all')
+    return api.get("/client/all");
   };
 
-  getOneClient = ( token: string, id: number ) => {
-    const api = apiInstance({ token })
+  getOneClient = (token: string, id: number) => {
+    const api = apiInstance({ token });
 
-    return api.get(`/client/${id}`)
+    return api.get(`/client/${id}`);
   };
 
-  createClient = ( token: string, clientData: ClientDataInterface ) => {
-  const api = apiInstance({ token });
-  
+  createClient = (token: string, clientData: ClientDataInterface) => {
+    const api = apiInstance({ token });
+
     return api.post(`/client/create`, clientData);
   };
 
-  editClient = ( token: string, id: number, clientData: ClientDataInterface ) => {
-    const api = apiInstance({ token })
+  editClient = (token: string, id: number, clientData: ClientDataInterface) => {
+    const api = apiInstance({ token });
 
-    return api.put(`/client/${id}`, )
+    return api.put(`/client/${id}`);
   };
 
-  deleteClient = ( token: string, id: number ) => {
-    const api = apiInstance({ token })
+  deleteClient = (token: string, id: number) => {
+    const api = apiInstance({ token });
 
-    return api.delete(`/client/${id}`)
+    return api.delete(`/client/${id}`);
   };
-
 }

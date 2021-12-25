@@ -1,0 +1,45 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true,
+        "es6": true
+    },
+    "extends": [
+        "airbnb",
+        "plugin:@typescript-eslint/base",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:import/typescript", // this is needed because airbnb uses eslint-plugin-import
+        "prettier",
+        "plugin:import/errors",
+        "plugin:import/warnings"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "@typescript-eslint"
+    ],
+    "rules": {
+        "import/no-unresolved": "off",
+        "no-param-reassign": "off",
+        "import/extensions": "off",
+        "import/prefer-default-export": "off",
+        "class-methods-use-this": "off",
+        "no-unused-vars": "off",
+        "react/react-in-jsx-scope": "off",
+        "react/jsx-filename-extension": "off"
+    },
+    "settings": {
+        "import/resolver": {
+            "node": {
+                "extensions": [".js", ".jsx", ".ts", ".tsx"]
+            }
+        }
+    }
+}

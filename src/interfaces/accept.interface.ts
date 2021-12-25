@@ -7,5 +7,5 @@ export interface AcceptDateInterface {
 }
 
 export interface AcceptKeyInterface {
-  key: string
+  key: string;
 }

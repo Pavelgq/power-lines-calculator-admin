@@ -1,7 +1,7 @@
 export interface AdminDataInterface {
   login: string;
   password?: string;
-  status: 'admin' | 'guest';
+  status: "admin" | "guest";
 }
 
 export interface AdminLoginInterface {
@@ -11,7 +11,7 @@ export interface AdminLoginInterface {
 
 export interface AdminFullInterface {
   id: number;
-  status?: 'admin' | 'guest';
+  status?: "admin" | "guest";
   login: string;
   token: string;
 }

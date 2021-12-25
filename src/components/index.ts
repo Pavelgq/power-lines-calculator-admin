@@ -1,9 +1,8 @@
 // atoms
 
+// molecules
 
+export * from "./molecules/ClientKey/ClientKey";
+export * from "./molecules/ClientCard/ClientCard";
 
-//molecules
-
-export * from './molecules/ClientKey/ClientKey'
-
-//templates
+// templates

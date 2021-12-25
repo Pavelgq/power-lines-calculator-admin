@@ -1,9 +1,9 @@
-import { configureStore } from '@reduxjs/toolkit';
-import adminReducer from './adminStore';
-import clientsReducer from './clientsStore';
-import createSagaMiddleware from 'redux-saga';
-import clientsSaga from '../sagas/clientsSaga';
-import rootSaga from '../sagas/rootSaga';
+import { configureStore } from "@reduxjs/toolkit";
+import adminReducer from "./adminStore";
+import clientsReducer from "./clientsStore";
+import createSagaMiddleware from "redux-saga";
+import clientsSaga from "../sagas/clientsSaga";
+import rootSaga from "../sagas/rootSaga";
 
 const saga = createSagaMiddleware();
 
@@ -12,7 +12,7 @@ export const store = configureStore({
     admin: adminReducer,
     clients: clientsReducer,
   },
-  middleware: [saga]
+  middleware: [saga],
 });
 
 saga.run(rootSaga);

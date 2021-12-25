@@ -1,11 +1,11 @@
 
 import { Button, Link } from '@mui/material';
 import { useState } from 'react';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { ClientKeyProps } from './ClientKey.props';
 
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
-export const ClientKey = ({keyValue, lifetime = 0}: ClientKeyProps): JSX.Element => {
+export function ClientKey({keyValue, lifetime = 0}: ClientKeyProps): JSX.Element {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {

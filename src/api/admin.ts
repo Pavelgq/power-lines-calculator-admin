@@ -1,23 +1,22 @@
-import { AdminLoginInterface } from "../interfaces/admin.interface"
-import { apiInstance } from "./instance"
+import { AdminLoginInterface } from "../interfaces/admin.interface";
+import { apiInstance } from "./instance";
 
-export class Admin  {
-  login ({ login, password }: AdminLoginInterface) {
+export class Admin {
+  login({ login, password }: AdminLoginInterface) {
     const api = apiInstance({});
 
-    return api.post('/admin/login', { login, password });
-  };
+    return api.post("/admin/login", { login, password });
+  }
 
-  profile (token: string) {
+  profile(token: string) {
     const api = apiInstance({ token });
 
-    return api.post('/admin/profile');
-  };
+    return api.post("/admin/profile");
+  }
 
-  getAdmin ( id: number, token: string ) {
+  getAdmin(id: number, token: string) {
     const api = apiInstance({ token });
 
     return api.get(`/admin/${id}`);
-  };
-
+  }
 }

@@ -9,14 +9,14 @@ export interface AdminStoreI {
 }
 
 const initialState: AdminStoreI = {
-    info: null,
-    isLoading: false,
-    error: null,
-    auth: false,
-}
+  info: null,
+  isLoading: false,
+  error: null,
+  auth: false,
+};
 
 export const adminSlice = createSlice({
-  name: 'admin',
+  name: "admin",
   initialState,
   reducers: {
     loginAdmin: (state, action) => {
@@ -70,26 +70,26 @@ export const adminSlice = createSlice({
     deleteAdminFailure: (state, action) => {
       state.error = action.payload;
       state.isLoading = false;
-    }
-  }
-})
+    },
+  },
+});
 
-export const { 
+export const {
   loginAdmin,
   logoutAdmin,
   profileAdmin,
-  getAdminFetch, 
-  getAdminSuccess, 
-  getAdminFailure, 
+  getAdminFetch,
+  getAdminSuccess,
+  getAdminFailure,
   createAdminFetch,
   createAdminSuccess,
   createAdminFailure,
   changeAdminFetch,
   changeAdminSuccess,
   changeAdminFailure,
-  deleteAdminFetch, 
-  deleteAdminSuccess, 
-  deleteAdminFailure 
+  deleteAdminFetch,
+  deleteAdminSuccess,
+  deleteAdminFailure,
 } = adminSlice.actions;
 
 export default adminSlice.reducer;
