@@ -4,6 +4,8 @@ export interface ClientDataInterface {
   company: string,
   office_position: string,
   phone_number: string,
-  email: string
+  email: string;
+  id: number;
+  key?: string;
 }
 
