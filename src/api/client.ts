@@ -5,31 +5,31 @@ export const Client = {
   getAllClients: function ( token: string ) {
     const api = apiInstance({ token })
 
-    return api.get('/user/all')
+    return api.get('/client/all')
   },
 
   getOneClient: function ( token: string, id: number ) {
     const api = apiInstance({ token })
 
-    return api.get(`/user/${id}`)
+    return api.get(`/client/${id}`)
   },
 
   createClient: function ( token: string, clientData: ClientDataInterface ) {
   const api = apiInstance({ token });
   
-    return api.post(`/user/create`, clientData);
+    return api.post(`/client/create`, clientData);
   },
 
   editClient: function ( token: string, id: number, clientData: ClientDataInterface ) {
     const api = apiInstance({ token })
 
-    return api.put(`/user/${id}`, )
+    return api.put(`/client/${id}`, )
   },
 
   deleteClient: function ( token: string, id: number ) {
     const api = apiInstance({ token })
 
-    return api.delete(`/user/${id}`)
+    return api.delete(`/client/${id}`)
   },
 
 }

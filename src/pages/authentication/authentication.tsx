@@ -1,8 +1,10 @@
 
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
-import useFetch from '../../hooks/useFetch';
+import { Navigate, useNavigate } from 'react-router-dom';
+
+import { Button, Grid, Input, TextField, Typography } from '@mui/material';
+
 import useLocalStorage from '../../hooks/useLocalStorage';
 import { createAdminFetch, loginAdmin } from '../../store/adminStore';
 import { RootState } from '../../store/store';
@@ -17,8 +19,9 @@ export const Authentication = (): JSX.Element => {
   // const {post, response, isLoading, error} = useFetch(apiUrl);
   const [token, setToken] = useLocalStorage('token');
 
-  const state = useSelector((state: RootState) => state.admin)
-  const dispatch = useDispatch()
+  const auth = useSelector((state: RootState) => state.admin.auth)
+  let navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = (event: any) => {
         event.preventDefault()
@@ -26,35 +29,61 @@ export const Authentication = (): JSX.Element => {
         
     }
 
-   useEffect(() => {
+    useEffect(() => {
+      if (auth) {
+        navigate({pathname: '/clients'})
+      }
+    }, [auth])
 
-    }, [])
-
-    if (isSuccesSubmit) {
-        return <Navigate
-          to={`/clients`}
-          replace
-        />
-    }
+    // if (state.auth) {
+    //     return <Navigate
+    //       to={`/clients`}
+    //       replace
+    //     />
+    // }
 
   return (
-    <div>
-      Авторизация
+    <Grid  
+      container
+      direction="column"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Typography variant="h5" component="h2">
+        Авторизация
+      </Typography>
+      
       <form onSubmit={handleSubmit}>
-        <label>Логин</label>
-        <input 
-          type='text'
-          value={login}
-          onChange={e => setLogin(e.target.value)}
-        ></input>
-        <label>Логин</label>
-        <input 
-          type='password'
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-        ></input>
-        <button type='submit'>Войти</button>
+        <Grid 
+          container 
+
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+        >
+           <TextField  
+            label="Логин" 
+            variant="outlined" 
+            autoFocus
+            type='text'
+            value={login}
+            onChange={e => setLogin(e.target.value)}
+            />
+          <TextField  
+            label="Пароль" 
+            variant="outlined" 
+            autoFocus
+            type='password'
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            /> 
+            <Grid>
+              <Button type='submit' variant="outlined">Войти</Button>
+            </Grid>
+          
+        </Grid>
+       
       </form>
-    </div>
+    </Grid>
   )
 }

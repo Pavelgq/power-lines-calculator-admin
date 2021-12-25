@@ -1,13 +1,11 @@
 
 import { call, put, takeEvery, fork, all } from 'redux-saga/effects'
-import { ClientDataInterface } from '../interfaces/client.interface';
-import { getClientsFailure, getClientsSuccess, createClientSuccess, createClientFailure } from '../store/clientsStore';
 
 import { Admin } from '../api/admin'
-import { createAdminSuccess ,createAdminFailure, getAdminFailure, getAdminSuccess } from '../store/adminStore';
+import { createAdminSuccess ,createAdminFailure, getAdminFailure, getAdminSuccess, profileAdmin, logoutAdmin  } from '../store/adminStore';
 import { AdminLoginInterface } from '../interfaces/admin.interface';
 
-function* loginAdminFetchWorker(action : {
+function* loginAdminWorker(action : {
     payload: any;
     type: string;
 }) {
@@ -42,10 +40,26 @@ function* createAdminFetchWorker(action: {
   }
 }
 
+function * profileAdminWorker (action: {
+    payload: any;
+    type: string;
+}) {
+  try {
+    const admin = new Admin();
+    const { token } = action.payload;
+    yield call(admin.profile, token)
+    yield put(profileAdmin());
+  } catch (error) {
+    console.log(error)
+    yield put(logoutAdmin(error));
+  }
+}
+
 function* adminSaga() {
   yield all([
-    takeEvery('admin/loginAdmin', loginAdminFetchWorker),
-    takeEvery('admin/createAdminFetch', createAdminFetchWorker)
+    takeEvery('admin/loginAdmin', loginAdminWorker),
+    takeEvery('admin/createAdminFetch', createAdminFetchWorker),
+    takeEvery('admin/profileAdmin', profileAdminWorker)
   ])
 }
 

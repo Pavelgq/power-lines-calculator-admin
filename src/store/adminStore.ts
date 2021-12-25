@@ -5,12 +5,14 @@ export interface AdminStoreI {
   info: AdminDataInterface | null;
   isLoading: boolean;
   error: Error | null;
+  auth: boolean;
 }
 
 const initialState: AdminStoreI = {
     info: null,
     isLoading: false,
     error: null,
+    auth: false,
 }
 
 export const adminSlice = createSlice({
@@ -19,9 +21,14 @@ export const adminSlice = createSlice({
   reducers: {
     loginAdmin: (state, action) => {
       state.info = action.payload;
+      state.auth = true;
     },
     logoutAdmin: (state, action) => {
       state.info = null;
+      state.auth = false;
+    },
+    profileAdmin: (state) => {
+      state.auth = true;
     },
     getAdminFetch: (state, action) => {
       state.isLoading = true;
@@ -70,6 +77,7 @@ export const adminSlice = createSlice({
 export const { 
   loginAdmin,
   logoutAdmin,
+  profileAdmin,
   getAdminFetch, 
   getAdminSuccess, 
   getAdminFailure, 

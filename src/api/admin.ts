@@ -8,6 +8,12 @@ export class Admin  {
     return api.post('/admin/login', { login, password });
   };
 
+  profile (token: string) {
+    const api = apiInstance({ token });
+
+    return api.post('/admin/profile');
+  };
+
   getAdmin ( id: number, token: string ) {
     const api = apiInstance({ token });
 
