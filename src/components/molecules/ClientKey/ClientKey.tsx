@@ -28,9 +28,6 @@ export function ClientKey({keyValue, lifetime = 0}: ClientKeyProps): JSX.Element
   }
 
   return (
-    <>
-      {lifetime}
-      <Button type='submit'>Генерировать</Button>
-    </>
+    <Button type='submit'>Генерировать</Button>
   )
 }

@@ -26,8 +26,12 @@ export const adminSlice = createSlice({
       state.info = null;
       state.auth = false;
     },
-    profileAdmin: (state) => {
+    profileAdmin: (state, action) => {
+      state.isLoading = true;
+    },
+    profileAdminSuccess: (state) => {
       state.auth = true;
+      state.isLoading = false;
     },
     getAdminFetch: (state, action) => {
       state.isLoading = true;
@@ -78,6 +82,7 @@ export const {
   loginAdmin,
   logoutAdmin,
   profileAdmin,
+  profileAdminSuccess,
   getAdminFetch,
   getAdminSuccess,
   getAdminFailure,

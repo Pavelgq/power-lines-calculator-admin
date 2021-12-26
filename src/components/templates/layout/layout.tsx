@@ -1,11 +1,12 @@
 import { Outlet } from "react-router-dom"
+import { Sidebar } from "../../molecules/Sidebar/Sidebar"
 import { LayoutProps } from "./layout.props"
 
 
-export const Layout = ({children}: LayoutProps): JSX.Element => {
+export function Layout({children}: LayoutProps): JSX.Element {
   return (
     <>
-      <div>Sidebar</div>
+      <Sidebar />
       <Outlet />
       <div>Footer</div>
     </>

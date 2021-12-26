@@ -11,7 +11,7 @@ export class Admin {
   profile(token: string) {
     const api = apiInstance({ token });
 
-    return api.post("/admin/profile");
+    return api.get("/admin/profile");
   }
 
   getAdmin(id: number, token: string) {

@@ -10,7 +10,7 @@ import { createAdminFetch, loginAdmin } from '../../store/adminStore';
 import { RootState } from '../../store/store';
 import styles from './authentication.module.css';
 
-export const Authentication = (): JSX.Element => {
+export function Authentication(): JSX.Element {
   const [login, setLogin] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isSuccesSubmit, setIsSuccesSubmit] = useState(false);
@@ -18,7 +18,7 @@ export const Authentication = (): JSX.Element => {
   const [token, setToken] = useLocalStorage('token');
 
   const auth = useSelector((state: RootState) => state.admin.auth)
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleSubmit = (event: any) => {
@@ -35,7 +35,7 @@ export const Authentication = (): JSX.Element => {
 
     if (auth) {
         return <Navigate
-          to={`/clients`}
+          to="/clients"
           replace
         />
     }

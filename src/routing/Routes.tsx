@@ -7,15 +7,17 @@ import { Authentication } from "../pages/authentication/authentication";
 import { Clients } from "../pages/clients/clients";
 import { PrivateRoute } from "./PrivateRouter";
 
-export const RoutesList = () => (
-  <Routes>
-    <Route path="/login" element={<Authentication />} />
+export function RoutesList() {
+  return (
+    <Routes>
+      <Route path="/login" element={<Authentication />} />
 
-    <Route path="/" element={<PrivateRoute />}>
-      <Route path="/" element={<Layout />}>
-        <Route path="/clients" element={<Clients />} />
-        <Route path="/:clientId" element={<Actions />} />
+      <Route path="/" element={<PrivateRoute />}>
+        <Route path="*" element={<Layout />}>
+          <Route path="clients" element={<Clients />} />
+          <Route path=":clientId" element={<Actions />} />
+        </Route>
       </Route>
-    </Route>
-  </Routes>
-);
+    </Routes>
+  );
+}

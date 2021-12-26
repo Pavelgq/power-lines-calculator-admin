@@ -1,5 +1,6 @@
 import { call, put, takeEvery, fork, all } from "redux-saga/effects";
 
+import { AxiosResponseHeaders } from "axios";
 import { Admin } from "../api/admin";
 import {
   createAdminSuccess,
@@ -7,6 +8,7 @@ import {
   getAdminFailure,
   getAdminSuccess,
   profileAdmin,
+  profileAdminSuccess,
   logoutAdmin,
 } from "../store/adminStore";
 import {
@@ -14,7 +16,6 @@ import {
   AdminFullInterface,
   AdminLoginInterface,
 } from "../interfaces/admin.interface";
-import { AxiosResponseHeaders } from "axios";
 
 function* loginAdminWorker(action: { payload: any; type: string }) {
   try {
@@ -54,9 +55,8 @@ function* profileAdminWorker(action: { payload: any; type: string }) {
     const admin = new Admin();
     const { token } = action.payload;
     yield call(admin.profile, token);
-    yield put(profileAdmin());
+    yield put(profileAdminSuccess());
   } catch (error) {
-    console.log(error);
     yield put(logoutAdmin(error));
   }
 }

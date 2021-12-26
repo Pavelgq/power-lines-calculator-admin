@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom"
 import { RootState } from "../../store/store";
 
 
-export const Actions = ({}) => {
+export function Actions() {
   const { clientId } = useParams();
 
   const clients = useSelector((state: RootState) => state.clients)

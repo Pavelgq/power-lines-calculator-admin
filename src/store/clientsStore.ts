@@ -1,17 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Key } from "react";
 import { ClientDataInterface } from "../interfaces/client.interface";
 
 interface ClientStateI {
-  data: ClientDataInterface[];
-  byId: Map<number, object>;
+  data: { [key: string]: ClientDataInterface };
   allIds: number[];
   isLoading: boolean;
   error: Error | null;
 }
 
 const initialState: ClientStateI = {
-  data: [],
-  byId: new Map(),
+  data: {},
   allIds: [],
   isLoading: false,
   error: null,
@@ -25,11 +24,10 @@ export const clientsSlice = createSlice({
       state.isLoading = true;
     },
     getClientsSuccess: (state, action) => {
-      state.data = action.payload;
       state.allIds = action.payload.map((c: ClientDataInterface) => c.id);
-      action.payload.forEach((c: ClientDataInterface) =>
-        state.byId.set(c.id, c)
-      );
+      action.payload.forEach((c: ClientDataInterface) => {
+        Object.assign(state.data, { [c.id]: c });
+      });
       state.isLoading = false;
     },
     getClientsFailure: (state, action) => {

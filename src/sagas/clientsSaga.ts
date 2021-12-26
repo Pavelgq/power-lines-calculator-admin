@@ -18,7 +18,9 @@ function* getClientsFetchWorker(action: { payload: any; type: string }) {
     const client = new Client();
     const { token } = action.payload;
     const res: AxiosResponseHeaders = yield call(client.getAllClients, token);
+    console.log("getClientsFetch", res);
     const clientsData: ClientDataInterface[] = yield res.data;
+    console.log("getClientsFetch", clientsData);
     yield put(getClientsSuccess(clientsData));
   } catch (e) {
     yield put(getClientsFailure(e));
@@ -35,7 +37,9 @@ function* getOneClientFetchWorker(action: { payload: any; type: string }) {
       token,
       id
     );
+    console.log("getOneClientFetch", res);
     const clientsData: ClientDataInterface = yield res.data;
+    console.log("getOneClientFetch", clientsData);
     yield put(getOneClientSuccess(clientsData));
   } catch (e) {
     yield put(getOneClientFailure(e));
@@ -45,12 +49,13 @@ function* getOneClientFetchWorker(action: { payload: any; type: string }) {
 function* createClientsFetchWorker(action: { payload: any; type: string }) {
   try {
     const client = new Client();
-    const { token, clientData } = action.payload;
+    const { token, data: clientData } = action.payload;
     const candidate: AxiosResponseHeaders = yield call(
       client.createClient,
       token,
       clientData
     );
+    console.log(candidate);
     const res: AnswerInterface = yield candidate.data;
     console.log(res);
     yield put(createClientSuccess(res));
