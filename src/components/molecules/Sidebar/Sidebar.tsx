@@ -2,6 +2,8 @@ import { AppBar, Container, Toolbar, Typography, Box, IconButton, Menu, MenuItem
 import MenuIcon from '@mui/icons-material/Menu';
 import { FormEvent, MouseEvent, useState } from "react";
 
+import styles from './Sidebar.module.css';
+
 const pages = ['Клиенты', 'Действия', 'Проверка ключей'];
 const settings = ['Добавить администратора', 'Изменить пароль', 'Выход'];
 
@@ -26,7 +28,7 @@ export function Sidebar() {
   };
 
   return (
-      <AppBar position="static">
+      <AppBar position="static" className={styles.appbar}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography

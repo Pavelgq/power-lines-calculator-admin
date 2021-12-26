@@ -44,20 +44,22 @@ export function ClientForm({title, open, setOpen}: ClientFormProps) {
   };
 
   const handleAction = () => {
+    handleSubmit(onSubmit);
     if (Object.keys(errors).length === 0) {
       handleClose();
     }
   }
 
   return (
+   
     <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{title} клиента</DialogTitle>
-         <form onSubmit={handleSubmit(onSubmit)} >
+        <form onSubmit={handleSubmit(onSubmit)} >
         <DialogContent>
           <DialogContentText>
             Заполните поля формы и нажмите
           </DialogContentText>
-         
+          
           <TextField
             margin="dense"
             id="first_name" 
@@ -125,8 +127,8 @@ export function ClientForm({title, open, setOpen}: ClientFormProps) {
             {...register('email')}
           />
 
-            <Button type="button" onClick={() => reset()}>Очистить</Button>
-            <Button type="submit">Подтвердить</Button>
+            {/* <Button type="button" onClick={() => reset()}>Очистить</Button>
+            <Button type="submit">Подтвердить</Button> */}
           
         </DialogContent>
         <DialogActions>
@@ -134,7 +136,7 @@ export function ClientForm({title, open, setOpen}: ClientFormProps) {
           <Button type="button" onClick={() => reset()}>Очистить</Button>
           <Button type="submit" onClick={handleAction}>{title}</Button>
         </DialogActions>
-        </form>
+       </form>
       </Dialog>
     
   )

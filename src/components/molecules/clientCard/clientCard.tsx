@@ -1,11 +1,32 @@
 import { Link as MuiLink, Card, CardContent, Typography, List, ListItem, ListItemAvatar, Avatar, ListItemText, CardActions, Button } from "@mui/material"
 import { Link } from "react-router-dom";
+import { useDispatch } from 'react-redux';
 import ContactIcon from '@mui/icons-material/PermContactCalendar';
+import { useState } from "react";
 import { ClientCardProps } from "./ClientCard.props";
 import { ClientKey } from '../ClientKey/ClientKey';
+import useLocalStorage from "../../../hooks/useLocalStorage";
+import { deleteClientFetch } from "../../../store/clientsStore";
+import { AlertDialog } from "../AlertDialog/AlertDialog";
 
 
 export function ClientCard({client, color='white'}: ClientCardProps): JSX.Element {
+  const [openAlert, setOpenAlert] = useState(false)
+  const [token] = useLocalStorage('token')
+  const dispatch = useDispatch()
+
+
+  const handleCloseAlert = () => {
+    setOpenAlert(false);
+  }
+
+  const handleOpenAlert = () => {
+    setOpenAlert(true);
+  }
+  const handleDelete = () => {
+    console.log('delete')
+    dispatch(deleteClientFetch({token, id: client.id}));
+  }
 
   return (
     <Card>
@@ -39,7 +60,8 @@ export function ClientCard({client, color='white'}: ClientCardProps): JSX.Elemen
       </CardContent>
       <CardActions>
         <Button size="small">Изменить</Button>
-        <Button size="small" color="warning">Удалить</Button>
+        <Button size="small" color="warning" onClick={handleOpenAlert}>Удалить</Button>
+        <AlertDialog open={openAlert} handleClose={handleCloseAlert} handleDelete={handleDelete} />
       </CardActions>
     </Card>
   )

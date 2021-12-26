@@ -13,6 +13,7 @@ import { ClientForm } from '../../components/molecules/ClientForm/ClientForm';
 export function Clients(): JSX.Element {
   const [token] = useLocalStorage('token');
   const clients = useSelector((state: RootState) => state.clients.data);
+  const isLoading = useSelector((state: RootState) => state.clients.isLoading);
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
@@ -27,18 +28,12 @@ export function Clients(): JSX.Element {
 
     }
   }, [dispatch])
-  console.log(clients)
 
-  const handleSubmit = () => {
-    console.log('submit')
-    dispatch(createClientsFetch({
-      "first_name": "Pavel1",
-      "last_name": "Gord1",
-      "company": "ZEU1",
-      "office_position": "123421",
-      "phone_number": "8999999942",
-      "email": "afsdf23@dsf34a.ru"
-    }))
+
+  if (isLoading) {
+    return (
+      <span>Загрузка данных...</span>
+    )
   }
 
   if (!Object.keys(clients).length) {

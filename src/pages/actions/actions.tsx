@@ -16,7 +16,7 @@ export function Actions() {
 
   return (
     <>
-      client {clientId}
+      Здесь будут действия совершенные клиентом в id: {clientId}
     </>
   )
 }

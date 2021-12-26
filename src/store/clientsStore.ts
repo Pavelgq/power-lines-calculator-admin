@@ -25,6 +25,7 @@ export const clientsSlice = createSlice({
     },
     getClientsSuccess: (state, action) => {
       state.allIds = action.payload.map((c: ClientDataInterface) => c.id);
+      state.data = {};
       action.payload.forEach((c: ClientDataInterface) => {
         Object.assign(state.data, { [c.id]: c });
       });
@@ -59,6 +60,9 @@ export const clientsSlice = createSlice({
     updateClientFailure: (state, action) => {
       state.isLoading = false;
     },
+    deleteClientFetch: (state, action) => {
+      state.isLoading = true;
+    },
     deleteClientSuccess: (state, action) => {
       state.isLoading = false;
     },
@@ -80,6 +84,7 @@ export const {
   createClientFailure,
   updateClientSuccess,
   updateClientFailure,
+  deleteClientFetch,
   deleteClientSuccess,
   deleteClientFailure,
 } = clientsSlice.actions;
