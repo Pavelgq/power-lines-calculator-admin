@@ -8,6 +8,7 @@ import { ClientKey } from '../ClientKey/ClientKey';
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import { deleteClientFetch } from "../../../store/clientsStore";
 import { AlertDialog } from "../AlertDialog/AlertDialog";
+import { formatePhone } from "../../../helpers/format";
 
 
 export function ClientCard({client, color='white'}: ClientCardProps): JSX.Element {
@@ -49,7 +50,7 @@ export function ClientCard({client, color='white'}: ClientCardProps): JSX.Elemen
                 <ContactIcon />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText primary={<MuiLink href={`tel:${client.phone_number}`}>{client.phone_number}</MuiLink>} secondary={<MuiLink href={`mailto:${client.email}`}>{client.email}</MuiLink>} />
+            <ListItemText primary={<MuiLink href={`tel:${client.phone_number}`}>{formatePhone(client.phone_number)}</MuiLink>} secondary={<MuiLink href={`mailto:${client.email}`}>{client.email}</MuiLink>} />
             
           </ListItem>
         </List>
