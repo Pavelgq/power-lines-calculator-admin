@@ -2,9 +2,23 @@ import { AppBar, Container, Toolbar, Typography, Box, IconButton, Menu, MenuItem
 import MenuIcon from '@mui/icons-material/Menu';
 import { FormEvent, MouseEvent, useState } from "react";
 
+import { Link } from "react-router-dom";
 import styles from './Sidebar.module.css';
 
-const pages = ['Клиенты', 'Действия', 'Проверка ключей'];
+const pages = [
+  {
+    title: 'Клиенты',
+    link: '/clients'
+  },
+  {
+    title: 'Действия',
+    link: '/actions'
+  },
+  {
+    title: 'Проверка ключей',
+    link: '/keys'
+  }
+]
 const settings = ['Добавить администратора', 'Изменить пароль', 'Выход'];
 
 export function Sidebar() {
@@ -70,8 +84,9 @@ export function Sidebar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem key={page.title} onClick={handleCloseNavMenu}>
+                  <Link to={page.link} />
+                  <Typography textAlign="center">{page.title}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -86,13 +101,16 @@ export function Sidebar() {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
+              
+                <Button
+                  key={page.title}
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  <Link to={page.link}>{page.title}</Link>
+                </Button>
+              
+              
             ))}
           </Box>
 

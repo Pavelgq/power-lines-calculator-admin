@@ -1,21 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import './styles/global.css';
 import './styles/index.css';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
 import * as serviceWorker from './serviceWorker';
-import { RoutesList } from './routing/Routes';
+import { PrivateRoute } from './routing/PrivateRouter';
 
 
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
-        <RoutesList />
-      </BrowserRouter>
+      <HashRouter>
+        <PrivateRoute />
+      </HashRouter>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
