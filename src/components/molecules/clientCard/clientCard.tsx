@@ -32,7 +32,7 @@ export function ClientCard({client, color='white'}: ClientCardProps): JSX.Elemen
   return (
     <Card>
       <CardContent>
-        <Link to={`/${client.id}`}>
+        <Link to={`/clients/${client.id}`}>
           <Typography  variant="h5" component="h3">
             {client.first_name} {client.last_name}
           </Typography>

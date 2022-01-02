@@ -1,34 +1,43 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Navigate, Outlet, useRoutes } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import useLocalStorage from "../hooks/useLocalStorage";
-import { profileAdmin } from "../store/adminStore";
-import { RootState } from "../store/store";
-import { routes } from "./Routes";
+import { profileAdmin, selectCurrentAdmin, selectIsAuthenticated } from "../store/adminStore";
+import { AccessDenied } from '../pages/AccessDenied/AccessDenied';
+import { ROLES } from "../interfaces/admin.interface";
 
-export function PrivateRoute(): JSX.Element {
-  const adminState = useSelector((state: RootState) => state.admin);
-  
+interface PrivateRouteProps {
+  component: React.ComponentType;
+  roles: ROLES[];
+  // eslint-disable-next-line react/require-default-props
+  path?: string;
+}
 
+export function PrivateRoute({component: RouteComponent, roles, path = ''}: PrivateRouteProps): JSX.Element {
+  const user = useSelector(selectCurrentAdmin);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const userHasRequiredRole = !!(user && roles.includes(user.status))
+
+  console.log(user, isAuthenticated, userHasRequiredRole)
   const dispatch = useDispatch();
 
   const [token] = useLocalStorage("token");
-  const { auth } = adminState; // determine if authorized, from context or however you're doing it
-  const routing = useRoutes(routes(auth));
 
   useEffect(() => {
-    if (auth) {
+    if (isAuthenticated) {
       return;
     }
     dispatch(profileAdmin({ token }));
   }, []);
 
-  // If authorized, return an outlet that will render child elements
-  // If not, return element that will navigate to login page
-  return (
-    // eslint-disable-next-line react/jsx-no-useless-fragment
-    <>
-      {routing}
-    </>  
-  );
+
+   if (isAuthenticated && userHasRequiredRole) {
+    return <RouteComponent />
+  }
+
+  if (isAuthenticated && !userHasRequiredRole) {
+    return <AccessDenied />
+  }
+
+  return <Navigate to="/" />
 }

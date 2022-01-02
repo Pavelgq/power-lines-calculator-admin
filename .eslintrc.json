@@ -33,7 +33,10 @@
         "class-methods-use-this": "off",
         "no-unused-vars": "off",
         "react/react-in-jsx-scope": "off",
-        "react/jsx-filename-extension": "off"
+        "react/jsx-filename-extension": "off",
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": ["error"],
+        "import/no-cycle": "off"
     },
     "settings": {
         "import/resolver": {

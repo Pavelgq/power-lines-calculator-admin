@@ -1,7 +1,14 @@
+export enum ROLES {
+  ADMIN = 'admin',
+  USER = 'user',
+  GUEST = 'guest'
+}
+
 export interface AdminDataInterface {
   login: string;
   password?: string;
-  status: "admin" | "guest";
+  status: ROLES;
+  message?: string;
 }
 
 export interface AdminLoginInterface {
@@ -11,7 +18,7 @@ export interface AdminLoginInterface {
 
 export interface AdminFullInterface {
   id: number;
-  status?: "admin" | "guest";
+  status?: ROLES;
   login: string;
   token: string;
 }

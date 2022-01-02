@@ -7,7 +7,6 @@ import {
   createAdminFailure,
   getAdminFailure,
   getAdminSuccess,
-  profileAdmin,
   profileAdminSuccess,
   logoutAdmin,
 } from "../store/adminStore";
@@ -55,9 +54,11 @@ function* profileAdminWorker(action: { payload: any; type: string }) {
   try {
     const admin = new Admin();
     const { token } = action.payload;
-    yield call(admin.profile, token);
-    yield put(profileAdminSuccess());
+    const candidate: AxiosResponseHeaders = yield call(admin.profile, token);
+    const res: AdminDataInterface = yield candidate.data;
+    yield put(profileAdminSuccess(res));
   } catch (error) {
+    console.log('error profile', error)
     yield put(logoutAdmin(error));
   }
 }

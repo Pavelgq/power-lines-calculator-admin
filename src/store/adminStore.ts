@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { start } from "repl";
 import { AdminDataInterface } from "../interfaces/admin.interface";
+import { RootState } from "./store";
 
 export interface AdminStoreI {
   info: AdminDataInterface | null;
@@ -29,7 +31,8 @@ export const adminSlice = createSlice({
     profileAdmin: (state, action) => {
       state.isLoading = true;
     },
-    profileAdminSuccess: (state) => {
+    profileAdminSuccess: (state, action) => {
+      state.info = {login: action.payload.login, status: action.payload.status};
       state.auth = true;
       state.isLoading = false;
     },
@@ -98,3 +101,7 @@ export const {
 } = adminSlice.actions;
 
 export default adminSlice.reducer;
+
+
+export const selectCurrentAdmin = (state: RootState) => state.admin.info;
+export const selectIsAuthenticated = (state: RootState) => state.admin.auth;

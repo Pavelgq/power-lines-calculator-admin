@@ -1,21 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import './styles/global.css';
 import './styles/index.css';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
 import * as serviceWorker from './serviceWorker';
-import { PrivateRoute } from './routing/PrivateRouter';
+import { RoutesList } from './routing/Routes';
 
 
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <HashRouter>
-        <PrivateRoute />
-      </HashRouter>
+      <BrowserRouter basename='/power-lines-calculator-admin'>
+        <RoutesList />
+      </BrowserRouter>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

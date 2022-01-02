@@ -6,18 +6,16 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { Button, Grid, Input, TextField, Typography } from '@mui/material';
 
 import useLocalStorage from '../../hooks/useLocalStorage';
-import { createAdminFetch, loginAdmin } from '../../store/adminStore';
+import { createAdminFetch, loginAdmin, selectIsAuthenticated } from '../../store/adminStore';
 import { RootState } from '../../store/store';
 import styles from './authentication.module.css';
 
 export function Authentication(): JSX.Element {
   const [login, setLogin] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [isSuccesSubmit, setIsSuccesSubmit] = useState(false);
-  // const {post, response, isLoading, error} = useFetch(apiUrl);
   const [token, setToken] = useLocalStorage('token');
 
-  const auth = useSelector((state: RootState) => state.admin.auth)
+  const auth = useSelector(selectIsAuthenticated)
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
