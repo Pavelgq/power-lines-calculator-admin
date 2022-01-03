@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Key } from "react";
 import { ClientDataInterface } from "../interfaces/client.interface";
+import { RootState } from "./store";
 
 interface ClientStateI {
   data: { [key: string]: ClientDataInterface };
@@ -90,3 +91,7 @@ export const {
 } = clientsSlice.actions;
 
 export default clientsSlice.reducer;
+
+export const selectAllClients = (state: RootState) => state.clients.data;
+export const selectIsLoadingClient = (state: RootState) =>
+  state.admin.isLoading;

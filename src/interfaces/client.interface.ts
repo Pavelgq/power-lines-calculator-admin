@@ -6,5 +6,6 @@ export interface ClientDataInterface {
   phone_number: string;
   email: string;
   id: number;
-  key?: string;
+  client_key?: string;
+  valid_until?: string;
 }

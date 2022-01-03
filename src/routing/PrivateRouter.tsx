@@ -2,8 +2,13 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Navigate } from "react-router-dom";
 import useLocalStorage from "../hooks/useLocalStorage";
-import { profileAdmin, selectCurrentAdmin, selectIsAuthenticated } from "../store/adminStore";
-import { AccessDenied } from '../pages/AccessDenied/AccessDenied';
+import {
+  profileAdmin,
+  selectCurrentAdmin,
+  selectIsAuthenticated,
+  selectIsLoadingAdmin,
+} from "../store/adminStore";
+import { AccessDenied } from "../pages/AccessDenied/AccessDenied";
 import { ROLES } from "../interfaces/admin.interface";
 
 interface PrivateRouteProps {
@@ -13,12 +18,17 @@ interface PrivateRouteProps {
   path?: string;
 }
 
-export function PrivateRoute({component: RouteComponent, roles, path = ''}: PrivateRouteProps): JSX.Element {
+export function PrivateRoute({
+  component: RouteComponent,
+  roles,
+  path = "",
+}: PrivateRouteProps): JSX.Element {
   const user = useSelector(selectCurrentAdmin);
+  const isLoading = useSelector(selectIsLoadingAdmin);
   const isAuthenticated = useSelector(selectIsAuthenticated);
-  const userHasRequiredRole = !!(user && roles.includes(user.status))
+  const userHasRequiredRole = !!(user && roles.includes(user.status));
 
-  console.log(user, isAuthenticated, userHasRequiredRole)
+  console.log(user, isAuthenticated, userHasRequiredRole);
   const dispatch = useDispatch();
 
   const [token] = useLocalStorage("token");
@@ -30,14 +40,17 @@ export function PrivateRoute({component: RouteComponent, roles, path = ''}: Priv
     dispatch(profileAdmin({ token }));
   }, []);
 
+  if (isLoading) {
+    return <span>Загрузка...</span>;
+  }
 
-   if (isAuthenticated && userHasRequiredRole) {
-    return <RouteComponent />
+  if (isAuthenticated && userHasRequiredRole) {
+    return <RouteComponent />;
   }
 
   if (isAuthenticated && !userHasRequiredRole) {
-    return <AccessDenied />
+    return <AccessDenied />;
   }
 
-  return <Navigate to="/" />
+  return <Navigate to="/" />;
 }

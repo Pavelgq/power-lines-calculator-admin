@@ -32,7 +32,10 @@ export const adminSlice = createSlice({
       state.isLoading = true;
     },
     profileAdminSuccess: (state, action) => {
-      state.info = {login: action.payload.login, status: action.payload.status};
+      state.info = {
+        login: action.payload.login,
+        status: action.payload.status,
+      };
       state.auth = true;
       state.isLoading = false;
     },
@@ -102,6 +105,6 @@ export const {
 
 export default adminSlice.reducer;
 
-
 export const selectCurrentAdmin = (state: RootState) => state.admin.info;
 export const selectIsAuthenticated = (state: RootState) => state.admin.auth;
+export const selectIsLoadingAdmin = (state: RootState) => state.admin.isLoading;

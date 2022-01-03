@@ -1,50 +1,39 @@
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useNavigate } from "react-router-dom";
 
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Button, Grid, TextField, Typography } from "@mui/material";
 
-import { Button, Grid, Input, TextField, Typography } from '@mui/material';
-
-import useLocalStorage from '../../hooks/useLocalStorage';
-import { createAdminFetch, loginAdmin, selectIsAuthenticated } from '../../store/adminStore';
-import { RootState } from '../../store/store';
-import styles from './authentication.module.css';
+import useLocalStorage from "../../hooks/useLocalStorage";
+import { loginAdmin, selectIsAuthenticated } from "../../store/adminStore";
+import styles from "./authentication.module.css";
 
 export function Authentication(): JSX.Element {
-  const [login, setLogin] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [token, setToken] = useLocalStorage('token');
+  const [login, setLogin] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [token, setToken] = useLocalStorage("token");
 
-  const auth = useSelector(selectIsAuthenticated)
+  const auth = useSelector(selectIsAuthenticated);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleSubmit = (event: any) => {
-        event.preventDefault()
-        dispatch(loginAdmin({ login, password}));
-        
-    }
+    event.preventDefault();
+    dispatch(loginAdmin({ login, password }));
+  };
 
-    useEffect(() => {
-      if (auth) {
-        navigate({pathname: '/clients'})
-      }
-    }, [auth])
-
+  useEffect(() => {
     if (auth) {
-        return <Navigate
-          to="/clients"
-          replace
-        />
+      navigate({ pathname: "/clients" });
     }
+  }, [auth]);
+
+  if (auth) {
+    return <Navigate to="/clients" replace />;
+  }
 
   return (
-    <Grid  
-      container
-      spacing={2}
-      direction="column"
-      alignItems="center"
-    >
+    <Grid container spacing={2} direction="column" alignItems="center">
       <Grid item>
         <Typography variant="h5" component="h2">
           Авторизация
@@ -52,43 +41,41 @@ export function Authentication(): JSX.Element {
       </Grid>
       <Grid item>
         <form onSubmit={handleSubmit}>
-        <Grid 
-          container 
-          spacing = {2}
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Grid item xs={6} md={8}>
-            <TextField  
-              label="Логин" 
-              variant="outlined" 
-              autoFocus
-              type='text'
-              value={login}
-              onChange={e => setLogin(e.target.value)}
-            />
-          </Grid>
-           <Grid item>
-              <TextField  
-                label="Пароль" 
-                variant="outlined" 
-                type='password'
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-              /> 
-           </Grid>
-          
-            <Grid item justifyContent="flex-end">
-                <Button type='submit' variant="outlined">Войти</Button>
+          <Grid
+            container
+            spacing={2}
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Grid item xs={6} md={8}>
+              <TextField
+                label="Логин"
+                variant="outlined"
+                autoFocus
+                type="text"
+                value={login}
+                onChange={(e) => setLogin(e.target.value)}
+              />
             </Grid>
-          
-        </Grid>
-       
-      </form>
+            <Grid item>
+              <TextField
+                label="Пароль"
+                variant="outlined"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Grid>
+
+            <Grid item justifyContent="flex-end">
+              <Button type="submit" variant="outlined">
+                Войти
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
       </Grid>
-      
-      
     </Grid>
-  )
+  );
 }

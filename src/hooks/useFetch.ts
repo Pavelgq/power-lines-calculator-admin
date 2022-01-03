@@ -59,6 +59,7 @@ const useFetch = (url: string): FetchInterface => {
           setIsLoading(false);
         }
       });
+    // eslint-disable-next-line consistent-return
     return () => {
       skipAfterDestroy = true;
     };

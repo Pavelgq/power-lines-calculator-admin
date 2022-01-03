@@ -2,6 +2,6 @@
 
 export interface ClientKeyProps {
   keyValue: string | undefined;
-  lifetime?: number;
+  lifetime?: string;
 
 }

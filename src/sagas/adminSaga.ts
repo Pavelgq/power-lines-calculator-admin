@@ -23,7 +23,7 @@ function* loginAdminWorker(action: { payload: any; type: string }) {
     const { ...authData } = action.payload;
     const adminData: AxiosResponseHeaders = yield call(admin.login, authData);
     const formatingAdminData: AdminFullInterface = yield adminData.data;
-    localStorage.setItem('token', formatingAdminData.token);
+    localStorage.setItem("token", formatingAdminData.token);
     console.log("admin data in saga", formatingAdminData);
     yield put(getAdminSuccess(formatingAdminData));
   } catch (e) {
@@ -58,7 +58,7 @@ function* profileAdminWorker(action: { payload: any; type: string }) {
     const res: AdminDataInterface = yield candidate.data;
     yield put(profileAdminSuccess(res));
   } catch (error) {
-    console.log('error profile', error)
+    console.log("error profile", error);
     yield put(logoutAdmin(error));
   }
 }

@@ -16,7 +16,7 @@ export function ClientCard({client, color='white'}: ClientCardProps): JSX.Elemen
   const [token] = useLocalStorage('token')
   const dispatch = useDispatch()
 
-
+  console.log(client)
   const handleCloseAlert = () => {
     setOpenAlert(false);
   }
@@ -55,7 +55,7 @@ export function ClientCard({client, color='white'}: ClientCardProps): JSX.Elemen
           </ListItem>
         </List>
         <Typography variant='body2'>
-          Ключ: <ClientKey keyValue={client.key} />
+          Ключ: <ClientKey keyValue={client.client_key} lifetime={client.valid_until} />
         </Typography>
         
       </CardContent>

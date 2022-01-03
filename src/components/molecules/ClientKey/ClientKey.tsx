@@ -2,11 +2,14 @@
 import { Button, Link } from '@mui/material';
 import { useState } from 'react';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import moment from '../../../helpers/date';
 import { ClientKeyProps } from './ClientKey.props';
+import { KeygenDialog } from '../KeygenDialog/KeygenDialog';
 
 
-export function ClientKey({keyValue, lifetime = 0}: ClientKeyProps): JSX.Element {
+export function ClientKey({keyValue, lifetime = ''}: ClientKeyProps): JSX.Element {
   const [copied, setCopied] = useState(false);
+  const [openGenerate, setOpenGenerate] = useState(false);
 
   const handleCopy = () => {
     if (keyValue) {
@@ -15,19 +18,31 @@ export function ClientKey({keyValue, lifetime = 0}: ClientKeyProps): JSX.Element
     setCopied(true);
   }
 
+  const handleGenerate = () => {
+    setOpenGenerate(true);
+  }
 
   if (keyValue) {
     return (
       <>
-        {keyValue}
-        <Button onClick={handleCopy}><ContentCopyIcon /></Button>
+        <span>
+          {keyValue}
+          <Button onClick={handleCopy}><ContentCopyIcon /></Button>
 
-        {copied ? <span style={{color: 'red'}}>Copied.</span> : null}
+          {copied ? <span style={{color: 'red'}}>Copied.</span> : null}
+        </span>
+        <span>
+          действителен до {moment(lifetime, moment.ISO_8601).format('DD MMMM YYYY')}
+        </span>
       </>
     )
   }
 
   return (
-    <Button type='submit'>Генерировать</Button>
+    <>
+      <KeygenDialog toggle={openGenerate} handleClose={setOpenGenerate}/>
+      <Button type='submit' onClick={handleGenerate}>Генерировать</Button>
+    </>
+    
   )
 }

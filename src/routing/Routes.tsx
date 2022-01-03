@@ -2,23 +2,27 @@ import React from "react";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { MainLayout } from "../components/templates/MainLayout/MainLayout";
 import { ROLES } from "../interfaces/admin.interface";
-import { Actions } from "../pages/actions/actions";
+import { Actions } from "../pages/Actions/Actions";
 
-import { Authentication } from "../pages/authentication/authentication";
-import { Clients } from "../pages/clients/clients";
-import { Landing } from "../pages/landing/landing";
+import { Authentication } from "../pages/Authentication/Authentication";
+import { Clients } from "../pages/Clients/Clients";
 import { PrivateRoute } from "./PrivateRouter";
 
-export function RoutesList( props: any ): JSX.Element {
+export function RoutesList(props: any): JSX.Element {
   const { isLoggedIn } = props;
   return (
     <Routes>
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Authentication />} />
-        <Route path="clients" element={<PrivateRoute roles={[ROLES.ADMIN]} component={Clients} />}> 
-          <Route path=":clientId" element={<PrivateRoute roles={[ROLES.ADMIN]} component={Actions} />} />
+        <Route
+          path="clients"
+          element={<PrivateRoute roles={[ROLES.ADMIN]} component={Clients} />}
+        >
+          <Route
+            path=":clientId"
+            element={<PrivateRoute roles={[ROLES.ADMIN]} component={Actions} />}
+          />
         </Route>
-
       </Route>
     </Routes>
   );
@@ -31,7 +35,7 @@ export function RoutesList( props: any ): JSX.Element {
 //     element: isLoggedIn ? <MainLayout /> : <Navigate to="/login" />,
 //     children: [
 //       { path: '/', element: <Landing /> },
-//       { path: '/clients', element: <Clients />, 
+//       { path: '/clients', element: <Clients />,
 //       children: [
 //         { path: ":clientId", element: <Actions /> }
 //       ]},
