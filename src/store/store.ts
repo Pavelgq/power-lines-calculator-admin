@@ -2,7 +2,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
 import adminReducer from "./adminStore";
 import clientsReducer from "./clientsStore";
-import clientsSaga from "../sagas/clientsSaga";
+import actionReducer from "./actionStore";
+import acceptReducer from "./acceptStore";
 import rootSaga from "../sagas/rootSaga";
 
 const saga = createSagaMiddleware();
@@ -11,6 +12,8 @@ export const store = configureStore({
   reducer: {
     admin: adminReducer,
     clients: clientsReducer,
+    actions: actionReducer,
+    accept: acceptReducer,
   },
   middleware: [saga],
 });

@@ -8,7 +8,10 @@ export class Action {
     return api.get("/action/all");
   };
 
-  createActionForClient = (acceptToken: string, data: ActionCreateInterface) => {
+  createActionForClient = (
+    acceptToken: string,
+    data: ActionCreateInterface
+  ) => {
     const api = apiInstance({ acceptToken });
 
     return api.post(`/action/add`, data);
@@ -20,10 +23,9 @@ export class Action {
     return api.get(`/action/${clientId}`);
   };
 
-  getActionFile = ( fileName: string ) => {
+  getActionFile = (fileName: string) => {
     const api = apiInstance({});
 
     return api.put(`action/file/${fileName}`);
   };
-
 }

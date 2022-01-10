@@ -8,4 +8,5 @@ export interface AcceptDateInterface {
 
 export interface AcceptKeyInterface {
   key: string;
+  message?: string;
 }
