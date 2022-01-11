@@ -1,36 +1,49 @@
-import { AppBar, Container, Toolbar, Typography, Box, IconButton, Menu, MenuItem, Button, Tooltip, Avatar } from "@mui/material";
-import MenuIcon from '@mui/icons-material/Menu';
+import {
+  AppBar,
+  Container,
+  Toolbar,
+  Typography,
+  Box,
+  IconButton,
+  Menu,
+  MenuItem,
+  Button,
+  Tooltip,
+  Avatar,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
 import { FormEvent, MouseEvent, useState } from "react";
 
 import { Link } from "react-router-dom";
-import styles from './Sidebar.module.css';
+import styles from "./Sidebar.module.css";
 
 const pages = [
   {
-    title: 'Клиенты',
-    link: '/clients'
+    title: "Клиенты",
+    link: "/clients",
   },
   {
-    title: 'Действия',
-    link: '/actions'
+    title: "Действия",
+    link: "/actions",
   },
   {
-    title: 'Проверка ключей',
-    link: '/keys'
-  }
-]
-const settings = ['Добавить администратора', 'Изменить пароль', 'Выход'];
+    title: "Проверка ключей",
+    link: "/keys",
+  },
+];
+const settings = ["Добавить администратора", "Изменить пароль", "Выход"];
 
 export function Sidebar() {
-
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
-  const handleOpenNavMenu = (event: MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
-    console.log('nav menu')
+  const handleOpenNavMenu = (
+    event: MouseEvent<HTMLButtonElement | HTMLAnchorElement>
+  ) => {
+    console.log("nav menu");
   };
-  const handleOpenUserMenu = (event:  MouseEvent<HTMLButtonElement>) => {
-    console.log('user menu')
+  const handleOpenUserMenu = (event: MouseEvent<HTMLButtonElement>) => {
+    console.log("user menu");
   };
 
   const handleCloseNavMenu = () => {
@@ -42,19 +55,19 @@ export function Sidebar() {
   };
 
   return (
-      <AppBar position="static" className={styles.appbar}>
+    <AppBar position="static" className={styles.appbar}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
             variant="h6"
             noWrap
             component="div"
-            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+            sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
           >
             Экран Труба Кабель
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -69,18 +82,18 @@ export function Sidebar() {
               id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
+                vertical: "bottom",
+                horizontal: "left",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
+                vertical: "top",
+                horizontal: "left",
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: 'block', md: 'none' },
+                display: { xs: "block", md: "none" },
               }}
             >
               {pages.map((page) => (
@@ -95,22 +108,19 @@ export function Sidebar() {
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
+            sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
           >
             Экран Труба Кабель
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              
-                <Button
-                  key={page.title}
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                >
-                  <Link to={page.link}>{page.title}</Link>
-                </Button>
-              
-              
+              <Button
+                key={page.title}
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: "white", display: "block" }}
+              >
+                <Link to={page.link}>{page.title}</Link>
+              </Button>
             ))}
           </Box>
 
@@ -121,17 +131,17 @@ export function Sidebar() {
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ mt: '45px' }}
+              sx={{ mt: "45px" }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
@@ -146,5 +156,5 @@ export function Sidebar() {
         </Toolbar>
       </Container>
     </AppBar>
-  )
+  );
 }

@@ -1,10 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Key } from "react";
 import { ClientDataInterface } from "../interfaces/client.interface";
 import { RootState } from "./store";
 
 interface ClientStateI {
-  data: { [key: string]: ClientDataInterface };
+  data: { [id: string]: ClientDataInterface };
   allIds: number[];
   isLoading: boolean;
   error: Error | null;

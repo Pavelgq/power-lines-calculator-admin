@@ -13,6 +13,7 @@ import useLocalStorage from "../../hooks/useLocalStorage";
 
 import { ClientCard } from "../../components";
 import { ClientForm } from "../../components/molecules/ClientForm/ClientForm";
+import { ClientTable } from "../../components/molecules/ClientTable/ClientTable";
 
 export function Clients(): JSX.Element {
   const { clientId } = useParams();
@@ -62,6 +63,7 @@ export function Clients(): JSX.Element {
           </Grid>
         ))}
       </Grid>
+      <ClientTable data={clients} />
     </>
   );
 }
