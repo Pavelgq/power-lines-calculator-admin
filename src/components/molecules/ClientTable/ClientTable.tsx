@@ -49,7 +49,6 @@ export function ClientTable({ data }: ClientTableInterface): JSX.Element {
 
   return (
     <>
-      {" "}
       <TableContainer component={Paper}>
         <Table
           sx={{ minWidth: 650 }}

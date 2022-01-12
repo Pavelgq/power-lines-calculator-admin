@@ -5,7 +5,7 @@ export class Action {
   getAllActions = (token: string) => {
     const api = apiInstance({ token });
 
-    return api.get("/action/all");
+    return api.get("/action/all?page=1&limit=5");
   };
 
   createActionForClient = (

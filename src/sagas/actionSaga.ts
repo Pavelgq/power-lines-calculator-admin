@@ -1,11 +1,11 @@
 import { AxiosResponseHeaders } from "axios";
 import { all, call, put, takeEvery } from "redux-saga/effects";
 import { Action } from "../api/action";
-import { ActionFullInterface } from "../interfaces/action.interface";
+import { ActionCreateInterface, ActionFullInterface } from "../interfaces/action.interface";
 import { ClientDataInterface } from "../interfaces/client.interface";
 import {
-  createActionFailure,
-  createActionSuccess,
+  createClientActionFailure,
+  createClientActionSuccess,
   getActionFileFailure,
   getActionFileSuccess,
   getAllActionsFailure,
@@ -14,10 +14,11 @@ import {
   getClientActionsSuccess,
 } from "../store/actionStore";
 
-function* createActionWorker(action: { payload: any; type: string }) {
+function* createActionWorker(action: { payload: {data: ActionCreateInterface, acceptToken: string }; type: string }) {
   try {
     const clientAction = new Action();
     const { acceptToken, data } = action.payload;
+    console.log(acceptToken)
     const res: AxiosResponseHeaders = yield call(
       clientAction.createActionForClient,
       acceptToken,
@@ -25,9 +26,9 @@ function* createActionWorker(action: { payload: any; type: string }) {
     );
     console.log("createActionForClient", res);
     const clientsData: ClientDataInterface[] = yield res.data;
-    yield put(createActionSuccess());
+    yield put(createClientActionSuccess());
   } catch (error) {
-    yield put(createActionFailure(error));
+    yield put(createClientActionFailure(error));
   }
 }
 
@@ -82,7 +83,7 @@ function* getActionFileWorker(action: { payload: any; type: string }) {
 
 function* actionSaga() {
   yield all([
-    takeEvery("actions/createAction", createActionWorker),
+    takeEvery("actions/createClientAction", createActionWorker),
     takeEvery("actions/getAllActions", getAllActionsWorker),
     takeEvery("actions/getClientActions", getClientActionsWorker),
     takeEvery("actions/getActionFile", getActionFileWorker),

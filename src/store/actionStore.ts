@@ -20,19 +20,20 @@ export const actionSlice = createSlice({
   name: "actions",
   initialState,
   reducers: {
-    createAction(state) {
+    createClientAction(state, action) {
       state.isLoading = true;
     },
-    createActionSuccess(state) {
+    createClientActionSuccess(state) {
       state.isLoading = false;
     },
-    createActionFailure(state, action) {
+    createClientActionFailure(state, action) {
       state.isLoading = false;
     },
-    getAllActions(state) {
+    getAllActions(state, action) {
       state.isLoading = true;
     },
     getAllActionsSuccess(state, action) {
+      state.data = action.payload;
       state.isLoading = false;
     },
     getAllActionsFailure(state, action) {
@@ -60,9 +61,9 @@ export const actionSlice = createSlice({
 });
 
 export const {
-  createAction,
-  createActionSuccess,
-  createActionFailure,
+  createClientAction,
+  createClientActionSuccess,
+  createClientActionFailure,
   getAllActions,
   getAllActionsSuccess,
   getAllActionsFailure,
@@ -77,5 +78,4 @@ export const {
 export default actionSlice.reducer;
 
 export const selectCurrentActions = (state: RootState) => state.actions.data;
-export const selectIsLoadingActions = (state: RootState) =>
-  state.actions.isLoading;
+export const selectIsLoadingActions = (state: RootState) => state.actions.isLoading;
