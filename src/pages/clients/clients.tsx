@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Grid } from "@mui/material";
+import { Button, Container, Grid } from "@mui/material";
 import { Outlet, useParams } from "react-router-dom";
 
 import {
@@ -19,6 +19,7 @@ export function Clients(): JSX.Element {
   const { clientId } = useParams();
 
   const [token] = useLocalStorage("token");
+  const [viewToggle, setViewToggle] = useState("table");
 
   const clients = useSelector(selectAllClients);
   const isLoading = useSelector(selectIsLoadingClient);
@@ -47,23 +48,32 @@ export function Clients(): JSX.Element {
   }
 
   return (
-    <>
-      <Button type="submit" variant="contained" onClick={handleClickOpen}>
-        Добавить клиента
-      </Button>
-      <ClientForm
-        title="Добавить"
-        open={openAddClientDialog}
-        setOpen={setOpenAddClientDialog}
-      />
-      <Grid container spacing={2}>
-        {Object.keys(clients).map((client) => (
-          <Grid item key={clients[client].id}>
-            <ClientCard client={clients[client]} />
+    <main>
+      <Container>
+        <Grid container spacing={2}>
+          <Grid item>
+            <Button type="submit" variant="contained" onClick={handleClickOpen}>
+              Добавить клиента
+            </Button>
+            <ClientForm
+              title="Добавить"
+              open={openAddClientDialog}
+              setOpen={setOpenAddClientDialog}
+            />
           </Grid>
-        ))}
-      </Grid>
-      <ClientTable data={clients} />
-    </>
+          <Grid item>
+            {viewToggle === "table" ? (
+              <ClientTable data={clients} />
+            ) : (
+              Object.keys(clients).map((client) => (
+                <Grid item key={clients[client].id}>
+                  <ClientCard client={clients[client]} />
+                </Grid>
+              ))
+            )}
+          </Grid>
+        </Grid>
+      </Container>
+    </main>
   );
 }

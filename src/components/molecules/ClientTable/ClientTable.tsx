@@ -8,7 +8,9 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  Typography,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 
 import { useState } from "react";
 import { ClientKey } from "../..";
@@ -70,9 +72,12 @@ export function ClientTable({ data }: ClientTableInterface): JSX.Element {
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
-                    {`${firstUpperChar(
-                      data[client].first_name
-                    )} ${firstUpperChar(data[client].last_name)}`}
+                    <Link to={`/clients/${client}`}>
+                      <Typography variant="body1" component="h3">
+                        {firstUpperChar(data[client].first_name)}{" "}
+                        {firstUpperChar(data[client].last_name)}
+                      </Typography>
+                    </Link>
                   </TableCell>
                   <TableCell component="th" scope="row">
                     {data[client].company.toUpperCase()}
