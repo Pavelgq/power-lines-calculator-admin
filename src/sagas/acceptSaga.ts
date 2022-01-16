@@ -66,7 +66,7 @@ function* getAcceptKeyWorker(action: {
     const res: AxiosResponseHeaders = yield call(
       acceptKey.getAcceptKey,
       token,
-      clientId,
+      clientId
     );
     const clientKey: AcceptKeyInterface = yield res.data;
     yield put(getAcceptKeySuccess(clientKey));
@@ -75,14 +75,17 @@ function* getAcceptKeyWorker(action: {
   }
 }
 
-function* deleteAcceptKeyWorker(action: { payload: {token: string, clientId: number}; type: string }) {
+function* deleteAcceptKeyWorker(action: {
+  payload: { token: string; clientId: number };
+  type: string;
+}) {
   try {
     const acceptKey = new Accept();
     const { token, clientId } = action.payload;
     const res: AxiosResponseHeaders = yield call(
       acceptKey.getAcceptKey,
       token,
-      clientId,
+      clientId
     );
     yield put(deleteAcceptKeySuccess());
   } catch (error) {

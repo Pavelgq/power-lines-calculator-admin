@@ -11,7 +11,7 @@ export const apiInstance = ({ token = "", acceptToken = "" }: apiParams) => {
     headers: {
       "Content-Type": "application/json",
       token: `${token}`,
-      acceptToken: `${acceptToken}`,
+      "accept-token": `${acceptToken}`,
     },
     timeout: 1000,
   };

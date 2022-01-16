@@ -5,6 +5,7 @@ export interface ActionTableInterface {
   data: ActionFullInterface[] | null;
   limit: number;
   page: number;
+  total: number;
   handleChangePage: (event: unknown, page: number) => void;
   handleChangeLimit: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }

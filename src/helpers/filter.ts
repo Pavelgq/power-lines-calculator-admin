@@ -1,4 +1,7 @@
-export const stableSort = <T>(array: readonly T[], comparator: (a: T, b: T) => number) => {
+export const stableSort = <T>(
+  array: readonly T[],
+  comparator: (a: T, b: T) => number
+) => {
   const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -8,4 +11,4 @@ export const stableSort = <T>(array: readonly T[], comparator: (a: T, b: T) => n
     return a[1] - b[1];
   });
   return stabilizedThis.map((el) => el[0]);
-}
+};

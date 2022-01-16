@@ -1,4 +1,7 @@
 import {
+  Box,
+  Button,
+  Grid,
   Link as MuiLink,
   Paper,
   Table,
@@ -13,10 +16,14 @@ import {
 import { Link } from "react-router-dom";
 
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import EditIcon from "@mui/icons-material/Edit";
+import ClearIcon from "@mui/icons-material/Clear";
 import { ClientKey } from "../..";
 import { firstUpperChar, formatePhone } from "../../../helpers/format";
 import styles from "./ClientTable.module.css";
 import { ClientTableInterface } from "./ClientTable.props";
+import { AlertDialog } from "../AlertDialog/AlertDialog";
 
 const columns = [
   { field: "name", headerName: "ФИО", width: 70 },
@@ -29,12 +36,21 @@ const columns = [
   },
   { field: "email", headerName: "Email", width: 130 },
   { field: "acceptKey", headerName: "Ключ", width: 130 },
+  { field: "actions", headerName: "", width: 130 },
 ];
 
 export function ClientTable({ data }: ClientTableInterface): JSX.Element {
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(true);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const [openAlert, setOpenAlert] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const handleToggleAlert = () => {
+    setOpenAlert(!openAlert);
+  };
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -86,7 +102,9 @@ export function ClientTable({ data }: ClientTableInterface): JSX.Element {
                   </TableCell>
                   <TableCell component="th" scope="row">
                     <MuiLink href={`tel:${data[client].phone_number}`}>
-                      {formatePhone(data[client].phone_number)}
+                      <Typography noWrap variant="body2">
+                        {formatePhone(data[client].phone_number)}
+                      </Typography>
                     </MuiLink>
                   </TableCell>
                   <TableCell component="th" scope="row">
@@ -96,8 +114,34 @@ export function ClientTable({ data }: ClientTableInterface): JSX.Element {
                   </TableCell>
                   <TableCell component="th" scope="row">
                     <ClientKey
+                      clientId={Number(client)}
                       keyValue={data[client].client_key}
                       lifetime={data[client].valid_until}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Grid container wrap="nowrap" spacing={0.5}>
+                      <Grid item xs="auto">
+                        <Button variant="contained" size="small">
+                          <EditIcon />
+                        </Button>
+                      </Grid>
+                      <Grid item xs="auto">
+                        <Button
+                          variant="contained"
+                          size="small"
+                          color="warning"
+                          onClick={handleToggleAlert}
+                        >
+                          <ClearIcon />
+                        </Button>
+                      </Grid>
+                    </Grid>
+
+                    <AlertDialog
+                      open={openAlert}
+                      handleClose={handleToggleAlert}
+                      handleDelete={() => console.log("delete")}
                     />
                   </TableCell>
                 </TableRow>

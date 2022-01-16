@@ -9,5 +9,5 @@ export const formatePhone = (phone: string) => {
   return number;
 };
 
-
-export const firstUpperChar = (str: string) => str.trim()[0].toUpperCase() + str.trim().substring(1);
+export const firstUpperChar = (str: string) =>
+  str.trim()[0].toUpperCase() + str.trim().substring(1);

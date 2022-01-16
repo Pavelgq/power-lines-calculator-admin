@@ -1,7 +1,10 @@
 import { AxiosResponseHeaders } from "axios";
 import { all, call, put, takeEvery } from "redux-saga/effects";
 import { Action } from "../api/action";
-import { ActionCreateInterface, ActionFullInterface } from "../interfaces/action.interface";
+import {
+  ActionCreateInterface,
+  ActionFullInterface,
+} from "../interfaces/action.interface";
 import { ClientDataInterface } from "../interfaces/client.interface";
 import {
   createClientActionFailure,
@@ -14,11 +17,14 @@ import {
   getClientActionsSuccess,
 } from "../store/actionStore";
 
-function* createActionWorker(action: { payload: {data: ActionCreateInterface, acceptToken: string }; type: string }) {
+function* createActionWorker(action: {
+  payload: { data: ActionCreateInterface; acceptToken: string };
+  type: string;
+}) {
   try {
     const clientAction = new Action();
     const { acceptToken, data } = action.payload;
-    console.log(acceptToken)
+    console.log(acceptToken);
     const res: AxiosResponseHeaders = yield call(
       clientAction.createActionForClient,
       acceptToken,
@@ -32,13 +38,24 @@ function* createActionWorker(action: { payload: {data: ActionCreateInterface, ac
   }
 }
 
-function* getAllActionsWorker(action: { payload: any; type: string }) {
+function* getAllActionsWorker(action: {
+  payload: {
+    token: string;
+    page?: number;
+    limit?: number;
+    clientId?: number;
+  };
+  type: string;
+}) {
   try {
     const clientAction = new Action();
-    const { token } = action.payload;
+    const { token, page, limit, clientId } = action.payload;
     const res: AxiosResponseHeaders = yield call(
       clientAction.getAllActions,
-      token
+      token,
+      page,
+      limit,
+      clientId
     );
     console.log("getAllActions", res);
     const actionData: ActionFullInterface[] = yield res.data;

@@ -4,6 +4,7 @@ import { RootState } from "./store";
 
 export interface ActionStoreI {
   data: ActionFullInterface[] | null;
+  total_items: number;
   isLoading: boolean;
   error: Error | null;
   message: string;
@@ -11,6 +12,7 @@ export interface ActionStoreI {
 
 const initialState: ActionStoreI = {
   data: null,
+  total_items: 0,
   isLoading: false,
   error: null,
   message: "",
@@ -33,7 +35,9 @@ export const actionSlice = createSlice({
       state.isLoading = true;
     },
     getAllActionsSuccess(state, action) {
-      state.data = action.payload;
+      console.log("getAllActionsSuccess", action)
+      state.data = action.payload.data;
+      state.total_items = action.payload.total_items;
       state.isLoading = false;
     },
     getAllActionsFailure(state, action) {
@@ -78,4 +82,6 @@ export const {
 export default actionSlice.reducer;
 
 export const selectCurrentActions = (state: RootState) => state.actions.data;
-export const selectIsLoadingActions = (state: RootState) => state.actions.isLoading;
+export const selectTotalActions = (state: RootState) => state.actions.total_items;
+export const selectIsLoadingActions = (state: RootState) =>
+  state.actions.isLoading;

@@ -14,6 +14,7 @@ import {
   getAllActions,
   selectCurrentActions,
   selectIsLoadingActions,
+  selectTotalActions,
 } from "../../store/actionStore";
 import { RootState } from "../../store/store";
 
@@ -24,21 +25,22 @@ export function Actions() {
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(5);
   const clientActions = useSelector(selectCurrentActions);
+  const totalItems = useSelector(selectTotalActions);
   const isLoading = useSelector(selectIsLoadingActions);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllActions({ token, page, limit }));
+    dispatch(getAllActions({ token, page, limit, clientId }));
     return () => {};
   }, [dispatch, page, limit]);
 
   const handleGenerateAction = () => {
     const newData: ActionCreateInterface = {
       client_id: Number(clientId),
-      name: `Project#${Math.floor(Math.random() * 100)}`,
+      project_name: `Project#${Math.floor(Math.random() * 100)}`,
       type: "save",
-      data: JSON.stringify({ data: "random" }),
     };
+    console.log(newData);
     dispatch(
       createClientAction({
         newData,
@@ -78,6 +80,7 @@ export function Actions() {
               data={clientActions}
               limit={limit}
               page={page}
+              total={totalItems}
               handleChangePage={handleChangePage}
               handleChangeLimit={handleChangeLimit}
             />

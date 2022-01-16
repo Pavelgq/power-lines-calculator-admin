@@ -23,6 +23,10 @@ export function RoutesList(props: any): JSX.Element {
             element={<PrivateRoute roles={[ROLES.ADMIN]} component={Actions} />}
           />
         </Route>
+        <Route
+          path="actions"
+          element={<PrivateRoute roles={[ROLES.ADMIN]} component={Actions} />}
+        />
       </Route>
     </Routes>
   );
