@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/power-lines-calculator-admin/static/css/main.1cfef7be.css",
-    "main.js": "/power-lines-calculator-admin/static/js/main.503ec056.js",
+    "main.js": "/power-lines-calculator-admin/static/js/main.bc1c43c8.js",
     "index.html": "/power-lines-calculator-admin/index.html",
     "main.1cfef7be.css.map": "/power-lines-calculator-admin/static/css/main.1cfef7be.css.map",
-    "main.503ec056.js.map": "/power-lines-calculator-admin/static/js/main.503ec056.js.map"
+    "main.bc1c43c8.js.map": "/power-lines-calculator-admin/static/js/main.bc1c43c8.js.map"
   },
   "entrypoints": [
     "static/css/main.1cfef7be.css",
-    "static/js/main.503ec056.js"
+    "static/js/main.bc1c43c8.js"
   ]
 }
