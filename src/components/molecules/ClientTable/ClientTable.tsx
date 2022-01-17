@@ -83,6 +83,7 @@ export function ClientTable({ data }: ClientTableInterface): JSX.Element {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((client) => (
                 <TableRow
+                  selected
                   key={client}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >

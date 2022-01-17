@@ -23,8 +23,12 @@ export const acceptSlice = createSlice({
     checkAcceptKey(state, action) {},
     checkAcceptKeySuccess(state) {},
     checkAcceptKeyFailure(state, action) {},
-    createAcceptKey(state, action) {},
-    createAcceptKeySuccess(state, action) {},
+    createAcceptKey(state, action) {
+      state.isLoading = true;
+    },
+    createAcceptKeySuccess(state, action) {
+      state.isLoading = false;
+    },
     createAcceptKeyFailure(state, action) {},
     getAcceptKey(state, action) {},
     getAcceptKeySuccess(state, action) {},

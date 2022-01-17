@@ -50,7 +50,7 @@ export function Clients(): JSX.Element {
   return (
     <main>
       <Container>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} direction="column">
           <Grid item>
             <Button type="submit" variant="contained" onClick={handleClickOpen}>
               Добавить клиента

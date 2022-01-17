@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ActionFullInterface } from "../interfaces/action.interface";
+import { ActionCreateInterface, ActionFullInterface } from "../interfaces/action.interface";
 import { RootState } from "./store";
 
 export interface ActionStoreI {
@@ -25,7 +25,12 @@ export const actionSlice = createSlice({
     createClientAction(state, action) {
       state.isLoading = true;
     },
-    createClientActionSuccess(state) {
+    createClientActionSuccess(state, action: {payload: {
+      data:  ActionFullInterface;
+      message: string;
+    }}) {
+      state.data?.push(action.payload.data);
+      state.message = action.payload.message;
       state.isLoading = false;
     },
     createClientActionFailure(state, action) {

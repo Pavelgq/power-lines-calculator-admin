@@ -17,6 +17,7 @@ import { ClientKey } from "../..";
 import { ActionTableInterface } from "./ActionTable.props";
 import { AlertDialog } from "../AlertDialog/AlertDialog";
 import { deleteClientFetch } from "../../../store/clientsStore";
+import { DownloadFile } from "../DownloadFile/DownloadFile";
 
 const columns = [
   { field: "category", headerName: "Категория", width: 70 },
@@ -41,6 +42,7 @@ export function ActionTable({
   // const handleDelete = () => {
   //   dispatch(deleteClientFetch({ token, id: client.id }));
   // };
+  console.log("action table", page, limit, total);
   if (!data) {
     return <span>Этот клиент не совершал пока действий</span>;
   }
@@ -76,7 +78,9 @@ export function ActionTable({
                   {act.date}
                 </TableCell>
                 <TableCell component="th" scope="row">
-                  {act.path_to_data}
+                  <DownloadFile path={act.path_to_data}>
+                    Скачать данные
+                  </DownloadFile>
                 </TableCell>
                 <TableCell component="th" scope="row">
                   {act.accept_key}

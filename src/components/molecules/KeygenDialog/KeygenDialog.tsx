@@ -6,6 +6,7 @@ import {
   DialogActions,
   Button,
   TextField,
+  Typography,
 } from "@mui/material";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 // import DateAdapter from "@mui/lab/AdapterMoment";
@@ -13,9 +14,11 @@ import { useState } from "react";
 import { LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { ru } from "date-fns/locale";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createAcceptKey } from "../../../store/acceptStore";
 import useLocalStorage from "../../../hooks/useLocalStorage";
+import { firstUpperChar } from "../../../helpers/format";
+import { selectAllClients } from "../../../store/clientsStore";
 
 interface KeygenDialogProps {
   clientId: number;
@@ -30,6 +33,7 @@ export function KeygenDialog({
 }: KeygenDialogProps) {
   const [dateValue, setDateValue] = useState<Date | null>(new Date());
   const [token] = useLocalStorage("token");
+  const clients = useSelector(selectAllClients);
   const dispatch = useDispatch();
 
   const handleChange = (newValue: Date | null) => {
@@ -52,7 +56,11 @@ export function KeygenDialog({
       aria-describedby="alert-dialog-description"
     >
       <DialogTitle id="alert-dialog-title">
-        Создание нового ключа для USER
+        Создание нового ключа для
+        <Typography variant="body1" component="h3">
+          {firstUpperChar(clients[clientId].first_name)}{" "}
+          {firstUpperChar(clients[clientId].last_name)}
+        </Typography>
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description" marginBottom={2}>

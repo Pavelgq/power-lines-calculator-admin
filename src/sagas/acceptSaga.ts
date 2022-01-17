@@ -50,7 +50,7 @@ function* createAcceptKeyWorker(action: {
       data
     );
     const newKey: AcceptKeyInterface = yield res.data;
-    yield put(createAcceptKeySuccess(newKey));
+    yield put(createAcceptKeySuccess({...newKey, clientId, data}));
   } catch (error) {
     yield put(createAcceptKeyFailure(error));
   }

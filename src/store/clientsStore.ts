@@ -48,7 +48,9 @@ export const clientsSlice = createSlice({
       state.isLoading = true;
     },
     createClientSuccess: (state, action) => {
-      // state.data.push(action.payload);
+      console.log('createClientSuccess', action)
+      state.allIds.push(action.payload.data.id);
+      state.data[action.payload.data.id] = action.payload.data;
       state.isLoading = false;
     },
     createClientFailure: (state, action) => {
@@ -69,6 +71,9 @@ export const clientsSlice = createSlice({
     deleteClientFailure: (state, action) => {
       state.isLoading = false;
     },
+    createAcceptKeySuccess: (state, action) => {
+      console.log('createAcceptKeySuccess in client', action)
+    }
   },
 });
 

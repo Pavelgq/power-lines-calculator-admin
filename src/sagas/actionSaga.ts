@@ -31,8 +31,8 @@ function* createActionWorker(action: {
       data
     );
     console.log("createActionForClient", res);
-    const clientsData: ClientDataInterface[] = yield {...data, message: res.data};
-    yield put(createClientActionSuccess());
+    const newAction: {data: ActionFullInterface, message: string} = yield res.data;
+    yield put(createClientActionSuccess(newAction));
   } catch (error) {
     yield put(createClientActionFailure(error));
   }
@@ -85,10 +85,10 @@ function* getClientActionsWorker(action: { payload: any; type: string }) {
 function* getActionFileWorker(action: { payload: any; type: string }) {
   try {
     const clientAction = new Action();
-    const { fileId } = action.payload;
+    const { path } = action.payload;
     const res: AxiosResponseHeaders = yield call(
       clientAction.getActionFile,
-      fileId
+      path
     );
     console.log("getClientActions", res);
     // TODO: Как это сделать?

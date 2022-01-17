@@ -1,7 +1,7 @@
-import { Container, Grid, Button } from "@mui/material";
+import { Container, Grid, Button, Breadcrumbs } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Loading } from "../../components/atoms/Loading/Loading";
 import { ActionTable } from "../../components/molecules/ActionTable/ActionTable";
 import useLocalStorage from "../../hooks/useLocalStorage";
@@ -65,7 +65,13 @@ export function Actions() {
   return (
     <main>
       <Container>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} direction="column">
+          <Grid item>
+            <Breadcrumbs separator="›" aria-label="breadcrumb">
+              <Link to="/clients">Клиенты</Link>
+              <Link to="/clients/1">Клиент {clientId}</Link>
+            </Breadcrumbs>
+          </Grid>
           <Grid item>
             <Button
               type="submit"

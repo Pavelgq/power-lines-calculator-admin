@@ -42,6 +42,6 @@ export class Action {
   getActionFile = (fileName: string) => {
     const api = apiInstance({});
 
-    return api.put(`action/file/${fileName}`);
+    return api.get(`action/file/${fileName}`);
   };
 }
