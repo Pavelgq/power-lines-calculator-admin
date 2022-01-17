@@ -43,7 +43,7 @@ export function Actions() {
     console.log(newData);
     dispatch(
       createClientAction({
-        newData,
+        data: newData,
         acceptToken:
           "eyJhbGciOiJIUzI1NiJ9.MTIzNDU.wHm_iBy9HobGOotzfG56HPVgPvmUr-aA4Ql5NvU2R4w",
       })
