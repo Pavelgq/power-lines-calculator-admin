@@ -12,7 +12,7 @@ import {
 import useLocalStorage from "../../hooks/useLocalStorage";
 
 import { ClientCard } from "../../components";
-import { ClientForm } from "../../components/molecules/ClientForm/ClientForm";
+import { CreateClientForm } from "../../components/molecules/CreateClientForm/CreateClientForm";
 import { ClientTable } from "../../components/molecules/ClientTable/ClientTable";
 
 export function Clients(): JSX.Element {
@@ -55,7 +55,7 @@ export function Clients(): JSX.Element {
             <Button type="submit" variant="contained" onClick={handleClickOpen}>
               Добавить клиента
             </Button>
-            <ClientForm
+            <CreateClientForm
               title="Добавить"
               open={openAddClientDialog}
               setOpen={setOpenAddClientDialog}

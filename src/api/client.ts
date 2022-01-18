@@ -20,10 +20,10 @@ export class Client {
     return api.post(`/client/create`, clientData);
   };
 
-  editClient = (token: string, id: number, clientData: ClientDataInterface) => {
+  updateClient = (token: string, id: number, clientData: ClientDataInterface) => {
     const api = apiInstance({ token });
 
-    return api.put(`/client/${id}`);
+    return api.put(`/client/${id}`, clientData);
   };
 
   deleteClient = (token: string, id: number) => {

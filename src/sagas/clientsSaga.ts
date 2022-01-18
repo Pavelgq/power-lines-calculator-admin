@@ -13,6 +13,8 @@ import {
   deleteClientSuccess,
   deleteClientFailure,
   getClientsFetch,
+  updateClientFailure,
+  updateClientSuccess,
 } from "../store/clientsStore";
 
 function* getClientsFetchWorker(action: { payload: any; type: string }) {
@@ -68,6 +70,25 @@ function* createClientsFetchWorker(action: { payload: any; type: string }) {
   }
 }
 
+function* updateClientFetchWorker(action: { payload: any; type: string }) {
+  try {
+    const client = new Client();
+    const { token, id, clientData } = action.payload;
+    const candidate: AxiosResponseHeaders = yield call(
+      client.updateClient,
+      token,
+      id,
+      clientData
+    );
+    console.log(candidate);
+    const res: AnswerInterface = yield candidate.data;
+    console.log(res);
+    yield put(updateClientSuccess(res));
+  } catch (error) {
+    yield put(updateClientFailure(error));
+  }
+}
+
 function* deleteClientFetchWorker(action: { payload: any; type: string }) {
   try {
     const client = new Client();
@@ -91,6 +112,7 @@ function* clientsSaga() {
   yield all([
     takeEvery("clients/getClientsFetch", getClientsFetchWorker),
     takeEvery("clients/createClientsFetch", createClientsFetchWorker),
+    takeEvery("clients/updateClientsFetch", updateClientFetchWorker),
     takeEvery("clients/deleteClientFetch", deleteClientFetchWorker),
   ]);
 }

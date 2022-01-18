@@ -56,6 +56,9 @@ export const clientsSlice = createSlice({
     createClientFailure: (state, action) => {
       state.isLoading = false;
     },
+    updateClientsFetch: (state, action) => {
+      state.isLoading = true;
+    },
     updateClientSuccess: (state, action) => {
       state.isLoading = false;
     },
@@ -98,6 +101,7 @@ export const {
   createClientsFetch,
   createClientSuccess,
   createClientFailure,
+  updateClientsFetch,
   updateClientSuccess,
   updateClientFailure,
   deleteClientFetch,

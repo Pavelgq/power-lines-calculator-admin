@@ -26,6 +26,7 @@ import { ClientTableInterface } from "./ClientTable.props";
 import { AlertDialog } from "../AlertDialog/AlertDialog";
 import { deleteClientFetch } from "../../../store/clientsStore";
 import useLocalStorage from "../../../hooks/useLocalStorage";
+import { EditClientForm } from "../EditClientForm/EditClientForm";
 
 const columns = [
   { field: "name", headerName: "ФИО", width: 70 },
@@ -47,11 +48,19 @@ export function ClientTable({ data }: ClientTableInterface): JSX.Element {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [token] = useLocalStorage("token");
   const [openAlert, setOpenAlert] = useState(false);
+  const [openUpdate, setOpenUpdate] = useState(false);
+  const [selectClient, setSelectClient] = useState(0);
 
   const dispatch = useDispatch();
 
-  const handleToggleAlert = () => {
+  const handleToggleAlert = (selectClientId: number = 0) => {
+    if (selectClientId) setSelectClient(selectClientId);
     setOpenAlert(!openAlert);
+  };
+
+  const handleToggleUpdate = (selectClientId: number = 0) => {
+    if (selectClientId) setSelectClient(selectClientId);
+    setOpenUpdate(!openUpdate);
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -131,7 +140,11 @@ export function ClientTable({ data }: ClientTableInterface): JSX.Element {
                   <TableCell>
                     <Grid container wrap="nowrap" spacing={0.5}>
                       <Grid item xs="auto">
-                        <Button variant="contained" size="small">
+                        <Button
+                          variant="contained"
+                          size="small"
+                          onClick={() => handleToggleUpdate(Number(client))}
+                        >
                           <EditIcon />
                         </Button>
                       </Grid>
@@ -140,18 +153,12 @@ export function ClientTable({ data }: ClientTableInterface): JSX.Element {
                           variant="contained"
                           size="small"
                           color="warning"
-                          onClick={handleToggleAlert}
+                          onClick={() => handleToggleAlert(Number(client))}
                         >
                           <ClearIcon />
                         </Button>
                       </Grid>
                     </Grid>
-
-                    <AlertDialog
-                      open={openAlert}
-                      handleClose={handleToggleAlert}
-                      handleChange={() => handleDelete(client)}
-                    />
                   </TableCell>
                 </TableRow>
               ))}
@@ -166,6 +173,16 @@ export function ClientTable({ data }: ClientTableInterface): JSX.Element {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+      <EditClientForm
+        open={openUpdate}
+        clientId={Number(selectClient)}
+        setOpen={setOpenUpdate}
+      />
+      <AlertDialog
+        open={openAlert}
+        handleClose={handleToggleAlert}
+        handleChange={() => handleDelete(selectClient.toString())}
       />
     </>
   );
