@@ -1,4 +1,4 @@
-import { Button, Grid, Link, Popover, Typography } from "@mui/material";
+import { Button, Chip, Grid, Link, Popover, Typography } from "@mui/material";
 import { useState } from "react";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import moment from "../../../helpers/date";
@@ -45,6 +45,11 @@ export function ClientKey({
           <Typography variant="h5">{keyValue}</Typography>
           <Typography variant="caption">
             {moment(lifetime, moment.ISO_8601).format("DD MMMM YYYY")}
+            {Date.parse(lifetime) - Date.now() < -24 * 60 * 60 * 1000 ? (
+              <Chip label="Просрочен" color="error" variant="filled" />
+            ) : (
+              ""
+            )}
           </Typography>
         </Grid>
         <Grid item xs={8}>
