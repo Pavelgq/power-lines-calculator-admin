@@ -57,7 +57,8 @@ export function KeygenDialog({
     >
       <DialogTitle id="alert-dialog-title">
         Создание нового ключа для
-        <Typography variant="body1" component="h3">
+        <br />
+        <Typography variant="body1" component="span">
           {firstUpperChar(clients[clientId].first_name)}{" "}
           {firstUpperChar(clients[clientId].last_name)}
         </Typography>

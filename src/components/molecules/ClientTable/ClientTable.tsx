@@ -24,6 +24,8 @@ import { firstUpperChar, formatePhone } from "../../../helpers/format";
 import styles from "./ClientTable.module.css";
 import { ClientTableInterface } from "./ClientTable.props";
 import { AlertDialog } from "../AlertDialog/AlertDialog";
+import { deleteClientFetch } from "../../../store/clientsStore";
+import useLocalStorage from "../../../hooks/useLocalStorage";
 
 const columns = [
   { field: "name", headerName: "ФИО", width: 70 },
@@ -43,7 +45,7 @@ export function ClientTable({ data }: ClientTableInterface): JSX.Element {
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(true);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
+  const [token] = useLocalStorage("token");
   const [openAlert, setOpenAlert] = useState(false);
 
   const dispatch = useDispatch();
@@ -61,6 +63,12 @@ export function ClientTable({ data }: ClientTableInterface): JSX.Element {
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+  };
+
+  const handleDelete = (clientId: string) => {
+    console.log("delete");
+    dispatch(deleteClientFetch({ token, id: clientId }));
+    setOpenAlert(!openAlert);
   };
 
   return (
@@ -142,7 +150,7 @@ export function ClientTable({ data }: ClientTableInterface): JSX.Element {
                     <AlertDialog
                       open={openAlert}
                       handleClose={handleToggleAlert}
-                      handleDelete={() => console.log("delete")}
+                      handleChange={() => handleDelete(client)}
                     />
                   </TableCell>
                 </TableRow>

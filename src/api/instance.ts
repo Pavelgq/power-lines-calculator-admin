@@ -13,7 +13,7 @@ export const apiInstance = ({ token = "", acceptToken = "" }: apiParams) => {
       token: `${token}`,
       "accept-token": `${acceptToken}`,
     },
-    timeout: 1000,
+    timeout: 5000,
   };
 
   return axios.create(config);

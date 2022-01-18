@@ -97,7 +97,7 @@ export function ClientCard({
         <AlertDialog
           open={openAlert}
           handleClose={handleCloseAlert}
-          handleDelete={handleDelete}
+          handleChange={handleDelete}
         />
       </CardActions>
     </Card>

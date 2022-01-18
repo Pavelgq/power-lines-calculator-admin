@@ -7,7 +7,7 @@ export function MainLayout({ children }: MainLayoutProps): JSX.Element {
     <>
       <Sidebar />
       <Outlet />
-      <div>Footer</div>
+      {/* <div>...</div> */}
     </>
   );
 }

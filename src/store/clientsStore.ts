@@ -66,15 +66,26 @@ export const clientsSlice = createSlice({
       state.isLoading = true;
     },
     deleteClientSuccess: (state, action) => {
+      const i = state.allIds.indexOf(action.payload.clientId);
+      if (i !== -1) {
+        state.allIds.splice(i, 1);
+      }
+      delete state.data[action.payload.clientId];
       state.isLoading = false;
     },
     deleteClientFailure: (state, action) => {
       state.isLoading = false;
     },
-    createAcceptKeySuccess: (state, action) => {
-      console.log('createAcceptKeySuccess in client', action)
-    }
   },
+  extraReducers: {
+    'accept/createAcceptKeySuccess': (state, action) => {
+      const {clientId} = action.payload;
+      console.log(clientId)
+      state.data[clientId].client_key = action.payload.key;
+      state.data[clientId].valid_until = action.payload.validDate;
+      console.log('createAcceptKeySuccess in client', action)
+    },
+  }
 });
 
 export const {
