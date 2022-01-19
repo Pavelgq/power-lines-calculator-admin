@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Checkbox,
   Grid,
   Link as MuiLink,
   Paper,
@@ -17,8 +18,7 @@ import { Link } from "react-router-dom";
 
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import EditIcon from "@mui/icons-material/Edit";
-import ClearIcon from "@mui/icons-material/Clear";
+
 import { ClientKey } from "../..";
 import { firstUpperChar, formatePhone } from "../../../helpers/format";
 import styles from "./ClientTable.module.css";
@@ -42,26 +42,15 @@ const columns = [
   { field: "actions", headerName: "", width: 130 },
 ];
 
-export function ClientTable({ data }: ClientTableInterface): JSX.Element {
+export function ClientTable({
+  data,
+  selectClient,
+  setSelectClient,
+}: ClientTableInterface): JSX.Element {
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(true);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [token] = useLocalStorage("token");
-  const [openAlert, setOpenAlert] = useState(false);
-  const [openUpdate, setOpenUpdate] = useState(false);
-  const [selectClient, setSelectClient] = useState(0);
-
-  const dispatch = useDispatch();
-
-  const handleToggleAlert = (selectClientId: number = 0) => {
-    if (selectClientId) setSelectClient(selectClientId);
-    setOpenAlert(!openAlert);
-  };
-
-  const handleToggleUpdate = (selectClientId: number = 0) => {
-    if (selectClientId) setSelectClient(selectClientId);
-    setOpenUpdate(!openUpdate);
-  };
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -74,10 +63,16 @@ export function ClientTable({ data }: ClientTableInterface): JSX.Element {
     setPage(0);
   };
 
-  const handleDelete = (clientId: string) => {
-    console.log("delete");
-    dispatch(deleteClientFetch({ token, id: clientId }));
-    setOpenAlert(!openAlert);
+  const handleSelectClient = (
+    event: React.MouseEvent<unknown>,
+    newSelectClientId: number
+  ) => {
+    if (newSelectClientId === selectClient) {
+      setSelectClient(0);
+      return;
+    }
+
+    setSelectClient(newSelectClientId);
   };
 
   return (
@@ -100,9 +95,14 @@ export function ClientTable({ data }: ClientTableInterface): JSX.Element {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((client) => (
                 <TableRow
-                  selected
                   key={client}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  hover
+                  onClick={(event) => handleSelectClient(event, Number(client))}
+                  role="checkbox"
+                  aria-checked={selectClient === Number(client)}
+                  tabIndex={-1}
+                  selected={selectClient === Number(client)}
                 >
                   <TableCell component="th" scope="row">
                     <Link to={`/clients/${client}`}>
@@ -137,29 +137,6 @@ export function ClientTable({ data }: ClientTableInterface): JSX.Element {
                       lifetime={data[client].valid_until}
                     />
                   </TableCell>
-                  <TableCell>
-                    <Grid container wrap="nowrap" spacing={0.5}>
-                      <Grid item xs="auto">
-                        <Button
-                          variant="contained"
-                          size="small"
-                          onClick={() => handleToggleUpdate(Number(client))}
-                        >
-                          <EditIcon />
-                        </Button>
-                      </Grid>
-                      <Grid item xs="auto">
-                        <Button
-                          variant="contained"
-                          size="small"
-                          color="warning"
-                          onClick={() => handleToggleAlert(Number(client))}
-                        >
-                          <ClearIcon />
-                        </Button>
-                      </Grid>
-                    </Grid>
-                  </TableCell>
                 </TableRow>
               ))}
           </TableBody>
@@ -173,16 +150,6 @@ export function ClientTable({ data }: ClientTableInterface): JSX.Element {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-      <EditClientForm
-        open={openUpdate}
-        clientId={Number(selectClient)}
-        setOpen={setOpenUpdate}
-      />
-      <AlertDialog
-        open={openAlert}
-        handleClose={handleToggleAlert}
-        handleChange={() => handleDelete(selectClient.toString())}
       />
     </>
   );
