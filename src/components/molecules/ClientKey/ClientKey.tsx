@@ -41,7 +41,7 @@ export function ClientKey({
         justifyContent="space-between"
         className={styles.container}
       >
-        <Grid item xs={8}>
+        <Grid item xs={9}>
           <Typography variant="h5">{keyValue}</Typography>
           <Typography variant="caption">
             {moment(lifetime, moment.ISO_8601).format("DD MMMM YYYY")}
@@ -51,12 +51,15 @@ export function ClientKey({
               ""
             )}
           </Typography>
-        </Grid>
-        <Grid item xs={8}>
-          <Button onClick={handleCopy}>
-            <ContentCopyIcon />
+          <Button
+            onClick={handleCopy}
+            size="small"
+            sx={{ minWidth: "40px", padding: "5px" }}
+          >
+            <ContentCopyIcon fontSize="small" />
           </Button>
-
+        </Grid>
+        <Grid item xs={3}>
           <Popover
             open={copied}
             anchorEl={anchorEl}

@@ -15,7 +15,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { FormEvent, MouseEvent, useState } from "react";
 
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import styles from "./Sidebar.module.css";
+import { selectCurrentAdmin } from "../../../store/adminStore";
 
 const pages = [
   {
@@ -24,7 +26,7 @@ const pages = [
   },
   {
     title: "Действия",
-    link: "/actions",
+    link: "/actions/all",
   },
   {
     title: "Проверка ключей",
@@ -34,15 +36,19 @@ const pages = [
 const settings = ["Добавить администратора", "Изменить пароль", "Выход"];
 
 export function Sidebar() {
-  const [anchorElNav, setAnchorElNav] = useState(null);
-  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+
+  const admin = useSelector(selectCurrentAdmin);
 
   const handleOpenNavMenu = (
     event: MouseEvent<HTMLButtonElement | HTMLAnchorElement>
   ) => {
+    setAnchorElNav(event.currentTarget);
     console.log("nav menu");
   };
   const handleOpenUserMenu = (event: MouseEvent<HTMLButtonElement>) => {
+    setAnchorElUser(event.currentTarget);
     console.log("user menu");
   };
 
@@ -53,6 +59,10 @@ export function Sidebar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  if (!admin) {
+    return <div>1</div>;
+  }
 
   return (
     <AppBar position="static" className={styles.appbar}>
@@ -125,9 +135,9 @@ export function Sidebar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title="Открыть настройки">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt={admin.login} src="#" />
               </IconButton>
             </Tooltip>
             <Menu

@@ -83,7 +83,7 @@ export function Clients(): JSX.Element {
           <Typography variant="h4" marginBottom={1}>
             Список клиентов
           </Typography>
-          <Grid container wrap="nowrap" spacing={0.5}>
+          <Grid container wrap="nowrap" spacing={1}>
             <Grid item>
               <Button
                 type="submit"
