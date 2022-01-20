@@ -26,7 +26,7 @@ const pages = [
   },
   {
     title: "Действия",
-    link: "/actions/all",
+    link: "/actions",
   },
   {
     title: "Проверка ключей",
@@ -61,7 +61,7 @@ export function Sidebar() {
   };
 
   if (!admin) {
-    return <div>1</div>;
+    return <div> </div>;
   }
 
   return (

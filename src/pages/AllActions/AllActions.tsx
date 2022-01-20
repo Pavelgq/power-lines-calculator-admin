@@ -16,39 +16,23 @@ import {
   selectIsLoadingActions,
   selectTotalActions,
 } from "../../store/actionStore";
+import { selectAllClients } from "../../store/clientsStore";
 import { RootState } from "../../store/store";
 
-export function Actions() {
-  const { clientId } = useParams();
-
+export function AllActions() {
   const [token] = useLocalStorage("token");
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(5);
+
   const clientActions = useSelector(selectCurrentActions);
   const totalItems = useSelector(selectTotalActions);
   const isLoading = useSelector(selectIsLoadingActions);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllActions({ token, page, limit, clientId }));
+    dispatch(getAllActions({ token, page, limit }));
     return () => {};
   }, [dispatch, page, limit]);
-
-  const handleGenerateAction = () => {
-    const newData: ActionCreateInterface = {
-      client_id: Number(clientId),
-      project_name: `Project#${Math.floor(Math.random() * 100)}`,
-      type: "save",
-    };
-    console.log(newData);
-    dispatch(
-      createClientAction({
-        data: newData,
-        acceptToken:
-          "eyJhbGciOiJIUzI1NiJ9.MTIzNDU.wHm_iBy9HobGOotzfG56HPVgPvmUr-aA4Ql5NvU2R4w",
-      })
-    );
-  };
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -69,17 +53,8 @@ export function Actions() {
           <Grid item>
             <Breadcrumbs separator="›" aria-label="breadcrumb">
               <Link to="/clients">Клиенты</Link>
-              <Link to="/clients/1">Клиент {clientId}</Link>
+              <Link to="/actions">Все клиенты</Link>
             </Breadcrumbs>
-          </Grid>
-          <Grid item>
-            <Button
-              type="submit"
-              variant="contained"
-              onClick={handleGenerateAction}
-            >
-              Имитировать действие этого клиента
-            </Button>
           </Grid>
           <Grid item>
             <ActionTable

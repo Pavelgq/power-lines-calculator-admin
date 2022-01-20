@@ -2,11 +2,12 @@ import React from "react";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { MainLayout } from "../components/templates/MainLayout/MainLayout";
 import { ROLES } from "../interfaces/admin.interface";
-import { Actions } from "../pages/Actions/Actions";
+import { ClientActions } from "../pages/ClientActions/ClientActions";
 
 import { Authentication } from "../pages/Authentication/Authentication";
 import { Clients } from "../pages/Clients/Clients";
 import { PrivateRoute } from "./PrivateRouter";
+import { AllActions } from "../pages/AllActions/AllActions";
 
 export function RoutesList(props: any): JSX.Element {
   const { isLoggedIn } = props;
@@ -20,12 +21,16 @@ export function RoutesList(props: any): JSX.Element {
         >
           <Route
             path=":clientId"
-            element={<PrivateRoute roles={[ROLES.ADMIN]} component={Actions} />}
+            element={
+              <PrivateRoute roles={[ROLES.ADMIN]} component={ClientActions} />
+            }
           />
         </Route>
         <Route
           path="actions"
-          element={<PrivateRoute roles={[ROLES.ADMIN]} component={Actions} />}
+          element={
+            <PrivateRoute roles={[ROLES.ADMIN]} component={AllActions} />
+          }
         />
       </Route>
     </Routes>

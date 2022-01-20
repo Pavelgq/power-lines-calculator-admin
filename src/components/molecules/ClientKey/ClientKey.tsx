@@ -51,6 +51,8 @@ export function ClientKey({
               ""
             )}
           </Typography>
+        </Grid>
+        <Grid item xs={3}>
           <Button
             onClick={handleCopy}
             size="small"
@@ -58,8 +60,7 @@ export function ClientKey({
           >
             <ContentCopyIcon fontSize="small" />
           </Button>
-        </Grid>
-        <Grid item xs={3}>
+
           <Popover
             open={copied}
             anchorEl={anchorEl}

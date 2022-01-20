@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, IconButton, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { getActionFile } from "../../../store/actionStore";
 import { DownloadFileProps } from "./DownloadFile.props";
@@ -14,8 +14,8 @@ export function DownloadFile({
     }
   };
   if (!path) {
-    return <span>Отсутствует</span>;
+    return <Typography variant="body1">--</Typography>;
   }
 
-  return <Button onClick={handleDownload}>{children}</Button>;
+  return <IconButton onClick={handleDownload}>{children}</IconButton>;
 }
