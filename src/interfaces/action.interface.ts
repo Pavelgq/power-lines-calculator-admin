@@ -10,21 +10,7 @@ export enum ProgramType {
   "Кабель"
 }
 
-export enum SheldMainParams {
-  "param1" = "Напряжение кабеля",
-  "param2" = "Длина линии"
-}
 
-export enum PipeMainParams {
-  "param1" = "Класс напряжения кабеля",
-  "param2" = "Длина линии"
-}
-
-export enum CableMainParams {
-  "param1" = "Диаметр кабеля",
-  "param2" = "Число кабелей в одной трубе"
-
-}
 
 
 export interface ActionCreateInterface {

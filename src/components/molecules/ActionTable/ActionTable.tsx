@@ -109,7 +109,6 @@ export function ActionTable({
 
                 <TableCell component="th" scope="row">
                   <ActionParam params={act.params} type={act.program_type} />
-                  <Typography>{act.params}</Typography>
                 </TableCell>
 
                 <TableCell component="th" scope="row">

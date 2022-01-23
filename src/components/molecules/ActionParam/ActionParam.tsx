@@ -1,51 +1,53 @@
-import { Grid } from "@mui/material";
-import {
-  CableMainParams,
-  ProgramType,
-  SheldMainParams,
-} from "../../../interfaces/action.interface";
+import { Grid, Typography } from "@mui/material";
+import { ProgramType } from "../../../interfaces/action.interface";
 
 export interface ActionParamInterface {
   params: string | undefined;
   type: ProgramType;
 }
 
+export const sheldMainParams = {
+  param1: "Напряжение кабеля",
+  param2: "Длина линии",
+};
+
+export const pipeMainParams = {
+  param1: "Класс напряжения кабеля",
+  param2: "Длина линии",
+};
+
+export const cableMainParams = {
+  param1: "Диаметр кабеля",
+  param2: "Число кабелей в одной трубе",
+};
+
 export function ActionParam({
   params,
   type,
 }: ActionParamInterface): JSX.Element {
-  console.log("llo", SheldMainParams.param1);
   const parseParams = () => {
-    if (params && params.length <= 1) {
+    console.log(params);
+    if (!params || (params && params.length <= 1)) {
       return <div> </div>;
     }
-    // const json = JSON.parse(params as string);
-    const result = {};
+    const json = JSON.parse(params as string);
+    const result = [sheldMainParams, pipeMainParams, cableMainParams];
 
-    // switch (type) {
-    //   case "1":
-    //     result[SheldMainParams["param1"]] = json.param;
-    //     result[SheldMainParams["param2"]] = json.param;
-    //     break;
-    //   case "2":
-    //     result[PipeMainParams["param1"]] = json.param;
-    //     result[PipeMainParams["param2"]] = json.param;
-    //     break;
-    //   case "3":
-    //     result[CableMainParams["param1"]] = json.param;
-    //     result[CableMainParams["param2"]] = json.param;
-    //     break;
-    //   default:
-    //     break;
-    // }
-    return {};
+    return (
+      <>
+        <Grid item>
+          <Typography variant="body1">
+            {result[type - 1].param1}: {json.param1}
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography variant="body1">
+            {result[type - 1].param2}: {json.param2}
+          </Typography>
+        </Grid>
+      </>
+    );
   };
-  parseParams();
 
-  return (
-    <Grid container>
-      {/* <Grid item>{parseParams()}</Grid> */}
-      <Grid item>parseParams()</Grid>
-    </Grid>
-  );
+  return <Grid container>{parseParams()}</Grid>;
 }
