@@ -6,7 +6,8 @@ export class Action {
     token: string,
     page: number = 1,
     limit: number = 5,
-    clientId: number = 0
+    clientId: number = 0,
+    type: number = 0
   ) => {
     const api = apiInstance({ token });
     let path = "";
@@ -14,6 +15,9 @@ export class Action {
       path = `/action/all?page=${page}&limit=${limit}&client_id=${clientId}`;
     } else {
       path = `/action/all?page=${page}&limit=${limit}`;
+    }
+    if (type) {
+      path += `&program_type=${type}`;
     }
 
     return api.get(path);

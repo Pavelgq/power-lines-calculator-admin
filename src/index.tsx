@@ -15,7 +15,7 @@ type SupportedLocales = keyof typeof locales;
 const theme = {
   palette: {
     primary: {
-      main: "#11a199",
+      main: "#11a1ff",
     },
     secondary: {
       main: "#edf2ff",

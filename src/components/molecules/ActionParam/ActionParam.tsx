@@ -49,5 +49,9 @@ export function ActionParam({
     );
   };
 
-  return <Grid container>{parseParams()}</Grid>;
+  return (
+    <Grid container direction="column">
+      {parseParams()}
+    </Grid>
+  );
 }

@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { object } from "yup/lib/locale";
 import { ActionCreateInterface, ActionFullInterface } from "../interfaces/action.interface";
 import { RootState } from "./store";
 
@@ -8,6 +9,7 @@ export interface ActionStoreI {
   isLoading: boolean;
   error: Error | null;
   message: string;
+  filterAttributes?: object;
 }
 
 const initialState: ActionStoreI = {
@@ -30,6 +32,7 @@ export const actionSlice = createSlice({
       message: string;
     }}) {
       state.data?.push(action.payload.data);
+      state.total_items = Number(state.total_items) + 1;
       state.message = action.payload.message;
       state.isLoading = false;
     },

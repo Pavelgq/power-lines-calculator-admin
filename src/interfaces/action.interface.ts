@@ -18,6 +18,8 @@ export interface ActionCreateInterface {
   client_id: number;
   type: "calculation" | "save" | "load";
   data?: object;
+  program_type?: number;
+  params?: object;
 }
 
 export interface ActionFullInterface {

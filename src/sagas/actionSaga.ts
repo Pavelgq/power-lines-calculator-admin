@@ -44,18 +44,21 @@ function* getAllActionsWorker(action: {
     page?: number;
     limit?: number;
     clientId?: number;
+    programType?: number;
   };
   type: string;
 }) {
   try {
     const clientAction = new Action();
-    const { token, page, limit, clientId } = action.payload;
+    const { token, page, limit, clientId, programType } = action.payload;
+    const type = Number(programType);
     const res: AxiosResponseHeaders = yield call(
       clientAction.getAllActions,
       token,
       page,
       limit,
-      clientId
+      clientId,
+      type
     );
     console.log("getAllActions", res);
     const actionData: ActionFullInterface[] = yield res.data;
