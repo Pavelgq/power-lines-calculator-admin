@@ -3,16 +3,16 @@ import { useState, MouseEvent } from "react";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { ClientRowMenuInterface } from "./ClientRowMenu.interface";
 
-const settings = ["Ключ", "Изменить", "Удалить"];
-
-export function ClientRowMenu({ id }: ClientRowMenuInterface): JSX.Element {
+export function ClientRowMenu({
+  id,
+  isKey = false,
+}: ClientRowMenuInterface): JSX.Element {
   const [anchorElAction, setAnchorElAction] = useState<null | HTMLElement>(
     null
   );
 
   const handleOpenActionMenu = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorElAction(event.currentTarget);
-    console.log("Action menu");
   };
 
   const handleCloseActionMenu = () => {
@@ -46,11 +46,17 @@ export function ClientRowMenu({ id }: ClientRowMenuInterface): JSX.Element {
         open={Boolean(anchorElAction)}
         onClose={handleCloseActionMenu}
       >
-        {settings.map((setting) => (
-          <MenuItem key={setting} onClick={handleCloseActionMenu}>
-            <Typography textAlign="center">{setting}</Typography>
+        {isKey && (
+          <MenuItem onClick={handleCloseActionMenu}>
+            <Typography textAlign="center">Генерировать ключ</Typography>
           </MenuItem>
-        ))}
+        )}
+        <MenuItem onClick={handleCloseActionMenu}>
+          <Typography textAlign="center">Изменить данные</Typography>
+        </MenuItem>
+        <MenuItem onClick={handleCloseActionMenu}>
+          <Typography textAlign="center">Удалить пользователя</Typography>
+        </MenuItem>
       </Menu>
     </>
   );

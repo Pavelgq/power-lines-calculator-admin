@@ -1,3 +1,14 @@
+Админка для power-lines-calculators проекта
+
+[https://pavelgq.github.io/power-lines-calculator-admin/](DEMO)
+
+Логин: admin
+Пароль: admin
+
+**Убедительная просьба сильно не мусорить**
+
+---
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
 
 ## Available Scripts

@@ -8,6 +8,7 @@ export interface AdminStoreI {
   isLoading: boolean;
   error: Error | null;
   auth: boolean;
+  token: string;
 }
 
 const initialState: AdminStoreI = {
@@ -15,6 +16,7 @@ const initialState: AdminStoreI = {
   isLoading: false,
   error: null,
   auth: false,
+  token: ''
 };
 
 export const adminSlice = createSlice({
