@@ -6,12 +6,9 @@ export enum Categories {
 
 export enum ProgramType {
   "Экран" = 1,
-  "Труба", 
-  "Кабель"
+  "Труба",
+  "Кабель",
 }
-
-
-
 
 export interface ActionCreateInterface {
   project_name: string;

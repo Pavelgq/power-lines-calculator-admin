@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { object } from "yup/lib/locale";
-import { ActionCreateInterface, ActionFullInterface } from "../interfaces/action.interface";
+import {
+  ActionCreateInterface,
+  ActionFullInterface,
+} from "../interfaces/action.interface";
 import { RootState } from "./store";
 
 export interface ActionStoreI {
@@ -27,10 +30,15 @@ export const actionSlice = createSlice({
     createClientAction(state, action) {
       state.isLoading = true;
     },
-    createClientActionSuccess(state, action: {payload: {
-      data:  ActionFullInterface;
-      message: string;
-    }}) {
+    createClientActionSuccess(
+      state,
+      action: {
+        payload: {
+          data: ActionFullInterface;
+          message: string;
+        };
+      }
+    ) {
       state.data?.push(action.payload.data);
       state.total_items = Number(state.total_items) + 1;
       state.message = action.payload.message;
@@ -43,7 +51,7 @@ export const actionSlice = createSlice({
       state.isLoading = true;
     },
     getAllActionsSuccess(state, action) {
-      console.log("getAllActionsSuccess", action)
+      console.log("getAllActionsSuccess", action);
       state.data = action.payload.data;
       state.total_items = action.payload.total_items;
       state.isLoading = false;
@@ -90,6 +98,7 @@ export const {
 export default actionSlice.reducer;
 
 export const selectCurrentActions = (state: RootState) => state.actions.data;
-export const selectTotalActions = (state: RootState) => state.actions.total_items;
+export const selectTotalActions = (state: RootState) =>
+  state.actions.total_items;
 export const selectIsLoadingActions = (state: RootState) =>
   state.actions.isLoading;

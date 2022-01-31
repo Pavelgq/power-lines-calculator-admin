@@ -5,6 +5,7 @@ import { RootState } from "./store";
 interface ClientStateI {
   data: { [id: string]: ClientDataInterface };
   allIds: number[];
+  tableIds: number[];
   isLoading: boolean;
   error: Error | null;
 }
@@ -12,6 +13,7 @@ interface ClientStateI {
 const initialState: ClientStateI = {
   data: {},
   allIds: [],
+  tableIds: [],
   isLoading: false,
   error: null,
 };
@@ -24,7 +26,10 @@ export const clientsSlice = createSlice({
       state.isLoading = true;
     },
     getClientsSuccess: (state, action) => {
-      state.allIds = action.payload.map((c: ClientDataInterface) => c.id);
+      action.payload.forEach((c: ClientDataInterface, index: number) => {
+        state.allIds.push(c.id);
+        state.tableIds.push(index + 1);
+      });
       state.data = {};
       action.payload.forEach((c: ClientDataInterface) => {
         Object.assign(state.data, { [c.id]: c });
@@ -48,8 +53,8 @@ export const clientsSlice = createSlice({
       state.isLoading = true;
     },
     createClientSuccess: (state, action) => {
-      console.log('createClientSuccess', action)
       state.allIds.push(action.payload.data.id);
+      state.tableIds.push(state.tableIds.length);
       state.data[action.payload.data.id] = action.payload.data;
       state.isLoading = false;
     },
@@ -73,6 +78,7 @@ export const clientsSlice = createSlice({
       if (i !== -1) {
         state.allIds.splice(i, 1);
       }
+      state.tableIds = state.allIds.map((el, index) => index);
       delete state.data[action.payload.clientId];
       state.isLoading = false;
     },
@@ -81,14 +87,14 @@ export const clientsSlice = createSlice({
     },
   },
   extraReducers: {
-    'accept/createAcceptKeySuccess': (state, action) => {
-      const {clientId} = action.payload;
-      console.log(clientId)
+    "accept/createAcceptKeySuccess": (state, action) => {
+      const { clientId } = action.payload;
+      console.log(clientId);
       state.data[clientId].client_key = action.payload.key;
       state.data[clientId].valid_until = action.payload.validDate;
-      console.log('createAcceptKeySuccess in client', action)
+      console.log("createAcceptKeySuccess in client", action);
     },
-  }
+  },
 });
 
 export const {
@@ -112,5 +118,8 @@ export const {
 export default clientsSlice.reducer;
 
 export const selectAllClients = (state: RootState) => state.clients.data;
+export const selectTableIds = (state: RootState) => state.clients.tableIds;
+export const selectAllIds = (state: RootState) => state.clients.allIds;
+
 export const selectIsLoadingClient = (state: RootState) =>
   state.admin.isLoading;

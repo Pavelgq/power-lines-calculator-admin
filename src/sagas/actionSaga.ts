@@ -24,14 +24,15 @@ function* createActionWorker(action: {
   try {
     const clientAction = new Action();
     const { acceptToken, data } = action.payload;
-    console.log('createActionWorker', acceptToken, data);
+    console.log("createActionWorker", acceptToken, data);
     const res: AxiosResponseHeaders = yield call(
       clientAction.createActionForClient,
       acceptToken,
       data
     );
     console.log("createActionForClient", res);
-    const newAction: {data: ActionFullInterface, message: string} = yield res.data;
+    const newAction: { data: ActionFullInterface; message: string } =
+      yield res.data;
     yield put(createClientActionSuccess(newAction));
   } catch (error) {
     yield put(createClientActionFailure(error));

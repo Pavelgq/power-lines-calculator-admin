@@ -132,7 +132,6 @@ export function Clients(): JSX.Element {
           <Grid item>
             {viewToggle === "table" ? (
               <ClientTable
-                data={clients}
                 selectClient={selectClient}
                 setSelectClient={setSelectClient}
               />
