@@ -1,6 +1,6 @@
 Админка для power-lines-calculators проекта
 
-[https://pavelgq.github.io/power-lines-calculator-admin/](DEMO)
+[DEMO](https://pavelgq.github.io/power-lines-calculator-admin/)
 
 Логин: admin
 Пароль: admin
