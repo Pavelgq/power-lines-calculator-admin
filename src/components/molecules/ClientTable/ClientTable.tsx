@@ -25,6 +25,8 @@ import {
 } from "../../../store/clientsStore";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import { ClientRowMenu } from "../ClientRowMenu/ClientRowMenu";
+import { useSortableData } from "../../../hooks/useSortableData";
+import { ClientDataInterface } from "../../../interfaces/client.interface";
 
 const columns = [
   { field: "id", headerName: "№", width: 70, numeric: false, sorting: true },
@@ -81,6 +83,10 @@ export function ClientTable({
   const data = useSelector(selectAllClients);
   const tableIds = useSelector(selectTableIds);
   const allIds = useSelector(selectAllIds);
+
+  const { items, sortConfig, sortingField } =
+    useSortableData<ClientDataInterface>(allIds, data);
+
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
@@ -123,8 +129,12 @@ export function ClientTable({
                   {n.sorting ? (
                     <TableSortLabel
                       active
-                      direction="asc"
-                      onClick={createSortHandler}
+                      direction={
+                        sortConfig.field === n.field
+                          ? sortConfig.direction
+                          : "asc"
+                      }
+                      onClick={() => sortingField(n.field)}
                     >
                       {n.headerName}
                     </TableSortLabel>

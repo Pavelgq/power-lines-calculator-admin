@@ -105,7 +105,7 @@ export const clientsSlice = createSlice({
   extraReducers: {
     "accept/createAcceptKeySuccess": (state, action) => {
       const { clientId } = action.payload;
-      console.log(clientId);
+      state.data[clientId].isAccept = true;
       state.data[clientId].client_key = action.payload.key;
       state.data[clientId].valid_until = action.payload.validDate;
       console.log("createAcceptKeySuccess in client", action);

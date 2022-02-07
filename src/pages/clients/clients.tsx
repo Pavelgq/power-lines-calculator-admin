@@ -1,12 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Container, Grid, Paper, Typography } from "@mui/material";
+import { Button, Container, Grid, Typography } from "@mui/material";
 import { Outlet, useParams } from "react-router-dom";
-import EditIcon from "@mui/icons-material/Edit";
-import ClearIcon from "@mui/icons-material/Clear";
 import {
-  createClientsFetch,
-  deleteClientFetch,
   getClientsFetch,
   selectAllClients,
   selectIsLoadingClient,
@@ -16,8 +12,6 @@ import useLocalStorage from "../../hooks/useLocalStorage";
 import { ClientCard } from "../../components";
 import { CreateClientForm } from "../../components/molecules/CreateClientForm/CreateClientForm";
 import { ClientTable } from "../../components/molecules/ClientTable/ClientTable";
-import { AlertDialog } from "../../components/molecules/AlertDialog/AlertDialog";
-import { EditClientForm } from "../../components/molecules/EditClientForm/EditClientForm";
 
 export function Clients(): JSX.Element {
   const { clientId } = useParams();
