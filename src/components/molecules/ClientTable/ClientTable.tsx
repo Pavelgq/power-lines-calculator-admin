@@ -8,6 +8,7 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  TableSortLabel,
   Typography,
 } from "@mui/material";
 
@@ -26,19 +27,45 @@ import useLocalStorage from "../../../hooks/useLocalStorage";
 import { ClientRowMenu } from "../ClientRowMenu/ClientRowMenu";
 
 const columns = [
-  { field: "id", headerName: "№", width: 70 },
-  { field: "firstname", headerName: "Имя", width: 70 },
-  { field: "lastname", headerName: "Фамилия", width: 70 },
-  { field: "company", headerName: "Компания", width: 130 },
-  { field: "office_position", headerName: "Должность", width: 130 },
+  { field: "id", headerName: "№", width: 70, numeric: false, sorting: true },
+  {
+    field: "firstname",
+    headerName: "Имя",
+    width: 70,
+    numeric: false,
+    sorting: true,
+  },
+  {
+    field: "lastname",
+    headerName: "Фамилия",
+    width: 70,
+    numeric: false,
+    sorting: true,
+  },
+  {
+    field: "company",
+    headerName: "Компания",
+    width: 130,
+    numeric: false,
+    sorting: true,
+  },
+  {
+    field: "office_position",
+    headerName: "Должность",
+    width: 130,
+    numeric: false,
+    sorting: false,
+  },
   {
     field: "phone_number",
     headerName: "Телефон",
     width: 90,
+
+    sorting: false,
   },
-  { field: "email", headerName: "Email", width: 130 },
-  { field: "acceptKey", headerName: "Ключ", width: 130 },
-  { field: "actions", headerName: "", width: 130 },
+  { field: "email", headerName: "Email", width: 130, sorting: false },
+  { field: "acceptKey", headerName: "Ключ", width: 130, sorting: false },
+  { field: "actions", headerName: "", width: 130, sorting: false },
 ];
 
 export function ClientTable({
@@ -77,6 +104,10 @@ export function ClientTable({
     setSelectClient(newSelectClientId);
   };
 
+  const createSortHandler = () => {
+    console.log("sort");
+  };
+
   return (
     <>
       <TableContainer component={Paper}>
@@ -88,7 +119,19 @@ export function ClientTable({
           <TableHead>
             <TableRow>
               {columns.map((n) => (
-                <TableCell key={n.field}>{n.headerName}</TableCell>
+                <TableCell key={n.field} align={n.numeric ? "right" : "left"}>
+                  {n.sorting ? (
+                    <TableSortLabel
+                      active
+                      direction="asc"
+                      onClick={createSortHandler}
+                    >
+                      {n.headerName}
+                    </TableSortLabel>
+                  ) : (
+                    <span>{n.headerName}</span>
+                  )}
+                </TableCell>
               ))}
             </TableRow>
           </TableHead>

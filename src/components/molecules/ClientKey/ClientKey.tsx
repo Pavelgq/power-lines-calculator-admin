@@ -84,7 +84,8 @@ export function ClientKey({
               {!clientData.isAccept ? (
                 <Chip label="Просрочен" color="error" variant="filled" />
               ) : (
-                <Typography variant="h5">{keyValue}</Typography>
+                <Chip label={keyValue} color="secondary" variant="filled" />
+                // <Typography variant="h5">{keyValue}</Typography>
               )}
             </Grid>
             <Grid item xs={9}>
@@ -95,13 +96,15 @@ export function ClientKey({
           </Grid>
         </Grid>
         <Grid item xs={3}>
-          <Button
-            onClick={handleCopy}
-            size="small"
-            sx={{ minWidth: "40px", padding: "5px" }}
-          >
-            <ContentCopyIcon fontSize="small" />
-          </Button>
+          {clientData.isAccept && (
+            <Button
+              onClick={handleCopy}
+              size="small"
+              sx={{ minWidth: "40px", padding: "5px" }}
+            >
+              <ContentCopyIcon fontSize="small" />
+            </Button>
+          )}
 
           <Popover
             open={copied}
