@@ -16,7 +16,7 @@ const initialState: AdminStoreI = {
   isLoading: false,
   error: null,
   auth: false,
-  token: ''
+  token: "",
 };
 
 export const adminSlice = createSlice({

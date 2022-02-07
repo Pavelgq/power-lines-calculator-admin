@@ -22,6 +22,18 @@ export const clientsSlice = createSlice({
   name: "clients",
   initialState,
   reducers: {
+    checkClientAccept: (
+      state,
+      action: {
+        payload: {
+          id: string;
+          isAccept: boolean;
+        };
+        type: string;
+      }
+    ) => {
+      state.data[action.payload.id].isAccept = action.payload.isAccept;
+    },
     getClientsFetch: (state, action) => {
       state.isLoading = true;
     },
@@ -33,6 +45,7 @@ export const clientsSlice = createSlice({
       state.data = {};
       action.payload.forEach((c: ClientDataInterface) => {
         Object.assign(state.data, { [c.id]: c });
+        state.data[c.id].isAccept = true;
       });
       state.isLoading = false;
     },
@@ -55,7 +68,10 @@ export const clientsSlice = createSlice({
     createClientSuccess: (state, action) => {
       state.allIds.push(action.payload.data.id);
       state.tableIds.push(state.tableIds.length);
-      state.data[action.payload.data.id] = action.payload.data;
+      state.data[action.payload.data.id] = {
+        ...action.payload.data,
+        isAccept: false,
+      };
       state.isLoading = false;
     },
     createClientFailure: (state, action) => {
@@ -98,6 +114,7 @@ export const clientsSlice = createSlice({
 });
 
 export const {
+  checkClientAccept,
   getClientsFetch,
   getClientsSuccess,
   getClientsFailure,

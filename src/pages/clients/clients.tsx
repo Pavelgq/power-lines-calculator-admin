@@ -29,34 +29,10 @@ export function Clients(): JSX.Element {
   const isLoading = useSelector(selectIsLoadingClient);
   const dispatch = useDispatch();
   const [openAddClientDialog, setOpenAddClientDialog] = useState(false);
-  const [openAlert, setOpenAlert] = useState(false);
-  const [openUpdate, setOpenUpdate] = useState(false);
 
   const handleOpenCreate = () => {
     setSelectClient(0);
     setOpenAddClientDialog(true);
-  };
-
-  const handleToggleAlert = () => {
-    if (!selectClient) {
-      return;
-    }
-    setOpenAlert(!openAlert);
-  };
-
-  const handleToggleUpdate = () => {
-    if (!selectClient) {
-      return;
-    }
-    setOpenUpdate(!openUpdate);
-  };
-
-  const handleDeleteSelectClient = () => {
-    if (!selectClient) {
-      return;
-    }
-    dispatch(deleteClientFetch({ token, id: selectClient }));
-    setOpenAlert(!openAlert);
   };
 
   useEffect(() => {
@@ -97,35 +73,6 @@ export function Clients(): JSX.Element {
                 title="Добавить"
                 open={openAddClientDialog}
                 setOpen={setOpenAddClientDialog}
-              />
-            </Grid>
-            <Grid item xs="auto">
-              <Button
-                variant="contained"
-                size="small"
-                onClick={() => handleToggleUpdate()}
-              >
-                Изменить
-              </Button>
-              <EditClientForm
-                open={openUpdate}
-                clientId={Number(selectClient)}
-                setOpen={setOpenUpdate}
-              />
-            </Grid>
-            <Grid item xs="auto">
-              <Button
-                variant="contained"
-                size="small"
-                color="warning"
-                onClick={() => handleToggleAlert()}
-              >
-                Удалить
-              </Button>
-              <AlertDialog
-                open={openAlert}
-                handleClose={handleToggleAlert}
-                handleChange={handleDeleteSelectClient}
               />
             </Grid>
           </Grid>

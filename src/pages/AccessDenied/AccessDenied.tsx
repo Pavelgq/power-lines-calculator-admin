@@ -1,10 +1,3 @@
-
-
 export function AccessDenied() {
-
-  return (
-    <div>
-      Доступ запрещен
-    </div>
-  )
+  return <div>Доступ запрещен</div>;
 }

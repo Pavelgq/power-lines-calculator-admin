@@ -6,7 +6,7 @@ import { Button, Grid, TextField, Typography } from "@mui/material";
 
 import useLocalStorage from "../../hooks/useLocalStorage";
 import { loginAdmin, selectIsAuthenticated } from "../../store/adminStore";
-import styles from "./authentication.module.css";
+import styles from "./Authentication.module.css";
 
 export function Authentication(): JSX.Element {
   const [login, setLogin] = useState<string>("");

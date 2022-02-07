@@ -1,4 +1,1 @@
-
-export interface SidebarProps {
-  
-}
+export interface SidebarProps {}

@@ -8,4 +8,5 @@ export interface ClientDataInterface {
   id: number;
   client_key?: string;
   valid_until?: string;
+  isAccept?: boolean;
 }
