@@ -1,7 +1,16 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Container, Grid, Typography } from "@mui/material";
+import {
+  Button,
+  Container,
+  Grid,
+  Input,
+  InputAdornment,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Outlet, useParams } from "react-router-dom";
+
 import {
   getClientsFetch,
   selectAllClients,
@@ -78,7 +87,7 @@ export function Clients(): JSX.Element {
               />
             ) : (
               Object.keys(clients).map((client) => (
-                <Grid item key={clients[client].id}>
+                <Grid item key={client}>
                   <ClientCard client={clients[client]} />
                 </Grid>
               ))

@@ -1,4 +1,5 @@
 export interface ClientDataInterface {
+  ordinal?: string;
   first_name: string;
   last_name: string;
   company: string;

@@ -53,12 +53,11 @@ export function ClientKey({
     const check = setInterval(() => {
       console.log("check");
       if (!checkKey()) {
-        console.log("checked");
         dispatch(
           checkClientAccept({ id: clientId.toString(), isAccept: false })
         );
       }
-    }, 60 * 1000);
+    }, 30 * 60 * 1000);
     return () => {
       clearInterval(check);
     };

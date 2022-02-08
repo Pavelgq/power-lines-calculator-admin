@@ -38,6 +38,7 @@ export const clientsSlice = createSlice({
       state.isLoading = true;
     },
     getClientsSuccess: (state, action) => {
+      state.allIds = [];
       action.payload.forEach((c: ClientDataInterface, index: number) => {
         state.allIds.push(c.id);
         state.tableIds.push(index + 1);

@@ -56,7 +56,6 @@ export function EditClientForm({
   const [token] = useLocalStorage("token");
   const clients = useSelector(selectAllClients);
   const dispatch = useDispatch();
-  console.log(clientId, clients[clientId]);
   const onSubmit: SubmitHandler<ClientDataInterface> = (clientData) => {
     console.log(clientData);
     dispatch(updateClientsFetch({ clientId, clientData, token }));

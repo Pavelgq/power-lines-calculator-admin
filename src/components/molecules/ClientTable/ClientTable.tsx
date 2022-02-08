@@ -1,4 +1,5 @@
 import {
+  InputAdornment,
   Link as MuiLink,
   Paper,
   Table,
@@ -9,10 +10,11 @@ import {
   TablePagination,
   TableRow,
   TableSortLabel,
+  TextField,
   Typography,
 } from "@mui/material";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 
 import { ClientKey } from "../..";
@@ -27,22 +29,32 @@ import useLocalStorage from "../../../hooks/useLocalStorage";
 import { ClientRowMenu } from "../ClientRowMenu/ClientRowMenu";
 import { useSortableData } from "../../../hooks/useSortableData";
 import { ClientDataInterface } from "../../../interfaces/client.interface";
+import { Search } from "../Search/Search";
 
 const columns = [
-  { field: "id", headerName: "№", width: 70, numeric: false, sorting: true },
   {
-    field: "firstname",
+    field: "ordinal",
+    headerName: "№",
+    width: 70,
+    numeric: false,
+    sorting: true,
+    search: false,
+  },
+  {
+    field: "first_name",
     headerName: "Имя",
     width: 70,
     numeric: false,
     sorting: true,
+    search: true,
   },
   {
-    field: "lastname",
+    field: "last_name",
     headerName: "Фамилия",
     width: 70,
     numeric: false,
     sorting: true,
+    search: true,
   },
   {
     field: "company",
@@ -50,6 +62,7 @@ const columns = [
     width: 130,
     numeric: false,
     sorting: true,
+    search: true,
   },
   {
     field: "office_position",
@@ -57,6 +70,7 @@ const columns = [
     width: 130,
     numeric: false,
     sorting: false,
+    search: false,
   },
   {
     field: "phone_number",
@@ -64,11 +78,32 @@ const columns = [
     width: 90,
 
     sorting: false,
+    search: false,
   },
-  { field: "email", headerName: "Email", width: 130, sorting: false },
-  { field: "acceptKey", headerName: "Ключ", width: 130, sorting: false },
-  { field: "actions", headerName: "", width: 130, sorting: false },
+  {
+    field: "email",
+    headerName: "Email",
+    width: 130,
+    sorting: false,
+    search: false,
+  },
+  {
+    field: "acceptKey",
+    headerName: "Ключ",
+    width: 130,
+    sorting: false,
+    search: false,
+  },
+  {
+    field: "actions",
+    headerName: "",
+    width: 130,
+    sorting: false,
+    search: false,
+  },
 ];
+
+const searchFields = columns.filter((el) => el.search).map((el) => el.field);
 
 export function ClientTable({
   selectClient,
@@ -78,14 +113,20 @@ export function ClientTable({
   const [dense, setDense] = useState(true);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [searchValue, setSearchValue] = useState("");
+
   const [token] = useLocalStorage("token");
 
   const data = useSelector(selectAllClients);
   const tableIds = useSelector(selectTableIds);
   const allIds = useSelector(selectAllIds);
 
-  const { items, sortConfig, sortingField } =
-    useSortableData<ClientDataInterface>(allIds, data);
+  const { items, sortConfig, sortingField } = useSortableData(
+    allIds,
+    data,
+    searchValue,
+    searchFields
+  );
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -116,6 +157,7 @@ export function ClientTable({
 
   return (
     <>
+      <Search value={searchValue} handleChange={setSearchValue} />
       <TableContainer component={Paper}>
         <Table
           sx={{ minWidth: 650 }}
@@ -146,8 +188,8 @@ export function ClientTable({
             </TableRow>
           </TableHead>
           <TableBody>
-            {allIds &&
-              allIds
+            {items &&
+              items
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((client, index) => (
                   <TableRow
@@ -164,7 +206,7 @@ export function ClientTable({
                   >
                     <TableCell component="th" scope="row">
                       <Typography variant="body1" component="h3">
-                        {tableIds[index + page * rowsPerPage]}
+                        {data[client].ordinal}
                       </Typography>
                     </TableCell>
                     <TableCell component="th" scope="row">
