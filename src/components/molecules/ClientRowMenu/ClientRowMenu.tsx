@@ -1,7 +1,16 @@
-import { Tooltip, IconButton, Menu, MenuItem, Typography } from "@mui/material";
+import {
+  Tooltip,
+  IconButton,
+  Menu,
+  MenuItem,
+  Typography,
+  ButtonBase,
+  Popover,
+} from "@mui/material";
 import { useState, MouseEvent } from "react";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { ClientRowMenuInterface } from "./ClientRowMenu.interface";
 import { EditClientForm } from "../EditClientForm/EditClientForm";
 import useLocalStorage from "../../../hooks/useLocalStorage";
@@ -16,9 +25,12 @@ export function ClientRowMenu({
   id,
   isKey = false,
 }: ClientRowMenuInterface): JSX.Element {
+  const navigate = useNavigate();
   const [anchorElAction, setAnchorElAction] = useState<null | HTMLElement>(
     null
   );
+  const [copied, setCopied] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [token] = useLocalStorage("token");
   const [openGenerate, setOpenGenerate] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -59,6 +71,27 @@ export function ClientRowMenu({
     }
     dispatch(deleteClientFetch({ token, id }));
     setOpenAlert(!openAlert);
+    handleCloseActionMenu();
+  };
+
+  const handleCopy = (event: React.MouseEvent<HTMLLIElement>) => {
+    if (clientData.client_key) {
+      navigator.clipboard.writeText(clientData.client_key);
+
+      setCopied(true);
+      // setAnchorEl(event.currentTarget);
+      setTimeout(() => {
+        setCopied(false);
+        setAnchorEl(null);
+      }, 1000);
+      handleCloseActionMenu();
+    }
+  };
+
+  const handleActions = () => {
+    const path = `/clients/${id}`;
+    navigate(path);
+    handleCloseActionMenu();
   };
 
   return (
@@ -99,11 +132,27 @@ export function ClientRowMenu({
         open={Boolean(anchorElAction)}
         onClose={handleCloseActionMenu}
       >
-        {!clientData.isAccept && (
-          <MenuItem onClick={handleGenerate}>
-            <Typography textAlign="center">Генерировать новый ключ</Typography>
-          </MenuItem>
-        )}
+        <MenuItem onClick={handleCopy}>
+          <Typography textAlign="center">Копировать ключ</Typography>
+          <Popover
+            open={copied}
+            anchorEl={anchorEl}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+          >
+            <Typography variant="body2" margin={1}>
+              Скопировано
+            </Typography>
+          </Popover>
+        </MenuItem>
+        <MenuItem onClick={handleGenerate}>
+          <Typography textAlign="center">Генерировать новый ключ</Typography>
+        </MenuItem>
+        <MenuItem onClick={handleActions}>
+          <Typography textAlign="center">Проверить действия</Typography>
+        </MenuItem>
         <MenuItem onClick={handleToggleUpdate}>
           <Typography textAlign="center">Изменить данные</Typography>
         </MenuItem>

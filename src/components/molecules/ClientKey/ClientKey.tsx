@@ -79,7 +79,7 @@ export function ClientKey({
       >
         <Grid item>
           <Grid container direction="column">
-            <Grid item xs={9}>
+            <Grid item xs={10}>
               {!clientData.isAccept ? (
                 <Chip label="Просрочен" color="error" variant="filled" />
               ) : (
@@ -87,36 +87,12 @@ export function ClientKey({
                 // <Typography variant="h5">{keyValue}</Typography>
               )}
             </Grid>
-            <Grid item xs={9}>
+            <Grid item xs={10}>
               <Typography variant="caption">
-                {moment(lifetime, moment.ISO_8601).format("DD MMMM YYYY")}
+                до {moment(lifetime, moment.ISO_8601).format("DD MMMM YYYY")}
               </Typography>
             </Grid>
           </Grid>
-        </Grid>
-        <Grid item xs={3}>
-          {clientData.isAccept && (
-            <Button
-              onClick={handleCopy}
-              size="small"
-              sx={{ minWidth: "40px", padding: "5px" }}
-            >
-              <ContentCopyIcon fontSize="small" />
-            </Button>
-          )}
-
-          <Popover
-            open={copied}
-            anchorEl={anchorEl}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "left",
-            }}
-          >
-            <Typography variant="body2" margin={1}>
-              Скопировано
-            </Typography>
-          </Popover>
         </Grid>
       </Grid>
     );

@@ -41,16 +41,16 @@ const columns = [
     search: false,
   },
   {
-    field: "first_name",
-    headerName: "Имя",
+    field: "last_name",
+    headerName: "Фамилия",
     width: 70,
     numeric: false,
     sorting: true,
     search: true,
   },
   {
-    field: "last_name",
-    headerName: "Фамилия",
+    field: "first_name",
+    headerName: "Имя",
     width: 70,
     numeric: false,
     sorting: true,
@@ -211,12 +211,12 @@ export function ClientTable({
                     </TableCell>
                     <TableCell component="th" scope="row">
                       <Typography variant="body1" component="h3">
-                        {firstUpperChar(data[client].first_name)}
+                        {firstUpperChar(data[client].last_name)}
                       </Typography>
                     </TableCell>
                     <TableCell component="th" scope="row">
                       <Typography variant="body1" component="h3">
-                        {firstUpperChar(data[client].last_name)}
+                        {firstUpperChar(data[client].first_name)}
                       </Typography>
                     </TableCell>
                     <TableCell component="th" scope="row">
