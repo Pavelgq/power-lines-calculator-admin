@@ -21,27 +21,14 @@ import useLocalStorage from "../../../hooks/useLocalStorage";
 import { deleteClientFetch } from "../../../store/clientsStore";
 import { AlertDialog } from "../AlertDialog/AlertDialog";
 import { formatePhone } from "../../../helpers/format";
+import { ClientRowMenu } from "../ClientRowMenu/ClientRowMenu";
 
 export function ClientCard({
   client,
   color = "white",
 }: ClientCardProps): JSX.Element {
-  const [openAlert, setOpenAlert] = useState(false);
   const [token] = useLocalStorage("token");
   const dispatch = useDispatch();
-
-  console.log(client);
-  const handleCloseAlert = () => {
-    setOpenAlert(false);
-  };
-
-  const handleOpenAlert = () => {
-    setOpenAlert(true);
-  };
-  const handleDelete = () => {
-    console.log("delete");
-    dispatch(deleteClientFetch({ token, id: client.id }));
-  };
 
   return (
     <Card>
@@ -82,24 +69,14 @@ export function ClientCard({
         </List>
         <Typography variant="body2">
           Ключ:{" "}
-          <ClientKey
+          {/* <ClientKey
             clientId={Number(client)}
             keyValue={client.client_key}
             lifetime={client.valid_until}
-          />
+          /> */}
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small">Изменить</Button>
-        <Button size="small" color="warning" onClick={handleOpenAlert}>
-          Удалить
-        </Button>
-        <AlertDialog
-          open={openAlert}
-          handleClose={handleCloseAlert}
-          handleChange={handleDelete}
-        />
-      </CardActions>
+      <ClientRowMenu id={client.id} />
     </Card>
   );
 }

@@ -14,7 +14,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import { FormEvent, MouseEvent, useState } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import styles from "./Sidebar.module.css";
 import { selectCurrentAdmin } from "../../../store/adminStore";
@@ -36,6 +36,7 @@ const pages = [
 const settings = ["Добавить администратора", "Изменить пароль", "Выход"];
 
 export function Sidebar() {
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
@@ -58,6 +59,12 @@ export function Sidebar() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleNav = (link: string) => {
+    navigate(link);
+
+    handleCloseUserMenu();
   };
 
   if (!admin) {
@@ -107,7 +114,7 @@ export function Sidebar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page.title} onClick={handleCloseNavMenu}>
+                <MenuItem key={page.title} onClick={() => handleNav(page.link)}>
                   <Link to={page.link} />
                   <Typography textAlign="center">{page.title}</Typography>
                 </MenuItem>
@@ -126,14 +133,16 @@ export function Sidebar() {
             {pages.map((page) => (
               <Button
                 key={page.title}
-                onClick={handleCloseNavMenu}
+                onClick={() => handleNav(page.link)}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                <Link to={page.link}>{page.title}</Link>
+                {page.title}
               </Button>
             ))}
           </Box>
-
+          <Typography variant="body1" sx={{ marginRight: 1 }}>
+            {admin.login}
+          </Typography>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Открыть настройки">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

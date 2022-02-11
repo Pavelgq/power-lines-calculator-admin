@@ -21,10 +21,12 @@ import useLocalStorage from "../../hooks/useLocalStorage";
 import { ClientCard } from "../../components";
 import { CreateClientForm } from "../../components/molecules/CreateClientForm/CreateClientForm";
 import { ClientTable } from "../../components/molecules/ClientTable/ClientTable";
+import { useWindowSize } from "../../hooks/useWindowsSize";
+import { ClientCardList } from "../../components/molecules/ClientCardList/ClietnCardList";
 
 export function Clients(): JSX.Element {
   const { clientId } = useParams();
-
+  const [windowsX, windowsY] = useWindowSize();
   const [token] = useLocalStorage("token");
   const [viewToggle, setViewToggle] = useState("table");
   const [selectClient, setSelectClient] = useState(0);
@@ -41,7 +43,7 @@ export function Clients(): JSX.Element {
   useEffect(() => {
     dispatch(getClientsFetch({ token }));
     return () => {};
-  }, [dispatch]);
+  }, []);
 
   if (isLoading) {
     return <span>Загрузка данных...</span>;
@@ -80,17 +82,13 @@ export function Clients(): JSX.Element {
             </Grid>
           </Grid>
           <Grid item>
-            {viewToggle === "table" ? (
+            {windowsX > 1000 ? (
               <ClientTable
                 selectClient={selectClient}
                 setSelectClient={setSelectClient}
               />
             ) : (
-              Object.keys(clients).map((client) => (
-                <Grid item key={client}>
-                  <ClientCard client={clients[client]} />
-                </Grid>
-              ))
+              <ClientCardList />
             )}
           </Grid>
         </Grid>

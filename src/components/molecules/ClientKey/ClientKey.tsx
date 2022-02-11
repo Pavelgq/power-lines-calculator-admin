@@ -9,6 +9,7 @@ import styles from "./ClientKey.module.css";
 import {
   checkClientAccept,
   selectAllClients,
+  selectIsLoadingClient,
 } from "../../../store/clientsStore";
 
 export function ClientKey({
@@ -21,8 +22,8 @@ export function ClientKey({
   const [openGenerate, setOpenGenerate] = useState(false);
 
   const clientData = useSelector(selectAllClients)[clientId];
+  const isLoading = useSelector(selectIsLoadingClient);
   const dispatch = useDispatch();
-
   const handleCopy = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (keyValue) {
       navigator.clipboard.writeText(keyValue);
@@ -34,34 +35,6 @@ export function ClientKey({
       setAnchorEl(null);
     }, 1000);
   };
-
-  const checkKey = () => {
-    if (Date.parse(lifetime) - Date.now() < -24 * 60 * 60 * 1000) {
-      return false;
-    }
-    return true;
-  };
-
-  useEffect(() => {
-    if (!clientData.isAccept) {
-      return () => {};
-    }
-    if (!checkKey()) {
-      console.log("checked");
-      dispatch(checkClientAccept({ id: clientId.toString(), isAccept: false }));
-    }
-    const check = setInterval(() => {
-      console.log("check");
-      if (!checkKey()) {
-        dispatch(
-          checkClientAccept({ id: clientId.toString(), isAccept: false })
-        );
-      }
-    }, 30 * 60 * 1000);
-    return () => {
-      clearInterval(check);
-    };
-  }, []);
 
   const handleGenerate = () => {
     setOpenGenerate(true);
@@ -79,7 +52,7 @@ export function ClientKey({
       >
         <Grid item>
           <Grid container direction="column">
-            <Grid item xs={10}>
+            <Grid item>
               {!clientData.isAccept ? (
                 <Chip label="Просрочен" color="error" variant="filled" />
               ) : (
@@ -87,7 +60,7 @@ export function ClientKey({
                 // <Typography variant="h5">{keyValue}</Typography>
               )}
             </Grid>
-            <Grid item xs={10}>
+            <Grid item>
               <Typography variant="caption">
                 до {moment(lifetime, moment.ISO_8601).format("DD MMMM YYYY")}
               </Typography>

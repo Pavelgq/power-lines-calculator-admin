@@ -20,22 +20,19 @@ import { useSelector } from "react-redux";
 import { ClientKey } from "../..";
 import { firstUpperChar, formatePhone } from "../../../helpers/format";
 import { ClientTableInterface } from "./ClientTable.props";
-import {
-  selectAllClients,
-  selectAllIds,
-  selectTableIds,
-} from "../../../store/clientsStore";
+import { selectAllClients, selectAllIds } from "../../../store/clientsStore";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import { ClientRowMenu } from "../ClientRowMenu/ClientRowMenu";
 import { useSortableData } from "../../../hooks/useSortableData";
 import { ClientDataInterface } from "../../../interfaces/client.interface";
 import { Search } from "../Search/Search";
+import { useWindowSize } from "../../../hooks/useWindowsSize";
 
 const columns = [
   {
     field: "ordinal",
     headerName: "№",
-    width: 70,
+    width: 20,
     numeric: false,
     sorting: true,
     search: false,
@@ -75,7 +72,7 @@ const columns = [
   {
     field: "phone_number",
     headerName: "Телефон",
-    width: 90,
+    width: 80,
 
     sorting: false,
     search: false,
@@ -110,7 +107,6 @@ export function ClientTable({
   setSelectClient,
 }: ClientTableInterface): JSX.Element {
   const [page, setPage] = useState(0);
-  const [dense, setDense] = useState(true);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [searchValue, setSearchValue] = useState("");
@@ -118,7 +114,6 @@ export function ClientTable({
   const [token] = useLocalStorage("token");
 
   const data = useSelector(selectAllClients);
-  const tableIds = useSelector(selectTableIds);
   const allIds = useSelector(selectAllIds);
 
   const { items, sortConfig, sortingField } = useSortableData(
@@ -159,15 +154,15 @@ export function ClientTable({
     <>
       <Search value={searchValue} handleChange={setSearchValue} />
       <TableContainer component={Paper}>
-        <Table
-          sx={{ minWidth: 650 }}
-          aria-label="Таблица клиентов"
-          size={dense ? "small" : "medium"}
-        >
+        <Table aria-label="Таблица клиентов" sx={{ minWidth: 1000 }}>
           <TableHead>
             <TableRow>
               {columns.map((n) => (
-                <TableCell key={n.field} align={n.numeric ? "right" : "left"}>
+                <TableCell
+                  key={n.field}
+                  align={n.numeric ? "right" : "left"}
+                  sx={{ maxWidth: n.width }}
+                >
                   {n.sorting ? (
                     <TableSortLabel
                       active

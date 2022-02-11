@@ -5,7 +5,6 @@ import { RootState } from "./store";
 interface ClientStateI {
   data: { [id: string]: ClientDataInterface };
   allIds: number[];
-  tableIds: number[];
   isLoading: boolean;
   error: Error | null;
 }
@@ -13,7 +12,6 @@ interface ClientStateI {
 const initialState: ClientStateI = {
   data: {},
   allIds: [],
-  tableIds: [],
   isLoading: false,
   error: null,
 };
@@ -41,12 +39,11 @@ export const clientsSlice = createSlice({
       state.allIds = [];
       action.payload.forEach((c: ClientDataInterface, index: number) => {
         state.allIds.push(c.id);
-        state.tableIds.push(index + 1);
       });
       state.data = {};
       action.payload.forEach((c: ClientDataInterface) => {
         Object.assign(state.data, { [c.id]: c });
-        state.data[c.id].isAccept = true;
+        // state.data[c.id].isAccept = true;
       });
       state.isLoading = false;
     },
@@ -68,7 +65,6 @@ export const clientsSlice = createSlice({
     },
     createClientSuccess: (state, action) => {
       state.allIds.push(action.payload.data.id);
-      state.tableIds.push(state.tableIds.length);
       state.data[action.payload.data.id] = {
         ...action.payload.data,
         isAccept: false,
@@ -95,7 +91,6 @@ export const clientsSlice = createSlice({
       if (i !== -1) {
         state.allIds.splice(i, 1);
       }
-      state.tableIds = state.allIds.map((el, index) => index);
       delete state.data[action.payload.clientId];
       state.isLoading = false;
     },
@@ -136,7 +131,6 @@ export const {
 export default clientsSlice.reducer;
 
 export const selectAllClients = (state: RootState) => state.clients.data;
-export const selectTableIds = (state: RootState) => state.clients.tableIds;
 export const selectAllIds = (state: RootState) => state.clients.allIds;
 
 export const selectIsLoadingClient = (state: RootState) =>
