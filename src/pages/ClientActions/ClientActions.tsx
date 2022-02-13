@@ -16,10 +16,7 @@ import { Loading } from "../../components/atoms/Loading/Loading";
 import { ActionTable } from "../../components/molecules/ActionTable/ActionTable";
 import { getRandomFrom } from "../../helpers/random";
 import useLocalStorage from "../../hooks/useLocalStorage";
-import {
-  ActionCreateInterface,
-  Categories,
-} from "../../interfaces/action.interface";
+import { ActionCreateInterface } from "../../interfaces/action.interface";
 import {
   createClientAction,
   getAllActions,
@@ -27,8 +24,25 @@ import {
   selectIsLoadingActions,
   selectTotalActions,
 } from "../../store/actionStore";
-import { RootState } from "../../store/store";
 
+const programs = [
+  {
+    name: "Все",
+    value: 0,
+  },
+  {
+    name: "Экран",
+    value: 1,
+  },
+  {
+    name: "Кабель",
+    value: 2,
+  },
+  {
+    name: "Труба",
+    value: 3,
+  },
+];
 export function ClientActions() {
   const { clientId } = useParams();
 
@@ -60,7 +74,6 @@ export function ClientActions() {
         param2: Math.floor(Math.random() * 100) + 1,
       },
     };
-    console.log(newData);
     dispatch(
       createClientAction({
         data: newData,
@@ -79,8 +92,8 @@ export function ClientActions() {
     setPage(0);
   };
 
-  const setProgramTypeFilter = (event: SelectChangeEvent) => {
-    setProgramType(event.target.value as string);
+  const setProgramTypeFilter = (n: number) => {
+    setProgramType(n.toString());
     setPage(0);
   };
 
@@ -93,37 +106,31 @@ export function ClientActions() {
         <Grid container spacing={2} direction="column">
           <Grid item>
             <Breadcrumbs separator="›" aria-label="breadcrumb">
-              <Link to="/clients">Клиенты</Link>
-              <Link to="/clients/1">Клиент {clientId}</Link>
+              <Link to="/clients">Пользователи</Link>
+              <Link to="/clients/1">Пользователь {clientId}</Link>
             </Breadcrumbs>
           </Grid>
-          <Grid item>
-            <Button
+
+          {/* <Button
               type="submit"
               variant="contained"
               onClick={handleGenerateAction}
             >
               Имитировать действие этого клиента
             </Button>
-          </Grid>
-          <Grid item>
-            <FormControl fullWidth>
-              <InputLabel id="program-type-filter">
-                Выберите программу
-              </InputLabel>
-              <Select
-                labelId="program-type-filter"
-                id="select-program-type"
-                value={programType}
-                label="Выберите программу"
-                onChange={setProgramTypeFilter}
-              >
-                <MenuItem value={0}>Все</MenuItem>
-                <MenuItem value={1}>Экран</MenuItem>
-                <MenuItem value={2}>Труба</MenuItem>
-                <MenuItem value={3}>Кабель</MenuItem>
-              </Select>
-            </FormControl>
+            */}
+          <Grid container spacing={1} marginTop={1}>
+            {programs.map((p) => (
+              <Grid item key={p.name}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  onClick={() => setProgramTypeFilter(p.value)}
+                >
+                  {p.name}
+                </Button>
+              </Grid>
+            ))}
           </Grid>
           <Grid item>
             <ActionTable

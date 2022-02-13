@@ -83,6 +83,17 @@ export function EditClientForm({
 
           <TextField
             margin="dense"
+            id="last_name"
+            error={!!errors.last_name}
+            label="Фамилия"
+            helperText={errors.last_name ? errors.last_name.message : ""}
+            type="text"
+            fullWidth
+            variant="outlined"
+            {...register("last_name")}
+          />
+          <TextField
+            margin="dense"
             id="first_name"
             error={!!errors.first_name}
             label="Имя"
@@ -94,15 +105,16 @@ export function EditClientForm({
           />
           <TextField
             margin="dense"
-            id="last_name"
-            error={!!errors.last_name}
-            label="Фамилия"
-            helperText={errors.last_name ? errors.last_name.message : ""}
+            id="company"
+            error={!!errors.company}
+            label="Название компании"
+            helperText={errors.company ? errors.company.message : ""}
             type="text"
             fullWidth
             variant="outlined"
-            {...register("last_name")}
+            {...register("company")}
           />
+
           <TextField
             margin="dense"
             id="office_position"
@@ -115,17 +127,6 @@ export function EditClientForm({
             fullWidth
             variant="outlined"
             {...register("office_position")}
-          />
-          <TextField
-            margin="dense"
-            id="company"
-            error={!!errors.company}
-            label="Название компании"
-            helperText={errors.company ? errors.company.message : ""}
-            type="text"
-            fullWidth
-            variant="outlined"
-            {...register("company")}
           />
           <TextField
             margin="dense"

@@ -7,6 +7,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  Button,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,6 +21,25 @@ import {
   selectIsLoadingActions,
   selectTotalActions,
 } from "../../store/actionStore";
+
+const programs = [
+  {
+    name: "Все",
+    value: 0,
+  },
+  {
+    name: "Экран",
+    value: 1,
+  },
+  {
+    name: "Кабель",
+    value: 2,
+  },
+  {
+    name: "Труба",
+    value: 3,
+  },
+];
 
 export function AllActions() {
   const [token] = useLocalStorage("token");
@@ -46,8 +66,8 @@ export function AllActions() {
     setPage(0);
   };
 
-  const setProgramTypeFilter = (event: SelectChangeEvent) => {
-    setProgramType(event.target.value as string);
+  const setProgramTypeFilter = (n: number) => {
+    setProgramType(n.toString());
     setPage(0);
   };
 
@@ -60,28 +80,22 @@ export function AllActions() {
         <Grid container spacing={2} direction="column">
           <Grid item>
             <Breadcrumbs separator="›" aria-label="breadcrumb">
-              <Link to="/clients">Клиенты</Link>
-              <Link to="/actions">Все клиенты</Link>
+              <Link to="/clients">Пользователи</Link>
+              <Link to="/clients/1">Все пользователи</Link>
             </Breadcrumbs>
           </Grid>
-          <Grid item>
-            <FormControl fullWidth>
-              <InputLabel id="program-type-filter">
-                Выберите программу
-              </InputLabel>
-              <Select
-                labelId="program-type-filter"
-                id="select-program-type"
-                value={programType}
-                label="Выберите программу"
-                onChange={setProgramTypeFilter}
-              >
-                <MenuItem value={0}>Все</MenuItem>
-                <MenuItem value={1}>Экран</MenuItem>
-                <MenuItem value={2}>Труба</MenuItem>
-                <MenuItem value={3}>Кабель</MenuItem>
-              </Select>
-            </FormControl>
+          <Grid container spacing={1} marginTop={1}>
+            {programs.map((p) => (
+              <Grid item key={p.name}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  onClick={() => setProgramTypeFilter(p.value)}
+                >
+                  {p.name}
+                </Button>
+              </Grid>
+            ))}
           </Grid>
           <Grid item>
             <ActionTable
