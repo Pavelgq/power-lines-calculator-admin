@@ -134,4 +134,4 @@ export const selectAllClients = (state: RootState) => state.clients.data;
 export const selectAllIds = (state: RootState) => state.clients.allIds;
 
 export const selectIsLoadingClient = (state: RootState) =>
-  state.admin.isLoading;
+  state.clients.isLoading;

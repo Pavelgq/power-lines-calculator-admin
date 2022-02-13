@@ -23,6 +23,7 @@ import { CreateClientForm } from "../../components/molecules/CreateClientForm/Cr
 import { ClientTable } from "../../components/molecules/ClientTable/ClientTable";
 import { useWindowSize } from "../../hooks/useWindowsSize";
 import { ClientCardList } from "../../components/molecules/ClientCardList/ClietnCardList";
+import { ClientsList } from "../../components/molecules/ClientsList/ClientsList";
 
 export function Clients(): JSX.Element {
   const { clientId } = useParams();
@@ -45,14 +46,6 @@ export function Clients(): JSX.Element {
     return () => {};
   }, []);
 
-  if (isLoading) {
-    return <span>Загрузка данных...</span>;
-  }
-
-  if (!Object.keys(clients).length) {
-    return <div>Клиентов пока нету</div>;
-  }
-
   if (clientId) {
     return <Outlet />;
   }
@@ -60,38 +53,7 @@ export function Clients(): JSX.Element {
   return (
     <main>
       <Container>
-        <Grid container spacing={2} direction="column">
-          <Typography variant="h4" marginBottom={1}>
-            Список клиентов
-          </Typography>
-          <Grid container wrap="nowrap" spacing={1}>
-            <Grid item>
-              <Button
-                type="submit"
-                variant="contained"
-                size="small"
-                onClick={handleOpenCreate}
-              >
-                Добавить клиента
-              </Button>
-              <CreateClientForm
-                title="Добавить"
-                open={openAddClientDialog}
-                setOpen={setOpenAddClientDialog}
-              />
-            </Grid>
-          </Grid>
-          <Grid item>
-            {windowsX > 1000 ? (
-              <ClientTable
-                selectClient={selectClient}
-                setSelectClient={setSelectClient}
-              />
-            ) : (
-              <ClientCardList />
-            )}
-          </Grid>
-        </Grid>
+        <ClientsList />
       </Container>
     </main>
   );

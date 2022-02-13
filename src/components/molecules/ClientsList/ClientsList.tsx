@@ -1,8 +1,14 @@
+import { Button, Container, Grid } from "@mui/material";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import { useSortableData } from "../../../hooks/useSortableData";
+import { useWindowSize } from "../../../hooks/useWindowsSize";
 import { selectAllClients, selectAllIds } from "../../../store/clientsStore";
+import { ClientCardList } from "../ClientCardList/ClietnCardList";
+import { ClientTable } from "../ClientTable/ClientTable";
+import { CreateClientForm } from "../CreateClientForm/CreateClientForm";
+import { Search } from "../Search/Search";
 
 const columns = [
   {
@@ -78,7 +84,10 @@ const columns = [
 
 const searchFields = columns.filter((el) => el.search).map((el) => el.field);
 
-export const ClientsList = () => {
+export function ClientsList() {
+  const [windowsX, windowsY] = useWindowSize();
+  const [selectClient, setSelectClient] = useState(0);
+  const [openAddClientDialog, setOpenAddClientDialog] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -107,9 +116,62 @@ export const ClientsList = () => {
     setPage(0);
   };
 
+  const handleOpenCreate = () => {
+    setSelectClient(0);
+    setOpenAddClientDialog(true);
+  };
+
   const createSortHandler = () => {
     console.log("sort");
   };
 
-  return {};
-};
+  return (
+    <Grid container spacing={2} direction="column">
+      <Grid
+        container
+        wrap="nowrap"
+        justifyContent="center"
+        alignItems="center"
+        spacing={1}
+      >
+        <Grid item xs justifyContent="center" alignItems="center">
+          <Container>
+            <Button
+              type="submit"
+              variant="contained"
+              size="small"
+              onClick={handleOpenCreate}
+            >
+              Добавить пользователя
+            </Button>
+            <CreateClientForm
+              title="Добавить"
+              open={openAddClientDialog}
+              setOpen={setOpenAddClientDialog}
+            />
+          </Container>
+        </Grid>
+        <Grid item xs={9}>
+          <Search value={searchValue} handleChange={setSearchValue} />
+        </Grid>
+      </Grid>
+      <Grid item>
+        {windowsX > 1000 ? (
+          <ClientTable
+            items={items}
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+            sortConfig={sortConfig}
+            sortingField={sortingField}
+            page={page}
+            handleChangePage={handleChangePage}
+            rowsPerPage={rowsPerPage}
+            handleChangeRowsPerPage={handleChangeRowsPerPage}
+          />
+        ) : (
+          <ClientCardList items={items} />
+        )}
+      </Grid>
+    </Grid>
+  );
+}

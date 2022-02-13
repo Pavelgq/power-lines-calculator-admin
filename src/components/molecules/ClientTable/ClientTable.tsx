@@ -1,5 +1,4 @@
 import {
-  InputAdornment,
   Link as MuiLink,
   Paper,
   Table,
@@ -10,23 +9,20 @@ import {
   TablePagination,
   TableRow,
   TableSortLabel,
-  TextField,
   Typography,
 } from "@mui/material";
 
-import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 
 import { ClientKey } from "../..";
 import { firstUpperChar, formatePhone } from "../../../helpers/format";
 import { ClientTableInterface } from "./ClientTable.props";
-import { selectAllClients, selectAllIds } from "../../../store/clientsStore";
-import useLocalStorage from "../../../hooks/useLocalStorage";
+import {
+  selectAllClients,
+  selectIsLoadingClient,
+} from "../../../store/clientsStore";
 import { ClientRowMenu } from "../ClientRowMenu/ClientRowMenu";
-import { useSortableData } from "../../../hooks/useSortableData";
-import { ClientDataInterface } from "../../../interfaces/client.interface";
-import { Search } from "../Search/Search";
-import { useWindowSize } from "../../../hooks/useWindowsSize";
+import { Loading } from "../../atoms/Loading/Loading";
 
 const columns = [
   {
@@ -103,56 +99,25 @@ const columns = [
 const searchFields = columns.filter((el) => el.search).map((el) => el.field);
 
 export function ClientTable({
-  selectClient,
-  setSelectClient,
+  searchValue,
+  setSearchValue,
+  sortConfig,
+  sortingField,
+  items,
+  page,
+  handleChangePage,
+  rowsPerPage,
+  handleChangeRowsPerPage,
 }: ClientTableInterface): JSX.Element {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  const [searchValue, setSearchValue] = useState("");
-
-  const [token] = useLocalStorage("token");
-
   const data = useSelector(selectAllClients);
-  const allIds = useSelector(selectAllIds);
+  const isLoading = useSelector(selectIsLoadingClient);
 
-  const { items, sortConfig, sortingField } = useSortableData(
-    allIds,
-    data,
-    searchValue,
-    searchFields
-  );
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const handleSelectClient = (
-    event: React.MouseEvent<unknown>,
-    newSelectClientId: number
-  ) => {
-    if (newSelectClientId === selectClient) {
-      setSelectClient(0);
-      return;
-    }
-
-    setSelectClient(newSelectClientId);
-  };
-
-  const createSortHandler = () => {
-    console.log("sort");
-  };
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <>
-      <Search value={searchValue} handleChange={setSearchValue} />
       <TableContainer component={Paper}>
         <Table aria-label="Таблица клиентов" sx={{ minWidth: 1000 }}>
           <TableHead>
@@ -191,13 +156,8 @@ export function ClientTable({
                     key={client}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     hover
-                    onClick={(event) =>
-                      handleSelectClient(event, Number(client))
-                    }
                     role="checkbox"
-                    aria-checked={selectClient === Number(client)}
                     tabIndex={-1}
-                    selected={selectClient === Number(client)}
                   >
                     <TableCell component="th" scope="row">
                       <Typography variant="body1" component="h3">

@@ -1,24 +1,32 @@
 import { Grid } from "@mui/material";
 import { useSelector } from "react-redux";
 import { ClientCard } from "../..";
-import { selectAllClients, selectAllIds } from "../../../store/clientsStore";
+import {
+  selectAllClients,
+  selectAllIds,
+  selectIsLoadingClient,
+} from "../../../store/clientsStore";
+import { Loading } from "../../atoms/Loading/Loading";
 
-interface ClientCardListProps {}
+interface ClientCardListProps {
+  items: number[];
+}
 
-export function ClientCardList() {
+export function ClientCardList({ items }: ClientCardListProps) {
   const data = useSelector(selectAllClients);
-  const allIds = useSelector(selectAllIds);
+  const isLoading = useSelector(selectIsLoadingClient);
 
-  if (!allIds.length) {
-    return {} as JSX.Element;
+  if (isLoading) {
+    return <Loading />;
   }
   return (
-    <>
-      {allIds.map((clientId: number) => (
-        <Grid item key={clientId}>
-          <ClientCard client={data[clientId]} />
-        </Grid>
-      ))}
-    </>
+    <div>
+      {items.length &&
+        items.map((clientId: number) => (
+          <Grid item key={clientId}>
+            <ClientCard client={data[clientId]} />
+          </Grid>
+        ))}
+    </div>
   );
 }

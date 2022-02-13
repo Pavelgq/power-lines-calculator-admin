@@ -5,7 +5,11 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { Button, Grid, TextField, Typography } from "@mui/material";
 
 import useLocalStorage from "../../hooks/useLocalStorage";
-import { loginAdmin, selectIsAuthenticated } from "../../store/adminStore";
+import {
+  loginAdmin,
+  selectIsAuthenticated,
+  selectIsError,
+} from "../../store/adminStore";
 import styles from "./Authentication.module.css";
 
 export function Authentication(): JSX.Element {
@@ -14,6 +18,7 @@ export function Authentication(): JSX.Element {
   const [token, setToken] = useLocalStorage("token");
 
   const auth = useSelector(selectIsAuthenticated);
+  const error = useSelector(selectIsError);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -75,6 +80,7 @@ export function Authentication(): JSX.Element {
             </Grid>
           </Grid>
         </form>
+        {error && <span>{error}</span>}
       </Grid>
     </Grid>
   );
