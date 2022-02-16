@@ -1,3 +1,43 @@
 .appbar {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+}
+
+.menuItem {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  margin-right: 1.5rem;
+  font-family: TTNormsMedium,
+  Arial,
+  serif;
+  font-size: .7rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #fff;
+  letter-spacing: .06rem;
+  opacity: .8;
+  position: relative;
+  white-space: nowrap;
+  transition-duration: 1s;
+  overflow: hidden;
+  border-radius: 0;
+}
+
+.menuItem::before {
+  background: none repeat scroll 0 0 transparent;
+  bottom: 0;
+  content: "";
+  display: block;
+  height: 3px;
+  right: 0;
+  position: absolute;
+  background: #fff;
+  transition: width .5s ease 0s,
+  right .5s ease 0s;
+  width: 0;
+}
+
+.menuItem:hover::before,
+.menuItem:focus::before {
+   width: 100%;
+   right: 0;
 }

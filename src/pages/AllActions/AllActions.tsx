@@ -22,6 +22,8 @@ import {
   selectTotalActions,
 } from "../../store/actionStore";
 
+import styles from "./AllActions.module.css";
+
 const programs = [
   {
     name: "Все",
@@ -97,7 +99,7 @@ export function AllActions() {
               </Grid>
             ))}
           </Grid>
-          <Grid item>
+          <Grid item marginTop={2}>
             <ActionTable
               data={clientActions}
               limit={limit}

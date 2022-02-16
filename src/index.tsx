@@ -18,7 +18,7 @@ const theme = {
       main: "#ce1e19",
     },
     secondary: {
-      main: "#edf2ff",
+      main: "#201d2a",
     },
   },
 };
