@@ -59,14 +59,24 @@ export function Authentication(): JSX.Element {
   return (
     <Grid container spacing={2} direction="column" alignItems="center">
       {auth && (
-        <Snackbar open={auth} autoHideDuration={1000} message="Note archived" />
+        <Snackbar open={auth} autoHideDuration={1000}>
+          <Alert severity="success" sx={{ width: "100%" }}>
+            Авторизация успешна!
+          </Alert>
+        </Snackbar>
       )}
       <Grid item>
         <Typography variant="h5" component="h2">
           Авторизация
         </Typography>
       </Grid>
-      <Grid item>{error && <Alert severity="error">{error}</Alert>}</Grid>
+      <Grid item>
+        {error && (
+          <Snackbar open={error && true} autoHideDuration={1000}>
+            <Alert severity="error">{error}</Alert>
+          </Snackbar>
+        )}
+      </Grid>
       <Grid item>
         <form onSubmit={handleSubmit}>
           <Grid

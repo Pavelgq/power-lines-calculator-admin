@@ -5,7 +5,7 @@ import { RootState } from "./store";
 
 interface ClientStateI {
   data: { [id: string]: ClientDataInterface };
-  allIds: number[];
+  allIds: (keyof { [id: string]: ClientDataInterface })[];
   isLoading: boolean;
   error: Error | null;
   message: string;

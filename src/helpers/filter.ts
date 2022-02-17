@@ -12,3 +12,6 @@ export const stableSort = <T>(
   });
   return stabilizedThis.map((el) => el[0]);
 };
+
+
+export const isNumber = (data: string) => Number.isInteger(Number(data)) ? Number(data) : data

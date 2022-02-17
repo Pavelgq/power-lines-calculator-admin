@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import { useSortableData } from "../../../hooks/useSortableData";
 import { useWindowSize } from "../../../hooks/useWindowsSize";
+import { ClientDataInterface } from "../../../interfaces/client.interface";
 import { selectAllClients, selectAllIds } from "../../../store/clientsStore";
 import { ClientCardList } from "../ClientCardList/ClietnCardList";
 import { ClientTable } from "../ClientTable/ClientTable";
@@ -98,12 +99,9 @@ export function ClientsList() {
   const data = useSelector(selectAllClients);
   const allIds = useSelector(selectAllIds);
 
-  const { items, sortConfig, sortingField } = useSortableData(
-    allIds,
-    data,
-    searchValue,
-    searchFields
-  );
+  const { items, sortConfig, sortingField } = useSortableData<{
+    [id: string]: ClientDataInterface;
+  }>(allIds, data, searchValue, searchFields);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
