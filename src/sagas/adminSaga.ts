@@ -1,6 +1,6 @@
 import { call, put, takeEvery, fork, all } from "redux-saga/effects";
 
-import { AxiosResponseHeaders } from "axios";
+import axios, { AxiosError, AxiosResponseHeaders } from "axios";
 import { Admin } from "../api/admin";
 import {
   createAdminSuccess,
@@ -24,10 +24,15 @@ function* loginAdminWorker(action: { payload: any; type: string }) {
     const adminData: AxiosResponseHeaders = yield call(admin.login, authData);
     const formatingAdminData: AdminFullInterface = yield adminData.data;
     localStorage.setItem("token", formatingAdminData.token);
-    console.log("admin data in saga", formatingAdminData);
     yield put(getAdminSuccess(formatingAdminData));
   } catch (e) {
-    yield put(getAdminFailure(e));
+    const error = e as AxiosError;
+     if (axios.isAxiosError(e) && e.response)  {
+          yield put(getAdminFailure({...e.response.data, error: true}));
+        } else {
+          yield put(getAdminFailure(e));
+        }
+    
   }
 }
 
@@ -59,12 +64,18 @@ function* profileAdminWorker(action: { payload: any; type: string }) {
     yield put(profileAdminSuccess(res));
   } catch (error) {
     console.log("error profile", error);
-    yield put(logoutAdmin(error));
+    yield put(logoutAdmin());
   }
+}
+
+function* logoutAdminWorker() {
+  yield localStorage.setItem("token", '');
+  
 }
 
 function* adminSaga() {
   yield all([
+    takeEvery("admin/logoutAdmin", logoutAdminWorker),
     takeEvery("admin/loginAdmin", loginAdminWorker),
     takeEvery("admin/createAdminFetch", createAdminFetchWorker),
     takeEvery("admin/profileAdmin", profileAdminWorker),

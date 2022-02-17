@@ -43,7 +43,7 @@ export function EditClientForm({
       .required("Адрес электронной почты должен быть указан")
       .email("Не похоже на адрес электронной почты"),
   });
-
+  const client = useSelector(selectAllClients)[clientId];
   const {
     control,
     register,
@@ -51,10 +51,13 @@ export function EditClientForm({
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<ClientDataInterface>({ resolver: yupResolver(schema) });
+  } = useForm<ClientDataInterface>({
+    resolver: yupResolver(schema),
+    defaultValues: { ...client },
+  });
 
   const [token] = useLocalStorage("token");
-  const clients = useSelector(selectAllClients);
+
   const dispatch = useDispatch();
   const onSubmit: SubmitHandler<ClientDataInterface> = (clientData) => {
     console.log(clientData);

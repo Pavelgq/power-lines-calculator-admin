@@ -15,9 +15,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { FormEvent, MouseEvent, useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./Sidebar.module.css";
-import { selectCurrentAdmin } from "../../../store/adminStore";
+import { logoutAdmin, selectCurrentAdmin } from "../../../store/adminStore";
 
 const pages = [
   {
@@ -39,18 +39,16 @@ export function Sidebar() {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-
+  const dispatch = useDispatch();
   const admin = useSelector(selectCurrentAdmin);
 
   const handleOpenNavMenu = (
     event: MouseEvent<HTMLButtonElement | HTMLAnchorElement>
   ) => {
     setAnchorElNav(event.currentTarget);
-    console.log("nav menu");
   };
   const handleOpenUserMenu = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorElUser(event.currentTarget);
-    console.log("user menu");
   };
 
   const handleCloseNavMenu = () => {
@@ -65,6 +63,11 @@ export function Sidebar() {
     navigate(link);
 
     handleCloseUserMenu();
+  };
+
+  const handleLogOut = () => {
+    dispatch(logoutAdmin());
+    handleCloseNavMenu();
   };
 
   if (!admin) {
@@ -166,11 +169,12 @@ export function Sidebar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">Личный кабинет</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleLogOut}>
+                <Typography textAlign="center">Выход</Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

@@ -73,17 +73,17 @@ function* createClientsFetchWorker(action: { payload: any; type: string }) {
 function* updateClientFetchWorker(action: { payload: any; type: string }) {
   try {
     const client = new Client();
-    const { token, id, clientData } = action.payload;
+    const { token, clientId, clientData } = action.payload;
     const candidate: AxiosResponseHeaders = yield call(
       client.updateClient,
       token,
-      id,
+      clientId,
       clientData
     );
     console.log(candidate);
     const res: AnswerInterface = yield candidate.data;
     console.log(res);
-    yield put(updateClientSuccess(res));
+    yield put(updateClientSuccess({...res, ...clientData}));
   } catch (error) {
     yield put(updateClientFailure(error));
   }
@@ -101,7 +101,7 @@ function* deleteClientFetchWorker(action: { payload: any; type: string }) {
     console.log(candidate);
     const res: AnswerInterface = yield candidate.data;
     console.log(res);
-    yield put(deleteClientSuccess(res));
+    yield put(deleteClientSuccess({...res, id}));
     yield put(getClientsFetch({ token }));
   } catch (error) {
     yield put(deleteClientFailure(error));

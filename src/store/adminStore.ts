@@ -27,8 +27,9 @@ export const adminSlice = createSlice({
       state.isLoading = true;
       state.info = action.payload;
     },
-    logoutAdmin: (state, action) => {
+    logoutAdmin: (state) => {
       state.info = null;
+      state.token = '';
       state.auth = false;
     },
     profileAdmin: (state, action) => {
@@ -47,12 +48,15 @@ export const adminSlice = createSlice({
     },
     getAdminSuccess: (state, action) => {
       state.info = action.payload;
+
       state.isLoading = false;
       state.auth = true;
     },
     getAdminFailure: (state, action) => {
-      state.error = action.payload;
+      console.log(action.payload)
+      state.error = action.payload.message;
       state.isLoading = false;
+
     },
     createAdminFetch: (state, action) => {
       state.isLoading = true;

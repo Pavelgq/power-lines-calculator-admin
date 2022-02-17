@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { string } from "yup/lib/locale";
 import { ClientDataInterface } from "../interfaces/client.interface";
 import { RootState } from "./store";
 
@@ -7,6 +8,7 @@ interface ClientStateI {
   allIds: number[];
   isLoading: boolean;
   error: Error | null;
+  message: string;
 }
 
 const initialState: ClientStateI = {
@@ -14,6 +16,7 @@ const initialState: ClientStateI = {
   allIds: [],
   isLoading: false,
   error: null,
+  message: '',
 };
 
 export const clientsSlice = createSlice({
@@ -79,6 +82,8 @@ export const clientsSlice = createSlice({
     },
     updateClientSuccess: (state, action) => {
       state.isLoading = false;
+      state.data[action.payload.id] = action.payload;
+      state.message = action.payload.message;
     },
     updateClientFailure: (state, action) => {
       state.isLoading = false;

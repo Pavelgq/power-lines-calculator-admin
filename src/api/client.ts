@@ -22,12 +22,12 @@ export class Client {
 
   updateClient = (
     token: string,
-    id: number,
+    clientId: number,
     clientData: ClientDataInterface
   ) => {
     const api = apiInstance({ token });
 
-    return api.put(`/client/${id}`, clientData);
+    return api.put(`/client/${clientId}`, clientData);
   };
 
   deleteClient = (token: string, id: number) => {

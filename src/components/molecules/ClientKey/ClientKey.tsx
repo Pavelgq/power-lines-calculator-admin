@@ -78,9 +78,7 @@ export function ClientKey({
         toggle={openGenerate}
         handleClose={setOpenGenerate}
       />
-      <Button type="submit" variant="contained" onClick={handleGenerate}>
-        Генерировать
-      </Button>
+      <Chip label="Отсутствует" color="info" variant="filled" />
     </>
   );
 }

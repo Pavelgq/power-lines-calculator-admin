@@ -2,7 +2,15 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 
-import { Button, Grid, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Button,
+  Container,
+  Grid,
+  Snackbar,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 import useLocalStorage from "../../hooks/useLocalStorage";
 import {
@@ -28,22 +36,37 @@ export function Authentication(): JSX.Element {
   };
 
   useEffect(() => {
+    let delay: NodeJS.Timeout;
     if (auth) {
-      navigate({ pathname: "/clients" });
+      delay = setTimeout(() => {
+        navigate({ pathname: "/clients" });
+      }, 1000);
     }
+
+    return () => {
+      clearTimeout(delay);
+    };
   }, [auth]);
 
-  if (auth) {
-    return <Navigate to="/clients" replace />;
-  }
+  // if (auth) {
+  //   return (
+  //     <Container>
+  //       <Alert severity="success">Авторизация успешна!</Alert>
+  //     </Container>
+  //   );
+  // }
 
   return (
     <Grid container spacing={2} direction="column" alignItems="center">
+      {auth && (
+        <Snackbar open={auth} autoHideDuration={1000} message="Note archived" />
+      )}
       <Grid item>
         <Typography variant="h5" component="h2">
           Авторизация
         </Typography>
       </Grid>
+      <Grid item>{error && <Alert severity="error">{error}</Alert>}</Grid>
       <Grid item>
         <form onSubmit={handleSubmit}>
           <Grid
@@ -80,7 +103,6 @@ export function Authentication(): JSX.Element {
             </Grid>
           </Grid>
         </form>
-        {error && <span>{error}</span>}
       </Grid>
     </Grid>
   );

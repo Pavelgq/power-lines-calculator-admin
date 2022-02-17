@@ -52,18 +52,20 @@ export function CreateClientForm({
   const [token] = useLocalStorage("token");
   const dispatch = useDispatch();
 
-  const onSubmit: SubmitHandler<ClientDataInterface> = (data) => {
-    console.log(data);
-    dispatch(createClientsFetch({ data, token }));
-  };
-
   const handleClose = () => {
     setOpen(false);
   };
 
+  const onSubmit: SubmitHandler<ClientDataInterface> = (data) => {
+    dispatch(createClientsFetch({ data, token }));
+    reset();
+    handleClose();
+  };
+
   const handleAction = () => {
-    handleSubmit(onSubmit);
+    console.log(errors);
     if (Object.keys(errors).length === 0) {
+      handleSubmit(onSubmit);
       handleClose();
     }
   };
@@ -144,18 +146,13 @@ export function CreateClientForm({
             variant="outlined"
             {...register("email")}
           />
-
-          {/* <Button type="button" onClick={() => reset()}>Очистить</Button>
-            <Button type="submit">Подтвердить</Button> */}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Отмена</Button>
           <Button type="button" onClick={() => reset()}>
             Очистить
           </Button>
-          <Button type="submit" onClick={handleAction}>
-            {title}
-          </Button>
+          <Button type="submit">{title}</Button>
         </DialogActions>
       </form>
     </Dialog>
