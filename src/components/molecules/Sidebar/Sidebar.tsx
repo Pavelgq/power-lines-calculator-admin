@@ -25,16 +25,12 @@ import {
 
 const pages = [
   {
-    title: "Клиенты",
+    title: "Пользователи",
     link: "/clients",
   },
   {
     title: "Действия",
     link: "/actions",
-  },
-  {
-    title: "Проверка ключей",
-    link: "/keys",
   },
 ];
 const settings = ["Добавить администратора", "Изменить пароль", "Выход"];
@@ -90,7 +86,7 @@ export function Sidebar() {
               component="div"
               sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
             >
-              Экран Труба Кабель
+              Экран-Труба-Кабель
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>

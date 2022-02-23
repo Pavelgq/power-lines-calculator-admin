@@ -80,12 +80,12 @@ export function AllActions() {
     <main>
       <Container>
         <Grid container spacing={2} direction="column">
-          <Grid item>
+          {/* <Grid item>
             <Breadcrumbs separator="›" aria-label="breadcrumb">
               <Link to="/clients">Пользователи</Link>
               <Link to="/clients/1">Все пользователи</Link>
             </Breadcrumbs>
-          </Grid>
+          </Grid> */}
           <Grid container spacing={1} marginTop={1}>
             {programs.map((p) => (
               <Grid item key={p.name}>

@@ -1,16 +1,11 @@
-import { Button, Chip, Grid, Link, Popover, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import { useDispatch, useSelector } from "react-redux";
+import { Chip, Grid, Typography } from "@mui/material";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import moment from "../../../helpers/date";
 import { ClientKeyProps } from "./ClientKey.props";
 import { KeygenDialog } from "../KeygenDialog/KeygenDialog";
 import styles from "./ClientKey.module.css";
-import {
-  checkClientAccept,
-  selectAllClients,
-  selectIsLoadingClient,
-} from "../../../store/clientsStore";
+import { selectAllClients } from "../../../store/clientsStore";
 
 export function ClientKey({
   clientId,
@@ -22,23 +17,6 @@ export function ClientKey({
   const [openGenerate, setOpenGenerate] = useState(false);
 
   const clientData = useSelector(selectAllClients)[clientId];
-  const isLoading = useSelector(selectIsLoadingClient);
-  const dispatch = useDispatch();
-  const handleCopy = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (keyValue) {
-      navigator.clipboard.writeText(keyValue);
-    }
-    setCopied(true);
-    setAnchorEl(event.currentTarget);
-    setTimeout(() => {
-      setCopied(false);
-      setAnchorEl(null);
-    }, 1000);
-  };
-
-  const handleGenerate = () => {
-    setOpenGenerate(true);
-  };
 
   if (keyValue) {
     return (
@@ -62,7 +40,7 @@ export function ClientKey({
             </Grid>
             <Grid item>
               <Typography variant="caption">
-                до {moment(lifetime, moment.ISO_8601).format("DD MMMM YYYY")}
+                до {moment(lifetime, moment.ISO_8601).format("D MMMM YYYY")}
               </Typography>
             </Grid>
           </Grid>
