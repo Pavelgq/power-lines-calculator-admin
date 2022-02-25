@@ -113,14 +113,21 @@ export function ActionTable({
   limit,
   page,
   total,
+  sort,
   handleChangePage,
   handleChangeLimit,
+  handleSort,
 }: ActionTableInterface): JSX.Element {
   const clients = useSelector(selectAllClients);
   const isLoading = useSelector(selectIsLoadingActions);
 
-  const sortingField = (field: string | undefined) => {
-    console.log(field);
+  const sortingField = (field: string) => {
+    let dir: "desc" | "asc" = sort.dir === "desc" ? "asc" : "desc";
+    if (sort.field !== field) {
+      dir = "desc";
+    }
+    handleSort({ field, dir });
+    console.log({ field, dir });
   };
 
   if (!data) {
@@ -150,7 +157,7 @@ export function ActionTable({
                   {n.sorting ? (
                     <TableSortLabel
                       active
-                      direction="asc"
+                      direction={sort.field === n.field ? sort.dir : "asc"}
                       onClick={() => sortingField(n.field)}
                     >
                       {n.headerName}

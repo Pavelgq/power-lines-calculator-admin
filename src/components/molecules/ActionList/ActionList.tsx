@@ -122,6 +122,11 @@ export interface ClientActionsProps {
   clientId: string | undefined;
 }
 
+export interface SortI {
+  field: string;
+  dir: "asc" | "desc";
+}
+
 export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
   const [windowsX, windowsY] = useWindowSize();
 
@@ -131,6 +136,10 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
   const [programType, setProgramType] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [timeFilter, setTimeFilter] = useState("all");
+  const [sortParams, setSortParams] = useState<SortI>({
+    field: "date",
+    dir: "desc",
+  });
 
   const clientActions = useSelector(selectCurrentActions);
   const totalItems = useSelector(selectTotalActions);
@@ -146,19 +155,25 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
           limit,
           filters: {
             client_id: clientId || "",
-            program_type: programType || 0,
+            program_type: programType || "0",
             project_name: searchValue,
           },
-          sort: {
-            field: "date",
-            dir: "DESC",
-          },
+          sort: sortParams,
           period: timeFilter,
         })
       );
     }
     return () => {};
-  }, [dispatch, page, limit, clientId, programType, searchValue, timeFilter]);
+  }, [
+    dispatch,
+    page,
+    limit,
+    clientId,
+    programType,
+    searchValue,
+    timeFilter,
+    sortParams,
+  ]);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -223,6 +238,8 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
           limit={limit}
           page={page}
           total={totalItems}
+          sort={sortParams}
+          handleSort={setSortParams}
           handleChangePage={handleChangePage}
           handleChangeLimit={handleChangeLimit}
         />

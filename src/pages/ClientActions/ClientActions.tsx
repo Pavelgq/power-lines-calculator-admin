@@ -133,14 +133,14 @@ export function ClientActions() {
             ))}
           </Grid>
           <Grid item>
-            <ActionTable
+            {/* <ActionTable
               data={clientActions}
               limit={limit}
               page={page}
               total={totalItems}
               handleChangePage={handleChangePage}
               handleChangeLimit={handleChangeLimit}
-            />
+            /> */}
           </Grid>
         </Grid>
       </Container>
