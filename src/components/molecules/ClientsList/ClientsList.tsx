@@ -119,10 +119,6 @@ export function ClientsList() {
     setOpenAddClientDialog(true);
   };
 
-  const createSortHandler = () => {
-    console.log("sort");
-  };
-
   return (
     <Grid container spacing={2} direction="column">
       <Grid

@@ -1,25 +1,25 @@
+import queryString from 'query-string';
 import { ActionCreateInterface } from "../interfaces/action.interface";
 import { apiInstance } from "./instance";
+
 
 export class Action {
   getAllActions = (
     token: string,
+    sort: {
+      field: string,
+      dir: 'ASC' | 'DESC'
+    },
+    period: "all" | "day" | "week" | "month" | "year",
     page: number = 1,
     limit: number = 5,
-    clientId: number = 0,
-    type: number = 0
+    filters: object = {},
   ) => {
     const api = apiInstance({ token });
-    let path = "";
-    if (clientId) {
-      path = `/action/all?page=${page}&limit=${limit}&client_id=${clientId}`;
-    } else {
-      path = `/action/all?page=${page}&limit=${limit}`;
-    }
-    if (type) {
-      path += `&program_type=${type}`;
-    }
 
+    const queryFilters = Object.keys(filters).map(el => `filter[${el}]=${filters[el as keyof object]}`)
+    console.log(queryFilters);
+    const path = `/action/all?page=${page}&limit=${limit}&period=${period}&sort[${sort.field}]=${sort.dir}&${queryFilters.join('&')}`;
     return api.get(path);
   };
 

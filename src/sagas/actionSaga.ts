@@ -1,5 +1,5 @@
 import { AxiosResponseHeaders } from "axios";
-import { all, call, put, takeEvery } from "redux-saga/effects";
+import { all, call, delay, put, takeEvery, takeLatest } from "redux-saga/effects";
 import { Action } from "../api/action";
 import {
   ActionCreateInterface,
@@ -46,20 +46,29 @@ function* getAllActionsWorker(action: {
     limit?: number;
     clientId?: number;
     programType?: number;
+    filters: object;
+    sort: {
+      field: string;
+      dir: 'ASC' | 'DESC';
+    },
+    period: 'all' | 'day' | 'week' | 'month' | 'year'
   };
   type: string;
 }) {
   try {
+    yield delay(500);
     const clientAction = new Action();
-    const { token, page, limit, clientId, programType } = action.payload;
+    const { token, page, limit, clientId, programType, filters, sort, period } = action.payload;
     const type = Number(programType);
     const res: AxiosResponseHeaders = yield call(
       clientAction.getAllActions,
       token,
+      sort,
+      period,
       page,
       limit,
-      clientId,
-      type
+      filters,
+      
     );
     console.log("getAllActions", res);
     const actionData: ActionFullInterface[] = yield res.data;
@@ -105,7 +114,7 @@ function* getActionFileWorker(action: { payload: any; type: string }) {
 function* actionSaga() {
   yield all([
     takeEvery("actions/createClientAction", createActionWorker),
-    takeEvery("actions/getAllActions", getAllActionsWorker),
+    takeLatest("actions/getAllActions", getAllActionsWorker),
     takeEvery("actions/getClientActions", getClientActionsWorker),
     takeEvery("actions/getActionFile", getActionFileWorker),
   ]);

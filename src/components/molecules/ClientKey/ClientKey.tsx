@@ -50,13 +50,13 @@ export function ClientKey({
   }
 
   return (
-    <>
+    <div className={styles.compensator}>
       <KeygenDialog
         clientId={clientId}
         toggle={openGenerate}
         handleClose={setOpenGenerate}
       />
       <Chip label="Отсутствует" color="info" variant="filled" />
-    </>
+    </div>
   );
 }
