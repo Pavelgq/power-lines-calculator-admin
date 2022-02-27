@@ -1,5 +1,12 @@
 import { AxiosResponseHeaders } from "axios";
-import { all, call, delay, put, takeEvery, takeLatest } from "redux-saga/effects";
+import {
+  all,
+  call,
+  delay,
+  put,
+  takeEvery,
+  takeLatest,
+} from "redux-saga/effects";
 import { Action } from "../api/action";
 import {
   ActionCreateInterface,
@@ -49,16 +56,17 @@ function* getAllActionsWorker(action: {
     filters: object;
     sort: {
       field: string;
-      dir: 'ASC' | 'DESC';
-    },
-    period: 'all' | 'day' | 'week' | 'month' | 'year'
+      dir: "ASC" | "DESC";
+    };
+    period: "all" | "day" | "week" | "month" | "year";
   };
   type: string;
 }) {
   try {
     yield delay(500);
     const clientAction = new Action();
-    const { token, page, limit, clientId, programType, filters, sort, period } = action.payload;
+    const { token, page, limit, clientId, programType, filters, sort, period } =
+      action.payload;
     const type = Number(programType);
     const res: AxiosResponseHeaders = yield call(
       clientAction.getAllActions,
@@ -67,8 +75,7 @@ function* getAllActionsWorker(action: {
       period,
       page,
       limit,
-      filters,
-      
+      filters
     );
     console.log("getAllActions", res);
     const actionData: ActionFullInterface[] = yield res.data;

@@ -120,7 +120,6 @@ const programs = [
   },
 ];
 
-
 export interface ClientActionsProps {
   clientId: string | undefined;
 }
@@ -138,8 +137,9 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
   const [limit, setLimit] = useState(5);
   const [programType, setProgramType] = useState("");
   const [searchValue, setSearchValue] = useState("");
+  const [selectClient, setSelectClient] = useState("");
   const [timeFilter, setTimeFilter] = useState("all");
-  const [clientIdSelected, setClientIdSelected] = useState(clientId || '');
+  const [clientIdSelected, setClientIdSelected] = useState(clientId || "");
   const [sortParams, setSortParams] = useState<SortI>({
     field: "date",
     dir: "desc",
@@ -159,7 +159,7 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
           page,
           limit,
           filters: {
-            client_id: clientId || "",
+            client_id: clientIdSelected || "",
             program_type: programType || "0",
             project_name: searchValue,
           },
@@ -178,13 +178,17 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
     searchValue,
     timeFilter,
     sortParams,
+    clientIdSelected
   ]);
 
   const searchClients = (value: string) => {
-    const clientList = Object.values(clients).filter(client => (client.first_name.includes(value) || client.last_name.includes(value)))
-    console.log(clientList)
-    return clientList
-  }
+    const clientList = Object.values(clients).filter(
+      (client) =>
+        client.first_name.includes(value) || client.last_name.includes(value)
+    );
+    console.log(clientList);
+    return clientList;
+  };
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -203,6 +207,13 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
   const handleTimeFilter = (event: SelectChangeEvent) => {
     setTimeFilter(event.target.value as string);
   };
+
+  const handleDeleteFilterUser = () => {
+    setClientIdSelected('');
+    setSearchValue('');
+    setPage(0);
+
+  }
 
   return (
     <Grid container spacing={2} direction="column">
@@ -225,42 +236,41 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
           </Grid>
         ))}
         <Grid item xs={6}>
-          {clientId ? 
-            <Search value={searchValue} handleChange={setSearchValue} />
-          :
-            <Autocomplete 
-            autoComplete   
-            autoHighlight 
-            value={clients[clientIdSelected]}
-            onChange={(event, user) => {
-              console.log(user)
-              setClientIdSelected(user && user.id.toString() || '');
-            }}
-            inputValue={searchValue} 
-            onInputChange={(event, newInputValue) => {
-              setSearchValue(newInputValue);
-            }}
-            options={searchClients("")} 
-            getOptionLabel={(option) => option.last_name} 
-            renderOption={(props, option) => (
-              <Box  component="li" {...props}> {option.last_name}  {option.first_name} </Box>
-            )} 
-            
-            
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Выберите пользователя"
-                inputProps={{
-                  ...params.inputProps,
-                  autoComplete: 'new-password', // disable autocomplete and autofill
-                }}
-              />
-            )
-          }/>
-            
-          }
-          
+          {clientIdSelected ? (
+            <Search value={searchValue} handleChange={setSearchValue} filterUser={clients[clientIdSelected].last_name} deleteFilterUser={handleDeleteFilterUser} />
+          ) : (
+            <Autocomplete
+              autoComplete
+              autoHighlight
+              value={clients[clientIdSelected]}
+              onChange={(event, user) => {
+                console.log(user);
+                setClientIdSelected((user && user.id.toString()) || "");
+              }}
+              inputValue={selectClient}
+              onInputChange={(event, newInputValue) => {
+                setSelectClient(newInputValue);
+              }}
+              options={searchClients("")}
+              getOptionLabel={(option) => `${option.id}`}
+              renderOption={(props, option) => (
+                <Box component="li" {...props}>
+                  {" "}
+                  {option.last_name} {option.first_name}{" "}
+                </Box>
+              )}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Выберите пользователя"
+                  inputProps={{
+                    ...params.inputProps,
+                    autoComplete: "new-password", // disable autocomplete and autofill
+                  }}
+                />
+              )}
+            />
+          )}
         </Grid>
         <Grid item xs={2}>
           <Select

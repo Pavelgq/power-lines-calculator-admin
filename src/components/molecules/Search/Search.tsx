@@ -1,27 +1,38 @@
 import SearchIcon from "@mui/icons-material/Search";
-import { InputAdornment, TextField } from "@mui/material";
+import { Chip, InputAdornment, TextField } from "@mui/material";
 import { ChangeEvent } from "react";
 
-interface SearchProps {
+export interface SearchProps {
   value: string;
   handleChange: (newValue: string) => void;
+  filterUser?: string;
+  deleteFilterUser?: () => void;
 }
 
-export function Search({ value, handleChange }: SearchProps): JSX.Element {
+export function Search({ value, handleChange, filterUser = '', deleteFilterUser }: SearchProps): JSX.Element {
   return (
     <TextField
+      
       fullWidth
       type="search"
       variant="outlined"
       id="input-search"
+      value={value}
       InputProps={{
-        startAdornment: (
+        startAdornment: (<>
+        
+          {filterUser && <Chip
+            key={filterUser}
+            tabIndex={-1}
+            label={filterUser}
+            onDelete={deleteFilterUser}
+          />}
           <InputAdornment position="start">
             <SearchIcon />
           </InputAdornment>
+          </>
         ),
       }}
-      value={value}
       onChange={(e: ChangeEvent<HTMLInputElement>) =>
         handleChange(e.target.value)
       }

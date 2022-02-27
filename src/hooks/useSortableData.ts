@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { isNumber } from "../helpers/filter";
 
-export const useSortableData = <T extends {[id: string]: any}>(
+export const useSortableData = <T extends { [id: string]: any }>(
   items: (keyof T)[],
   sortData: T,
   searchValue: string,
@@ -41,7 +41,7 @@ export const useSortableData = <T extends {[id: string]: any}>(
         return 0;
       });
     }
-    return sortableItems.map(el => Number(el));
+    return sortableItems.map((el) => Number(el));
   }, [items, sortConfig, searchValue]);
 
   const sortingField = (field: string) => {

@@ -27,12 +27,11 @@ function* loginAdminWorker(action: { payload: any; type: string }) {
     yield put(getAdminSuccess(formatingAdminData));
   } catch (e) {
     const error = e as AxiosError;
-     if (axios.isAxiosError(e) && e.response)  {
-          yield put(getAdminFailure({...e.response.data, error: true}));
-        } else {
-          yield put(getAdminFailure(e));
-        }
-    
+    if (axios.isAxiosError(e) && e.response) {
+      yield put(getAdminFailure({ ...e.response.data, error: true }));
+    } else {
+      yield put(getAdminFailure(e));
+    }
   }
 }
 
@@ -69,8 +68,7 @@ function* profileAdminWorker(action: { payload: any; type: string }) {
 }
 
 function* logoutAdminWorker() {
-  yield localStorage.setItem("token", '');
-  
+  yield localStorage.setItem("token", "");
 }
 
 function* adminSaga() {

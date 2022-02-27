@@ -83,7 +83,7 @@ function* updateClientFetchWorker(action: { payload: any; type: string }) {
     console.log(candidate);
     const res: AnswerInterface = yield candidate.data;
     console.log(res);
-    yield put(updateClientSuccess({...res, ...clientData}));
+    yield put(updateClientSuccess({ ...res, ...clientData }));
   } catch (error) {
     yield put(updateClientFailure(error));
   }
@@ -101,7 +101,7 @@ function* deleteClientFetchWorker(action: { payload: any; type: string }) {
     console.log(candidate);
     const res: AnswerInterface = yield candidate.data;
     console.log(res);
-    yield put(deleteClientSuccess({...res, id}));
+    yield put(deleteClientSuccess({ ...res, id }));
     yield put(getClientsFetch({ token }));
   } catch (error) {
     yield put(deleteClientFailure(error));

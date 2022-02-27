@@ -9,10 +9,10 @@ export interface ActionTableInterface {
   page: number;
   total: number;
   sort: {
-    field: string,
-    dir: "asc" | "desc"
-  }
+    field: string;
+    dir: "asc" | "desc";
+  };
   handleChangePage: (event: unknown, page: number) => void;
   handleChangeLimit: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleSort: React.Dispatch<React.SetStateAction<SortI>>
+  handleSort: React.Dispatch<React.SetStateAction<SortI>>;
 }

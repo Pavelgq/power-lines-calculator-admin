@@ -8,9 +8,9 @@ export interface ClientTableInterface {
     direction: "desc" | "asc" | undefined;
   };
   sortingField: (field: string) => void;
-  items:number[];
+  items: number[];
   page: number;
-  handleChangePage: (event: unknown, newPage: number) => void
+  handleChangePage: (event: unknown, newPage: number) => void;
   rowsPerPage: number;
-  handleChangeRowsPerPage: (event: React.ChangeEvent<HTMLInputElement>) => void
+  handleChangeRowsPerPage: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }

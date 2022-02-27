@@ -29,7 +29,7 @@ export const adminSlice = createSlice({
     },
     logoutAdmin: (state) => {
       state.info = null;
-      state.token = '';
+      state.token = "";
       state.auth = false;
     },
     profileAdmin: (state, action) => {
@@ -53,10 +53,9 @@ export const adminSlice = createSlice({
       state.auth = true;
     },
     getAdminFailure: (state, action) => {
-      console.log(action.payload)
+      console.log(action.payload);
       state.error = action.payload.message;
       state.isLoading = false;
-
     },
     createAdminFetch: (state, action) => {
       state.isLoading = true;

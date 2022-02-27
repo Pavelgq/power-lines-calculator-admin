@@ -107,10 +107,9 @@ export function ClientsList() {
 
   useEffect(() => {
     if (clientId && Object.prototype.hasOwnProperty.call(data, clientId)) {
-      setSearchValue(`${data[clientId].last_name}`) // ${data[clientId].first_name}
+      setSearchValue(`${data[clientId].last_name}`); // ${data[clientId].first_name}
     }
-  }, [])
-
+  }, []);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -155,7 +154,7 @@ export function ClientsList() {
           </Container>
         </Grid>
         <Grid item xs={9}>
-          <Search value={searchValue} handleChange={setSearchValue} />
+          <Search value={searchValue} handleChange={setSearchValue}  />
         </Grid>
       </Grid>
       <Grid item>

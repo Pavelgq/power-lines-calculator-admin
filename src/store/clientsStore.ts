@@ -16,7 +16,7 @@ const initialState: ClientStateI = {
   allIds: [],
   isLoading: false,
   error: null,
-  message: '',
+  message: "",
 };
 
 export const clientsSlice = createSlice({
