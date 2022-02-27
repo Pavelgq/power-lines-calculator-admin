@@ -22,7 +22,7 @@ export function RoutesList(props: any): JSX.Element {
           <Route
             path=":clientId"
             element={
-              <PrivateRoute roles={[ROLES.ADMIN]} component={ClientActions} />
+              <PrivateRoute roles={[ROLES.ADMIN]} component={AllActions} />
             }
           />
         </Route>

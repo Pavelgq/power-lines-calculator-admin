@@ -49,6 +49,14 @@ const columns = [
     search: true,
   },
   {
+    field: "date",
+    headerName: "Время",
+    width: 130,
+    numeric: false,
+    sorting: true,
+    search: true,
+  },
+  {
     field: "category",
     headerName: "Категория",
     width: 70,
@@ -76,23 +84,6 @@ const columns = [
     field: "params",
     headerName: "Параметры",
     width: 70,
-    numeric: false,
-    sorting: false,
-    search: false,
-  },
-  {
-    field: "date",
-    headerName: "Дата",
-    width: 130,
-    numeric: false,
-    sorting: true,
-    search: true,
-  },
-
-  {
-    field: "acceptKey",
-    headerName: "Ключ",
-    width: 130,
     numeric: false,
     sorting: false,
     search: false,
@@ -154,17 +145,7 @@ export function ActionTable({
                   align={n.numeric ? "right" : "left"}
                   sx={{ maxWidth: n.width }}
                 >
-                  {n.sorting ? (
-                    <TableSortLabel
-                      active
-                      direction={sort.field === n.field ? sort.dir : "asc"}
-                      onClick={() => sortingField(n.field)}
-                    >
-                      {n.headerName}
-                    </TableSortLabel>
-                  ) : (
-                    <span>{n.headerName}</span>
-                  )}
+                  <span>{n.headerName}</span>
                 </TableCell>
               ))}
             </TableRow>
@@ -180,8 +161,13 @@ export function ActionTable({
                     {clients[act.client_id].ordinal}
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {firstUpperChar(clients[act.client_id].first_name)}{" "}
-                    {firstUpperChar(clients[act.client_id].last_name)}
+                    {firstUpperChar(clients[act.client_id].last_name)}{" "}
+                    {firstUpperChar(clients[act.client_id].first_name)}
+                  </TableCell>
+                  <TableCell component="th" scope="row">
+                    {moment(act.date, moment.ISO_8601).format(
+                      "DD.MM.YYYY hh:mm"
+                    )}
                   </TableCell>
                   <TableCell component="th" scope="row">
                     <Typography>{act.type}</Typography>
@@ -199,14 +185,6 @@ export function ActionTable({
                     <ActionParam params={act.params} type={act.program_type} />
                   </TableCell>
 
-                  <TableCell component="th" scope="row">
-                    {moment(act.date, moment.ISO_8601).format(
-                      "DD.MM.YYYY hh:mm"
-                    )}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {act.accept_key}
-                  </TableCell>
                   <TableCell component="th" scope="row">
                     <DownloadFile path={act.path_to_data}>
                       <FileDownloadIcon />

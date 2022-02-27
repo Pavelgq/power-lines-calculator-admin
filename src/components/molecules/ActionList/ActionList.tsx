@@ -227,6 +227,7 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
             <MenuItem value="day">День</MenuItem>
             <MenuItem value="week">Неделя</MenuItem>
             <MenuItem value="month">Месяц</MenuItem>
+            <MenuItem value="quarter">Квартал</MenuItem>
             <MenuItem value="year">Год</MenuItem>
           </Select>
         </Grid>

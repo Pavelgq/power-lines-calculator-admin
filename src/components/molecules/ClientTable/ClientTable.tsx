@@ -23,6 +23,7 @@ import {
 } from "../../../store/clientsStore";
 import { ClientRowMenu } from "../ClientRowMenu/ClientRowMenu";
 import { Loading } from "../../atoms/Loading/Loading";
+import { Link } from "react-router-dom";
 
 const columns = [
   {
@@ -166,12 +167,16 @@ export function ClientTable({
                     </TableCell>
                     <TableCell component="th" scope="row">
                       <Typography variant="body1" component="h3">
-                        {firstUpperChar(data[client].last_name)}
+                        <Link to={`${client}`}>
+                          {firstUpperChar(data[client].last_name)}
+                        </Link>
                       </Typography>
                     </TableCell>
                     <TableCell component="th" scope="row">
                       <Typography variant="body1" component="h3">
-                        {firstUpperChar(data[client].first_name)}
+                        <Link to={`${client}`}>
+                          {firstUpperChar(data[client].first_name)}
+                        </Link>
                       </Typography>
                     </TableCell>
                     <TableCell component="th" scope="row">
