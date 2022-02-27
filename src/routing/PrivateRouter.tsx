@@ -28,7 +28,6 @@ export function PrivateRoute({
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const userHasRequiredRole = !!(user && roles.includes(user.status));
 
-  console.log(user, isAuthenticated, userHasRequiredRole);
   const dispatch = useDispatch();
 
   const [token] = useLocalStorage("token");

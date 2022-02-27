@@ -1,14 +1,15 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import {
   SelectChangeEvent,
   Grid,
   Button,
   Select,
   MenuItem,
-  InputLabel,
-  FormControl,
-  FormGroup,
+  Autocomplete,
+  Box,
+  TextField,
 } from "@mui/material";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import { useWindowSize } from "../../../hooks/useWindowsSize";
@@ -18,6 +19,7 @@ import {
   selectIsLoadingActions,
   getAllActions,
 } from "../../../store/actionStore";
+import { selectAllClients } from "../../../store/clientsStore";
 import { ActionTable } from "../ActionTable/ActionTable";
 import { Search } from "../Search/Search";
 
@@ -118,6 +120,7 @@ const programs = [
   },
 ];
 
+
 export interface ClientActionsProps {
   clientId: string | undefined;
 }
@@ -136,11 +139,13 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
   const [programType, setProgramType] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [timeFilter, setTimeFilter] = useState("all");
+  const [clientIdSelected, setClientIdSelected] = useState(clientId || '');
   const [sortParams, setSortParams] = useState<SortI>({
     field: "date",
     dir: "desc",
   });
 
+  const clients = useSelector(selectAllClients);
   const clientActions = useSelector(selectCurrentActions);
   const totalItems = useSelector(selectTotalActions);
   const isLoading = useSelector(selectIsLoadingActions);
@@ -174,6 +179,12 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
     timeFilter,
     sortParams,
   ]);
+
+  const searchClients = (value: string) => {
+    const clientList = Object.values(clients).filter(client => (client.first_name.includes(value) || client.last_name.includes(value)))
+    console.log(clientList)
+    return clientList
+  }
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -214,7 +225,42 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
           </Grid>
         ))}
         <Grid item xs={6}>
-          <Search value={searchValue} handleChange={setSearchValue} />
+          {clientId ? 
+            <Search value={searchValue} handleChange={setSearchValue} />
+          :
+            <Autocomplete 
+            autoComplete   
+            autoHighlight 
+            value={clients[clientIdSelected]}
+            onChange={(event, user) => {
+              console.log(user)
+              setClientIdSelected(user && user.id.toString() || '');
+            }}
+            inputValue={searchValue} 
+            onInputChange={(event, newInputValue) => {
+              setSearchValue(newInputValue);
+            }}
+            options={searchClients("")} 
+            getOptionLabel={(option) => option.last_name} 
+            renderOption={(props, option) => (
+              <Box  component="li" {...props}> {option.last_name}  {option.first_name} </Box>
+            )} 
+            
+            
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Выберите пользователя"
+                inputProps={{
+                  ...params.inputProps,
+                  autoComplete: 'new-password', // disable autocomplete and autofill
+                }}
+              />
+            )
+          }/>
+            
+          }
+          
         </Grid>
         <Grid item xs={2}>
           <Select

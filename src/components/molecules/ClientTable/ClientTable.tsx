@@ -14,6 +14,7 @@ import {
 
 import { useSelector } from "react-redux";
 
+import { Link } from "react-router-dom";
 import { ClientKey } from "../..";
 import { firstUpperChar, formatePhone } from "../../../helpers/format";
 import { ClientTableInterface } from "./ClientTable.props";
@@ -23,7 +24,6 @@ import {
 } from "../../../store/clientsStore";
 import { ClientRowMenu } from "../ClientRowMenu/ClientRowMenu";
 import { Loading } from "../../atoms/Loading/Loading";
-import { Link } from "react-router-dom";
 
 const columns = [
   {
@@ -167,7 +167,7 @@ export function ClientTable({
                     </TableCell>
                     <TableCell component="th" scope="row">
                       <Typography variant="body1" component="h3">
-                        <Link to={`${client}`}>
+                        <Link to={`/actions/${client}`}>
                           {firstUpperChar(data[client].last_name)}
                         </Link>
                       </Typography>

@@ -150,9 +150,6 @@ export function ClientRowMenu({
         <MenuItem onClick={handleGenerate}>
           <Typography textAlign="center">Генерировать новый ключ</Typography>
         </MenuItem>
-        <MenuItem onClick={handleActions}>
-          <Typography textAlign="center">Проверить действия</Typography>
-        </MenuItem>
         <MenuItem onClick={handleToggleUpdate}>
           <Typography textAlign="center">Изменить данные</Typography>
         </MenuItem>

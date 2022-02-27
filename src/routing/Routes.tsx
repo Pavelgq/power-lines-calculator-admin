@@ -22,7 +22,7 @@ export function RoutesList(props: any): JSX.Element {
           <Route
             path=":clientId"
             element={
-              <PrivateRoute roles={[ROLES.ADMIN]} component={AllActions} />
+              <PrivateRoute roles={[ROLES.ADMIN]} component={Clients} />
             }
           />
         </Route>
@@ -31,44 +31,15 @@ export function RoutesList(props: any): JSX.Element {
           element={
             <PrivateRoute roles={[ROLES.ADMIN]} component={AllActions} />
           }
-        />
+        >
+          <Route
+            path=":clientId"
+            element={
+              <PrivateRoute roles={[ROLES.ADMIN]} component={AllActions} />
+            }
+          />
+        </Route>
       </Route>
     </Routes>
   );
 }
-/* <Route path="/" element={<PrivateRoute />}></Route> */
-
-// export const routes = (isLoggedIn: boolean) => [
-//   {
-//     path: '/',
-//     element: isLoggedIn ? <MainLayout /> : <Navigate to="/login" />,
-//     children: [
-//       { path: '/', element: <Landing /> },
-//       { path: '/clients', element: <Clients />,
-//       children: [
-//         { path: ":clientId", element: <Actions /> }
-//       ]},
-//       // { path: '/actions', element: <Actions />,
-//       // children: [
-//       //   { path: ":actionId", element: <Actions /> }
-//       // ]},
-//       { path: '*', element: <Navigate to="/" /> },
-//       {
-//         path: 'member',
-//         element: <Outlet />,
-//         children: [
-//           // { path: '/', element: <MemberGrid /> },
-//           // { path: '/add', element: <AddMember /> },
-//         ],
-//       },
-//     ],
-//   },
-//   {
-//     path: '/',
-//     element: !isLoggedIn ? <MainLayout /> : <Navigate to="/" />,
-//     children: [
-//       { path: 'login', element: <Authentication /> },
-//       { path: '/', element: <Navigate to="/login" /> },
-//     ],
-//   },
-// ];

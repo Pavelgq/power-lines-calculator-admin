@@ -30,6 +30,7 @@ import { ProgramType } from "../../../interfaces/action.interface";
 import { ActionParam } from "../ActionParam/ActionParam";
 import { Loading } from "../../atoms/Loading/Loading";
 import { selectIsLoadingActions } from "../../../store/actionStore";
+import styles from "./ActionTable.module.css"
 
 const columns = [
   {
@@ -112,17 +113,60 @@ export function ActionTable({
   const clients = useSelector(selectAllClients);
   const isLoading = useSelector(selectIsLoadingActions);
 
-  const sortingField = (field: string) => {
-    let dir: "desc" | "asc" = sort.dir === "desc" ? "asc" : "desc";
-    if (sort.field !== field) {
-      dir = "desc";
-    }
-    handleSort({ field, dir });
-    console.log({ field, dir });
-  };
+  const dataRows = () => { 
 
-  if (!data) {
-    return <span>Действий не найдено</span>;
+    const dataView = data && data.map((act) => (
+      <TableRow
+        key={act.id}
+        sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+      >
+        <TableCell component="th" scope="row">
+          {clients[act.client_id].ordinal}
+        </TableCell>
+        <TableCell component="th" scope="row">
+          <Link to={`/clients/${act.client_id}`}>
+          {firstUpperChar(clients[act.client_id].last_name)}{" "}
+          {firstUpperChar(clients[act.client_id].first_name)}
+          </Link>
+        </TableCell>
+        <TableCell component="th" scope="row">
+          {moment(act.date, moment.ISO_8601).format(
+            "DD.MM.YYYY hh:mm"
+          )}
+        </TableCell>
+        <TableCell component="th" scope="row">
+          <Typography>{act.type}</Typography>
+        </TableCell>
+
+        <TableCell component="th" scope="row">
+          <Typography>{ProgramType[act.program_type]}</Typography>
+        </TableCell>
+
+        <TableCell component="th" scope="row">
+          <Typography>{act.project_name}</Typography>
+        </TableCell>
+
+        <TableCell component="th" scope="row">
+          <ActionParam params={act.params} type={act.program_type} />
+        </TableCell>
+
+        <TableCell component="th" scope="row">
+          <DownloadFile path={act.path_to_data}>
+            <FileDownloadIcon />
+          </DownloadFile>
+        </TableCell>
+      </TableRow>
+    ));
+    if (!isLoading && (data && data.length)) {
+      return dataView;
+    } 
+    if (!data || data.length === 0) {
+      return <span className={styles.notFound}>Действий не найдено</span>
+    } 
+      return <Loading />
+      
+    
+    
   }
 
   return (
@@ -151,50 +195,7 @@ export function ActionTable({
             </TableRow>
           </TableHead>
           <TableBody>
-            {!isLoading ? (
-              data.map((act) => (
-                <TableRow
-                  key={act.id}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {clients[act.client_id].ordinal}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {firstUpperChar(clients[act.client_id].last_name)}{" "}
-                    {firstUpperChar(clients[act.client_id].first_name)}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {moment(act.date, moment.ISO_8601).format(
-                      "DD.MM.YYYY hh:mm"
-                    )}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    <Typography>{act.type}</Typography>
-                  </TableCell>
-
-                  <TableCell component="th" scope="row">
-                    <Typography>{ProgramType[act.program_type]}</Typography>
-                  </TableCell>
-
-                  <TableCell component="th" scope="row">
-                    <Typography>{act.project_name}</Typography>
-                  </TableCell>
-
-                  <TableCell component="th" scope="row">
-                    <ActionParam params={act.params} type={act.program_type} />
-                  </TableCell>
-
-                  <TableCell component="th" scope="row">
-                    <DownloadFile path={act.path_to_data}>
-                      <FileDownloadIcon />
-                    </DownloadFile>
-                  </TableCell>
-                </TableRow>
-              ))
-            ) : (
-              <Loading />
-            )}
+            {dataRows()}
           </TableBody>
         </Table>
       </TableContainer>

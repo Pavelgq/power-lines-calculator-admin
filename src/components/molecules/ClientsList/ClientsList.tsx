@@ -1,6 +1,7 @@
 import { Button, Container, Grid } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import { useSortableData } from "../../../hooks/useSortableData";
 import { useWindowSize } from "../../../hooks/useWindowsSize";
@@ -86,6 +87,7 @@ const columns = [
 const searchFields = columns.filter((el) => el.search).map((el) => el.field);
 
 export function ClientsList() {
+  const { clientId } = useParams() || "";
   const [windowsX, windowsY] = useWindowSize();
   const [selectClient, setSelectClient] = useState(0);
   const [openAddClientDialog, setOpenAddClientDialog] = useState(false);
@@ -102,6 +104,13 @@ export function ClientsList() {
   const { items, sortConfig, sortingField } = useSortableData<{
     [id: string]: ClientDataInterface;
   }>(allIds, data, searchValue, searchFields);
+
+  useEffect(() => {
+    if (clientId && Object.prototype.hasOwnProperty.call(data, clientId)) {
+      setSearchValue(`${data[clientId].last_name}`) // ${data[clientId].first_name}
+    }
+  }, [])
+
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);

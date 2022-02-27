@@ -27,9 +27,9 @@ export function Clients(): JSX.Element {
     return () => {};
   }, []);
 
-  if (clientId) {
-    return <Outlet />;
-  }
+  // if (clientId) {
+  //   return <Outlet />;
+  // }
 
   return (
     <main>
