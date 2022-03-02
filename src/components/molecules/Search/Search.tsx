@@ -9,27 +9,33 @@ export interface SearchProps {
   deleteFilterUser?: () => void;
 }
 
-export function Search({ value, handleChange, filterUser = '', deleteFilterUser }: SearchProps): JSX.Element {
+export function Search({
+  value,
+  handleChange,
+  filterUser = "",
+  deleteFilterUser,
+}: SearchProps): JSX.Element {
   return (
     <TextField
-      
       fullWidth
       type="search"
       variant="outlined"
       id="input-search"
-      value={value}
+      value={!filterUser ? value : ""}
       InputProps={{
-        startAdornment: (<>
-        
-          {filterUser && <Chip
-            key={filterUser}
-            tabIndex={-1}
-            label={filterUser}
-            onDelete={deleteFilterUser}
-          />}
-          <InputAdornment position="start">
-            <SearchIcon />
-          </InputAdornment>
+        startAdornment: (
+          <>
+            {filterUser && (
+              <Chip
+                key={filterUser}
+                tabIndex={-1}
+                label={filterUser}
+                onDelete={deleteFilterUser}
+              />
+            )}
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
           </>
         ),
       }}

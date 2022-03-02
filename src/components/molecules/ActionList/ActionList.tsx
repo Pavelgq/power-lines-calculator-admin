@@ -25,94 +25,18 @@ import { Search } from "../Search/Search";
 
 import styles from "./ActionList.module.css";
 
-const columns = [
-  {
-    field: "id",
-    headerName: "№",
-    width: 70,
-    numeric: false,
-    sorting: true,
-    search: false,
-  },
-  {
-    field: "name",
-    headerName: "ФИО",
-    width: 70,
-    numeric: false,
-    sorting: true,
-    search: true,
-  },
-  {
-    field: "category",
-    headerName: "Категория",
-    width: 70,
-    numeric: false,
-    sorting: true,
-    search: false,
-  },
-  {
-    field: "program_type",
-    headerName: "Программа",
-    width: 70,
-    numeric: false,
-    sorting: false,
-    search: true,
-  },
-  {
-    field: "project_name",
-    headerName: "Название",
-    width: 70,
-    numeric: false,
-    sorting: true,
-    search: true,
-  },
-  {
-    field: "params",
-    headerName: "Параметры",
-    width: 70,
-    numeric: false,
-    sorting: false,
-    search: false,
-  },
-  {
-    field: "date",
-    headerName: "Дата",
-    width: 130,
-    numeric: false,
-    sorting: true,
-    search: true,
-  },
-
-  {
-    field: "acceptKey",
-    headerName: "Ключ",
-    width: 130,
-    numeric: false,
-    sorting: false,
-    search: false,
-  },
-  {
-    field: "filePath",
-    headerName: "Данные",
-    width: 90,
-    numeric: false,
-    sorting: false,
-    search: false,
-  },
-];
-
 const programs = [
   {
     name: "Все",
     value: 0,
   },
   {
-    name: "Экран",
-    value: 1,
-  },
-  {
     name: "Труба",
     value: 2,
+  },
+  {
+    name: "Экран",
+    value: 1,
   },
   {
     name: "Кабель",
@@ -178,7 +102,7 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
     searchValue,
     timeFilter,
     sortParams,
-    clientIdSelected
+    clientIdSelected,
   ]);
 
   const searchClients = (value: string) => {
@@ -186,7 +110,6 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
       (client) =>
         client.first_name.includes(value) || client.last_name.includes(value)
     );
-    console.log(clientList);
     return clientList;
   };
 
@@ -209,42 +132,51 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
   };
 
   const handleDeleteFilterUser = () => {
-    setClientIdSelected('');
-    setSearchValue('');
+    setClientIdSelected("");
+    setSearchValue("");
     setPage(0);
-
-  }
+  };
 
   return (
     <Grid container spacing={2} direction="column">
       <Grid
         container
-        spacing={1}
-        marginTop={1}
-        justifyContent="space-between"
+        spacing={2}
         alignItems="center"
+        justifyContent="space-between"
+        direction="row"
+        wrap="nowrap"
       >
-        {programs.map((p) => (
-          <Grid item key={p.name}>
-            <Button
-              type="submit"
-              variant="contained"
-              onClick={() => setProgramTypeFilter(p.value)}
-            >
-              {p.name}
-            </Button>
+        <Grid item>
+          <Grid container spacing={1} wrap="nowrap">
+            {programs.map((p) => (
+              <Grid item key={p.name}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  size="small"
+                  onClick={() => setProgramTypeFilter(p.value)}
+                >
+                  {p.name}
+                </Button>
+              </Grid>
+            ))}
           </Grid>
-        ))}
-        <Grid item xs={6}>
+        </Grid>
+        <Grid item xs={7}>
           {clientIdSelected ? (
-            <Search value={searchValue} handleChange={setSearchValue} filterUser={clients[clientIdSelected].last_name} deleteFilterUser={handleDeleteFilterUser} />
+            <Search
+              value={searchValue}
+              handleChange={setSearchValue}
+              filterUser={clients[clientIdSelected].last_name}
+              deleteFilterUser={handleDeleteFilterUser}
+            />
           ) : (
             <Autocomplete
               autoComplete
               autoHighlight
               value={clients[clientIdSelected]}
               onChange={(event, user) => {
-                console.log(user);
                 setClientIdSelected((user && user.id.toString()) || "");
               }}
               inputValue={selectClient}
@@ -252,11 +184,10 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
                 setSelectClient(newInputValue);
               }}
               options={searchClients("")}
-              getOptionLabel={(option) => `${option.id}`}
+              getOptionLabel={(option) => `${option.last_name}`}
               renderOption={(props, option) => (
                 <Box component="li" {...props}>
-                  {" "}
-                  {option.last_name} {option.first_name}{" "}
+                  {option.last_name} {option.first_name}
                 </Box>
               )}
               renderInput={(params) => (

@@ -1,7 +1,14 @@
-import { Button, Container, Grid } from "@mui/material";
+import {
+  Button,
+  Container,
+  Grid,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import { useSortableData } from "../../../hooks/useSortableData";
 import { useWindowSize } from "../../../hooks/useWindowsSize";
@@ -11,6 +18,8 @@ import { ClientCardList } from "../ClientCardList/ClietnCardList";
 import { ClientTable } from "../ClientTable/ClientTable";
 import { CreateClientForm } from "../CreateClientForm/CreateClientForm";
 import { Search } from "../Search/Search";
+
+import styles from "./ClientsList.module.css";
 
 const columns = [
   {
@@ -87,6 +96,7 @@ const columns = [
 const searchFields = columns.filter((el) => el.search).map((el) => el.field);
 
 export function ClientsList() {
+  const navigate = useNavigate();
   const { clientId } = useParams() || "";
   const [windowsX, windowsY] = useWindowSize();
   const [selectClient, setSelectClient] = useState(0);
@@ -95,6 +105,7 @@ export function ClientsList() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [searchValue, setSearchValue] = useState("");
+  const [timeFilter, setTimeFilter] = useState("all");
 
   const [token] = useLocalStorage("token");
 
@@ -103,7 +114,7 @@ export function ClientsList() {
 
   const { items, sortConfig, sortingField } = useSortableData<{
     [id: string]: ClientDataInterface;
-  }>(allIds, data, searchValue, searchFields);
+  }>(allIds, data, searchValue, searchFields, timeFilter);
 
   useEffect(() => {
     if (clientId && Object.prototype.hasOwnProperty.call(data, clientId)) {
@@ -125,6 +136,17 @@ export function ClientsList() {
   const handleOpenCreate = () => {
     setSelectClient(0);
     setOpenAddClientDialog(true);
+  };
+
+  const handleDeleteFilterUser = () => {
+    const path = `/clients`;
+    navigate(path);
+    setSearchValue("");
+    setPage(0);
+  };
+
+  const handleTimeFilter = (event: SelectChangeEvent) => {
+    setTimeFilter(event.target.value as string);
   };
 
   return (
@@ -154,7 +176,27 @@ export function ClientsList() {
           </Container>
         </Grid>
         <Grid item xs={9}>
-          <Search value={searchValue} handleChange={setSearchValue}  />
+          <Search
+            value={searchValue}
+            handleChange={setSearchValue}
+            filterUser={clientId && data[clientId].last_name}
+            deleteFilterUser={handleDeleteFilterUser}
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <Select
+            className={styles.select}
+            defaultValue="all"
+            value={timeFilter}
+            onChange={handleTimeFilter}
+          >
+            <MenuItem value="all">Все ключи</MenuItem>
+            <MenuItem value="day">за день</MenuItem>
+            <MenuItem value="week">за неделю</MenuItem>
+            <MenuItem value="month">за месяц</MenuItem>
+            <MenuItem value="quarter">за квартал</MenuItem>
+            <MenuItem value="year">за год</MenuItem>
+          </Select>
         </Grid>
       </Grid>
       <Grid item>

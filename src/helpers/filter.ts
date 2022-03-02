@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const stableSort = <T>(
   array: readonly T[],
   comparator: (a: T, b: T) => number
@@ -15,3 +17,46 @@ export const stableSort = <T>(
 
 export const isNumber = (data: string) =>
   Number.isInteger(Number(data)) ? Number(data) : data;
+
+
+export const checkTimeInterval = (time: string, interval: string): boolean => {
+  console.log(time, interval, moment(time), moment().subtract(1, 'years') );
+
+  if (!time && interval !== 'all') {
+    return false;
+  }
+  switch (interval) {
+    case 'all': 
+      return true;
+    case 'day':
+      if (moment(time).isAfter(moment().subtract(1, 'days') )) {
+        return true;
+      }
+    break;
+    case 'week':
+      if (moment(time).isAfter(moment().subtract(7, 'days') )) {
+        return true;
+      }
+    break;
+    case 'month':
+      if (moment(time).isAfter(moment().subtract(1, 'months') )) {
+        return true;
+      }
+    break;
+    case 'quarter':
+      if (moment(time).isAfter(moment().subtract(3, 'months') )) {
+        return true;
+      }
+    break;
+    case 'year':
+      if (moment(time).isAfter(moment().subtract(1, 'years') )) {
+        return true;
+      }
+    break;
+  
+    default:
+      break;
+  }
+
+  return false;
+}

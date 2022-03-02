@@ -26,7 +26,6 @@ export function ActionParam({
   type,
 }: ActionParamInterface): JSX.Element {
   const parseParams = () => {
-    console.log(params);
     if (!params || (params && params.length <= 1)) {
       return <div> </div>;
     }
@@ -36,12 +35,12 @@ export function ActionParam({
     return (
       <>
         <Grid item>
-          <Typography variant="body1">
+          <Typography variant="body2">
             {result[type - 1].param1}: {json.param1}
           </Typography>
         </Grid>
         <Grid item>
-          <Typography variant="body1">
+          <Typography variant="body2">
             {result[type - 1].param2}: {json.param2}
           </Typography>
         </Grid>

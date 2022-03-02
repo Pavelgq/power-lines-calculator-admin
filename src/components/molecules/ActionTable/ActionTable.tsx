@@ -26,7 +26,7 @@ import {
 } from "../../../store/clientsStore";
 import { DownloadFile } from "../DownloadFile/DownloadFile";
 import { firstUpperChar } from "../../../helpers/format";
-import { ProgramType } from "../../../interfaces/action.interface";
+import { Categories, ProgramType } from "../../../interfaces/action.interface";
 import { ActionParam } from "../ActionParam/ActionParam";
 import { Loading } from "../../atoms/Loading/Loading";
 import { selectIsLoadingActions } from "../../../store/actionStore";
@@ -58,20 +58,20 @@ const columns = [
     search: true,
   },
   {
-    field: "category",
-    headerName: "Категория",
-    width: 70,
-    numeric: false,
-    sorting: true,
-    search: false,
-  },
-  {
     field: "program_type",
     headerName: "Программа",
     width: 70,
     numeric: false,
     sorting: false,
     search: true,
+  },
+  {
+    field: "category",
+    headerName: "Категория",
+    width: 70,
+    numeric: false,
+    sorting: true,
+    search: false,
   },
   {
     field: "project_name",
@@ -133,14 +133,13 @@ export function ActionTable({
           <TableCell component="th" scope="row">
             {moment(act.date, moment.ISO_8601).format("DD.MM.YYYY hh:mm")}
           </TableCell>
-          <TableCell component="th" scope="row">
-            <Typography>{act.type}</Typography>
-          </TableCell>
 
           <TableCell component="th" scope="row">
             <Typography>{ProgramType[act.program_type]}</Typography>
           </TableCell>
-
+          <TableCell component="th" scope="row">
+            <Typography>{Categories[act.type] as string}</Typography>
+          </TableCell>
           <TableCell component="th" scope="row">
             <Typography>{act.project_name}</Typography>
           </TableCell>
@@ -182,7 +181,7 @@ export function ActionTable({
               {columns.map((n) => (
                 <TableCell
                   key={n.field}
-                  align={n.numeric ? "right" : "left"}
+                  align="center"
                   sx={{ maxWidth: n.width }}
                 >
                   <span>{n.headerName}</span>

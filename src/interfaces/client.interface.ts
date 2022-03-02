@@ -8,6 +8,7 @@ export interface ClientDataInterface {
   email: string;
   id: number;
   client_key?: string;
+  update?: string;
   valid_until?: string;
   isAccept?: boolean;
 }

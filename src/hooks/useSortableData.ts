@@ -1,26 +1,28 @@
 import { useState, useMemo } from "react";
-import { isNumber } from "../helpers/filter";
+import { checkTimeInterval, isNumber } from "../helpers/filter";
 
 export const useSortableData = <T extends { [id: string]: any }>(
   items: (keyof T)[],
   sortData: T,
   searchValue: string,
   searchFields: string[],
+  timeInterval: string,
   config: {
     field: string;
     direction: "desc" | "asc" | undefined;
-  } = { field: "ordinal", direction: "asc" }
+  } = { field: "ordinal", direction: "asc" },
+  
 ) => {
   const [sortConfig, setSortConfig] = useState(config);
 
   const sortedItems = useMemo(() => {
     let sortableItems = [...items];
-    if (searchValue) {
+    if (searchValue || timeInterval) {
       sortableItems = sortableItems.filter((id) => {
         for (let i = 0; i < searchFields.length; i += 1) {
           const currentField = searchFields[i];
-
-          if (sortData[id][currentField].includes(searchValue)) {
+          console.log(timeInterval)
+          if (sortData[id][currentField].includes(searchValue) && checkTimeInterval(sortData[id], timeInterval)) {
             return true;
           }
         }
@@ -42,7 +44,7 @@ export const useSortableData = <T extends { [id: string]: any }>(
       });
     }
     return sortableItems.map((el) => Number(el));
-  }, [items, sortConfig, searchValue]);
+  }, [items, sortConfig, searchValue, timeInterval]);
 
   const sortingField = (field: string) => {
     let direction: "desc" | "asc" | undefined =

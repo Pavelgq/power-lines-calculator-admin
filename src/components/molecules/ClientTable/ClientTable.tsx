@@ -126,7 +126,7 @@ export function ClientTable({
               {columns.map((n) => (
                 <TableCell
                   key={n.field}
-                  align={n.numeric ? "right" : "left"}
+                  align="center"
                   sx={{ maxWidth: n.width }}
                 >
                   {n.sorting ? (
@@ -161,19 +161,19 @@ export function ClientTable({
                     tabIndex={-1}
                   >
                     <TableCell component="th" scope="row">
-                      <Typography variant="body1" component="h3">
+                      <Typography variant="body2" component="h3">
                         {data[client].ordinal}
                       </Typography>
                     </TableCell>
                     <TableCell component="th" scope="row">
-                      <Typography variant="body1" component="h3">
+                      <Typography variant="body2" component="h3">
                         <Link to={`/actions/${client}`}>
                           {firstUpperChar(data[client].last_name)}
                         </Link>
                       </Typography>
                     </TableCell>
                     <TableCell component="th" scope="row">
-                      <Typography variant="body1" component="h3">
+                      <Typography variant="body2" component="h3">
                         <Link to={`${client}`}>
                           {firstUpperChar(data[client].first_name)}
                         </Link>
