@@ -20,13 +20,14 @@ export const isNumber = (data: string) =>
 
 
 export const checkTimeInterval = (time: string, interval: string): boolean => {
-  console.log(time, interval, moment(time), moment().subtract(1, 'years') );
+  
 
   if (!time && interval !== 'all') {
     return false;
   }
   switch (interval) {
     case 'all': 
+      console.log(time, interval, moment(time).format(), moment().subtract(1, 'years').format(), moment(time).isAfter(moment().subtract(1, 'year') ) );
       return true;
     case 'day':
       if (moment(time).isAfter(moment().subtract(1, 'days') )) {

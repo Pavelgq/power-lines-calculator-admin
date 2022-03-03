@@ -17,12 +17,23 @@ export const useSortableData = <T extends { [id: string]: any }>(
 
   const sortedItems = useMemo(() => {
     let sortableItems = [...items];
-    if (searchValue || timeInterval) {
+    if (searchValue ) {
       sortableItems = sortableItems.filter((id) => {
         for (let i = 0; i < searchFields.length; i += 1) {
           const currentField = searchFields[i];
-          console.log(timeInterval)
-          if (sortData[id][currentField].includes(searchValue) && checkTimeInterval(sortData[id], timeInterval)) {
+          if (sortData[id][currentField].includes(searchValue)) {
+            return true;
+          }
+        }
+        return false;
+      });
+    }
+
+    if (timeInterval !== 'all') {
+      sortableItems = sortableItems.filter((id) => {
+        for (let i = 0; i < searchFields.length; i += 1) {
+          console.log(sortData[id].update, timeInterval)
+          if (checkTimeInterval(sortData[id].update, timeInterval)) {
             return true;
           }
         }

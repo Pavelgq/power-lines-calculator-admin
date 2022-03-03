@@ -156,7 +156,7 @@ export function ClientsList() {
         wrap="nowrap"
         justifyContent="center"
         alignItems="center"
-        spacing={1}
+        spacing={2}
       >
         <Grid item xs justifyContent="center" alignItems="center">
           <Container>
@@ -175,7 +175,7 @@ export function ClientsList() {
             />
           </Container>
         </Grid>
-        <Grid item xs={9}>
+        <Grid item xs={7}>
           <Search
             value={searchValue}
             handleChange={setSearchValue}

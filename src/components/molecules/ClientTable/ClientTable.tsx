@@ -215,7 +215,7 @@ export function ClientTable({
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={Object.keys(data).length}
+        count={items.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
