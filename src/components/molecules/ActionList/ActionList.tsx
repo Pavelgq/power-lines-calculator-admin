@@ -184,7 +184,9 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
                 setSelectClient(newInputValue);
               }}
               options={searchClients("")}
-              getOptionLabel={(option) => `${option.last_name}`}
+              getOptionLabel={(option) =>
+                `${option.ordinal} ${option.last_name}`
+              }
               renderOption={(props, option) => (
                 <Box component="li" {...props}>
                   {option.last_name} {option.first_name}

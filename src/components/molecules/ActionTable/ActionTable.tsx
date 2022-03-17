@@ -36,7 +36,7 @@ const columns = [
   {
     field: "id",
     headerName: "№",
-    width: 70,
+    width: 20,
     numeric: false,
     sorting: true,
     search: false,
@@ -44,7 +44,7 @@ const columns = [
   {
     field: "name",
     headerName: "ФИО",
-    width: 70,
+    width: 90,
     numeric: false,
     sorting: true,
     search: true,
@@ -52,7 +52,7 @@ const columns = [
   {
     field: "date",
     headerName: "Время",
-    width: 130,
+    width: 70,
     numeric: false,
     sorting: true,
     search: true,
@@ -84,7 +84,7 @@ const columns = [
   {
     field: "params",
     headerName: "Параметры",
-    width: 70,
+    width: 120,
     numeric: false,
     sorting: false,
     search: false,
@@ -92,7 +92,7 @@ const columns = [
   {
     field: "filePath",
     headerName: "Данные",
-    width: 90,
+    width: 20,
     numeric: false,
     sorting: false,
     search: false,
@@ -121,34 +121,68 @@ export function ActionTable({
           key={act.id}
           sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         >
-          <TableCell component="th" scope="row">
+          <TableCell
+            component="th"
+            scope="row"
+            align="center"
+            sx={{ maxWidth: columns[0].width }}
+            className="no-wrap-text fix-table-cell"
+          >
             {clients[act.client_id].ordinal}
           </TableCell>
-          <TableCell component="th" scope="row">
+          <TableCell
+            component="th"
+            scope="row"
+            align="center"
+            sx={{ maxWidth: columns[1].width }}
+            className="no-wrap-text fix-table-cell"
+          >
             <Link to={`/clients/${act.client_id}`}>
               {firstUpperChar(clients[act.client_id].last_name)}{" "}
               {firstUpperChar(clients[act.client_id].first_name)}
             </Link>
           </TableCell>
-          <TableCell component="th" scope="row">
+          <TableCell
+            component="th"
+            scope="row"
+            align="center"
+            sx={{ maxWidth: columns[2].width }}
+            className="no-wrap-text fix-table-cell"
+          >
             {moment(act.date, moment.ISO_8601).format("DD.MM.YYYY hh:mm")}
           </TableCell>
 
-          <TableCell component="th" scope="row">
-            <Typography>{ProgramType[act.program_type]}</Typography>
+          <TableCell component="th" scope="row" align="center">
+            <Typography variant="body2">
+              {ProgramType[act.program_type]}
+            </Typography>
           </TableCell>
-          <TableCell component="th" scope="row">
-            <Typography>{Categories[act.type] as string}</Typography>
+          <TableCell component="th" scope="row" align="center">
+            <Typography variant="body2">
+              {Categories[act.type] as string}
+            </Typography>
           </TableCell>
-          <TableCell component="th" scope="row">
-            <Typography>{act.project_name}</Typography>
+          <TableCell
+            component="th"
+            scope="row"
+            align="center"
+            sx={{ maxWidth: columns[5].width }}
+            className="no-wrap-text fix-table-cell"
+          >
+            <Typography variant="body2">{act.project_name}</Typography>
           </TableCell>
 
-          <TableCell component="th" scope="row">
+          <TableCell
+            component="th"
+            scope="row"
+            align="center"
+            sx={{ maxWidth: columns[6].width }}
+            className="no-wrap-text fix-table-cell"
+          >
             <ActionParam params={act.params} type={act.program_type} />
           </TableCell>
 
-          <TableCell component="th" scope="row">
+          <TableCell component="th" scope="row" align="center">
             <DownloadFile path={act.path_to_data}>
               <FileDownloadIcon />
             </DownloadFile>
@@ -179,11 +213,7 @@ export function ActionTable({
           <TableHead>
             <TableRow>
               {columns.map((n) => (
-                <TableCell
-                  key={n.field}
-                  align="center"
-                  sx={{ maxWidth: n.width }}
-                >
+                <TableCell key={n.field} align="center" sx={{ width: n.width }}>
                   <span>{n.headerName}</span>
                 </TableCell>
               ))}

@@ -21,7 +21,7 @@ export const useSortableData = <T extends { [id: string]: any }>(
       sortableItems = sortableItems.filter((id) => {
         for (let i = 0; i < searchFields.length; i += 1) {
           const currentField = searchFields[i];
-          if (sortData[id][currentField].includes(searchValue)) {
+          if (sortData[id][currentField].toLowerCase().includes(searchValue.toLowerCase())) {
             return true;
           }
         }

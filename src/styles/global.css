@@ -1,0 +1,14 @@
+
+
+
+
+.no-wrap-text {
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   /* max-width: 120px; */
+}
+
+.fix-table-cell {
+  table-layout: fixed;
+}

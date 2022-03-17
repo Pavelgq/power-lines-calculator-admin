@@ -45,7 +45,7 @@ const columns = [
   {
     field: "first_name",
     headerName: "Имя",
-    width: 70,
+    width: 60,
     numeric: false,
     sorting: true,
     search: true,
@@ -53,7 +53,7 @@ const columns = [
   {
     field: "company",
     headerName: "Компания",
-    width: 130,
+    width: 100,
     numeric: false,
     sorting: true,
     search: true,
@@ -77,7 +77,7 @@ const columns = [
   {
     field: "email",
     headerName: "Email",
-    width: 130,
+    width: 90,
     sorting: false,
     search: false,
   },
@@ -91,7 +91,7 @@ const columns = [
   {
     field: "actions",
     headerName: "",
-    width: 130,
+    width: 30,
     sorting: false,
     search: false,
   },
@@ -120,15 +120,15 @@ export function ClientTable({
   return (
     <>
       <TableContainer component={Paper}>
-        <Table aria-label="Таблица клиентов" sx={{ minWidth: 1000 }}>
+        <Table
+          aria-label="Таблица клиентов"
+          sx={{ minWidth: 1000 }}
+          size="small"
+        >
           <TableHead>
             <TableRow>
               {columns.map((n) => (
-                <TableCell
-                  key={n.field}
-                  align="center"
-                  sx={{ maxWidth: n.width }}
-                >
+                <TableCell key={n.field} align="center" sx={{ width: n.width }}>
                   {n.sorting ? (
                     <TableSortLabel
                       active
@@ -160,26 +160,46 @@ export function ClientTable({
                     role="checkbox"
                     tabIndex={-1}
                   >
-                    <TableCell component="th" scope="row">
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      sx={{ maxWidth: columns[0].width }}
+                      className="no-wrap-text fix-table-cell"
+                    >
                       <Typography variant="body2" component="h3">
                         {data[client].ordinal}
                       </Typography>
                     </TableCell>
-                    <TableCell component="th" scope="row">
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      sx={{ maxWidth: columns[1].width }}
+                      className="no-wrap-text fix-table-cell"
+                    >
                       <Typography variant="body2" component="h3">
                         <Link to={`/actions/${client}`}>
                           {firstUpperChar(data[client].last_name)}
                         </Link>
                       </Typography>
                     </TableCell>
-                    <TableCell component="th" scope="row">
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      sx={{ maxWidth: columns[2].width }}
+                      className="no-wrap-text fix-table-cell"
+                    >
                       <Typography variant="body2" component="h3">
                         <Link to={`${client}`}>
                           {firstUpperChar(data[client].first_name)}
                         </Link>
                       </Typography>
                     </TableCell>
-                    <TableCell component="th" scope="row">
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      sx={{ maxWidth: columns[3].width }}
+                      className="no-wrap-text fix-table-cell"
+                    >
                       {data[client].company.toUpperCase()}
                     </TableCell>
                     <TableCell component="th" scope="row">
@@ -192,12 +212,21 @@ export function ClientTable({
                         </Typography>
                       </MuiLink>
                     </TableCell>
-                    <TableCell component="th" scope="row">
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      sx={{ maxWidth: columns[7].width }}
+                      className="no-wrap-text fix-table-cell"
+                    >
                       <MuiLink href={`tel:${data[client].email}`}>
                         {data[client].email}
                       </MuiLink>
                     </TableCell>
-                    <TableCell component="th" scope="row">
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      className="no-wrap-text fix-table-cell"
+                    >
                       <ClientKey
                         clientId={Number(client)}
                         keyValue={data[client].client_key}

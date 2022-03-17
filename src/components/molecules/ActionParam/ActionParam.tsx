@@ -7,18 +7,18 @@ export interface ActionParamInterface {
 }
 
 export const sheldMainParams = {
-  param1: "Напряжение кабеля",
+  param1: "Напряжение",
   param2: "Длина линии",
 };
 
 export const pipeMainParams = {
-  param1: "Класс напряжения кабеля",
+  param1: "Напряжение",
   param2: "Длина линии",
 };
 
 export const cableMainParams = {
   param1: "Диаметр кабеля",
-  param2: "Число кабелей в одной трубе",
+  param2: "Число кабелей в трубе",
 };
 
 export function ActionParam({

@@ -147,6 +147,7 @@ export function ClientsList() {
 
   const handleTimeFilter = (event: SelectChangeEvent) => {
     setTimeFilter(event.target.value as string);
+    setPage(0);
   };
 
   return (
