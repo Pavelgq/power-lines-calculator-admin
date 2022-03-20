@@ -59,19 +59,11 @@ const columns = [
   },
   {
     field: "program_type",
-    headerName: "Программа",
+    headerName: "Событие",
     width: 70,
     numeric: false,
     sorting: false,
     search: true,
-  },
-  {
-    field: "category",
-    headerName: "Категория",
-    width: 70,
-    numeric: false,
-    sorting: true,
-    search: false,
   },
   {
     field: "project_name",
@@ -149,15 +141,15 @@ export function ActionTable({
             sx={{ maxWidth: columns[2].width }}
             className="no-wrap-text fix-table-cell"
           >
-            {moment(act.date, moment.ISO_8601).format("DD.MM.YYYY hh:mm")}
+            {moment(act.date, moment.ISO_8601).format("DD.MM.YYYY")}
+            <br />
+            {moment(act.date, moment.ISO_8601).format("hh:mm")}
           </TableCell>
 
           <TableCell component="th" scope="row" align="center">
             <Typography variant="body2">
               {ProgramType[act.program_type]}
             </Typography>
-          </TableCell>
-          <TableCell component="th" scope="row" align="center">
             <Typography variant="body2">
               {Categories[act.type] as string}
             </Typography>

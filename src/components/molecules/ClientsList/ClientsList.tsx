@@ -21,7 +21,7 @@ import { Search } from "../Search/Search";
 
 import styles from "./ClientsList.module.css";
 
-const columns = [
+export const columns = [
   {
     field: "ordinal",
     headerName: "№",
@@ -41,7 +41,7 @@ const columns = [
   {
     field: "first_name",
     headerName: "Имя",
-    width: 70,
+    width: 60,
     numeric: false,
     sorting: true,
     search: true,
@@ -49,7 +49,7 @@ const columns = [
   {
     field: "company",
     headerName: "Компания",
-    width: 130,
+    width: 100,
     numeric: false,
     sorting: true,
     search: true,
@@ -63,17 +63,10 @@ const columns = [
     search: false,
   },
   {
-    field: "phone_number",
-    headerName: "Телефон",
-    width: 80,
+    field: "contacts",
+    headerName: "Контакты",
+    width: 280,
 
-    sorting: false,
-    search: false,
-  },
-  {
-    field: "email",
-    headerName: "Email",
-    width: 130,
     sorting: false,
     search: false,
   },
@@ -87,7 +80,7 @@ const columns = [
   {
     field: "actions",
     headerName: "",
-    width: 130,
+    width: 30,
     sorting: false,
     search: false,
   },
