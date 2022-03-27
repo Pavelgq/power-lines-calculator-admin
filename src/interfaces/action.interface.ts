@@ -5,8 +5,8 @@ export enum Categories {
 }
 
 export enum ProgramType {
-  "Экран" = 1,
-  "Труба",
+  "Труба" = 1,
+  "Экран",
   "Кабель",
 }
 

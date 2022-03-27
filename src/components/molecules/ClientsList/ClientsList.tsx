@@ -32,16 +32,8 @@ export const columns = [
   },
   {
     field: "last_name",
-    headerName: "Фамилия",
+    headerName: "ФИО",
     width: 70,
-    numeric: false,
-    sorting: true,
-    search: true,
-  },
-  {
-    field: "first_name",
-    headerName: "Имя",
-    width: 60,
     numeric: false,
     sorting: true,
     search: true,
@@ -49,7 +41,7 @@ export const columns = [
   {
     field: "company",
     headerName: "Компания",
-    width: 100,
+    width: 120,
     numeric: false,
     sorting: true,
     search: true,
@@ -65,7 +57,7 @@ export const columns = [
   {
     field: "contacts",
     headerName: "Контакты",
-    width: 280,
+    width: 160,
 
     sorting: false,
     search: false,

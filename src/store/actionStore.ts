@@ -1,7 +1,6 @@
+import { saveAs } from 'file-saver';
 import { createSlice } from "@reduxjs/toolkit";
-import { object } from "yup/lib/locale";
 import {
-  ActionCreateInterface,
   ActionFullInterface,
 } from "../interfaces/action.interface";
 import { RootState } from "./store";
@@ -69,10 +68,14 @@ export const actionSlice = createSlice({
       state.isLoading = false;
     },
     getActionFile(state, action) {
-      state.isLoading = true;
+      // state.isLoading = true;
     },
-    getActionFileSuccess(state) {
+    getActionFileSuccess(state, action) {
       state.isLoading = false;
+      console.log(action.payload);
+      const blob = new Blob([JSON.stringify(action.payload.data)], {type: "text/plain;charset=utf-8"});
+      const path = action.payload.path.split('.');
+      saveAs(blob, `${path[0]}.txt`);
     },
     getActionFileFailure(state, action) {
       state.isLoading = false;

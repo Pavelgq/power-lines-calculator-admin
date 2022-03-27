@@ -182,6 +182,8 @@ export function ClientTable({
                       <Typography variant="body2" component="h3">
                         <Link to={`/actions/${client}`}>
                           {firstUpperChar(data[client].last_name)}
+                          <br />
+                          {firstUpperChar(data[client].first_name)}
                         </Link>
                       </Typography>
                     </TableCell>
@@ -192,26 +194,13 @@ export function ClientTable({
                       sx={{ maxWidth: columns[2].width }}
                       className="no-wrap-text fix-table-cell"
                     >
-                      <Typography variant="body2" component="h3">
-                        <Link to={`${client}`}>
-                          {firstUpperChar(data[client].first_name)}
-                        </Link>
-                      </Typography>
-                    </TableCell>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      align="center"
-                      sx={{ maxWidth: columns[3].width }}
-                      className="no-wrap-text fix-table-cell"
-                    >
                       {data[client].company.toUpperCase()}
                     </TableCell>
                     <TableCell
                       component="th"
                       scope="row"
                       align="center"
-                      sx={{ maxWidth: columns[4].width }}
+                      sx={{ maxWidth: columns[3].width }}
                     >
                       {firstUpperChar(data[client].office_position)}
                     </TableCell>

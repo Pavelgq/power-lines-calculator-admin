@@ -8,22 +8,13 @@ import {
   TableBody,
   Typography,
   TablePagination,
-  Button,
-  TableSortLabel,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import moment from "moment";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import { Paragliding } from "@mui/icons-material";
-import { ClientKey } from "../..";
 import { ActionTableInterface } from "./ActionTable.props";
-import { AlertDialog } from "../AlertDialog/AlertDialog";
-import {
-  deleteClientFetch,
-  selectAllClients,
-} from "../../../store/clientsStore";
+import { selectAllClients } from "../../../store/clientsStore";
 import { DownloadFile } from "../DownloadFile/DownloadFile";
 import { firstUpperChar } from "../../../helpers/format";
 import { Categories, ProgramType } from "../../../interfaces/action.interface";
@@ -130,7 +121,7 @@ export function ActionTable({
             className="no-wrap-text fix-table-cell"
           >
             <Link to={`/clients/${act.client_id}`}>
-              {firstUpperChar(clients[act.client_id].last_name)}{" "}
+              {firstUpperChar(clients[act.client_id].last_name)} <br />
               {firstUpperChar(clients[act.client_id].first_name)}
             </Link>
           </TableCell>

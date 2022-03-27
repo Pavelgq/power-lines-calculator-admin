@@ -11,12 +11,12 @@ export const sheldMainParams = {
   param2: "Длина линии",
 };
 
-export const pipeMainParams = {
+export const cableMainParams = {
   param1: "Напряжение",
   param2: "Длина линии",
 };
 
-export const cableMainParams = {
+export const pipeMainParams = {
   param1: "Диаметр кабеля",
   param2: "Число кабелей в трубе",
 };
@@ -30,7 +30,7 @@ export function ActionParam({
       return <div> </div>;
     }
     const json = JSON.parse(params as string);
-    const result = [sheldMainParams, pipeMainParams, cableMainParams];
+    const result = [pipeMainParams, sheldMainParams, cableMainParams];
 
     return (
       <>
