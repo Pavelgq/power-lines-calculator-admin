@@ -26,80 +26,6 @@ import { ClientRowMenu } from "../ClientRowMenu/ClientRowMenu";
 import { Loading } from "../../atoms/Loading/Loading";
 import { columns } from "../ClientsList/ClientsList";
 
-// const columns = [
-//   {
-//     field: "ordinal",
-//     headerName: "№",
-//     width: 20,
-//     numeric: false,
-//     sorting: true,
-//     search: false,
-//   },
-//   {
-//     field: "last_name",
-//     headerName: "Фамилия",
-//     width: 70,
-//     numeric: false,
-//     sorting: true,
-//     search: true,
-//   },
-//   {
-//     field: "first_name",
-//     headerName: "Имя",
-//     width: 60,
-//     numeric: false,
-//     sorting: true,
-//     search: true,
-//   },
-//   {
-//     field: "company",
-//     headerName: "Компания",
-//     width: 100,
-//     numeric: false,
-//     sorting: true,
-//     search: true,
-//   },
-//   {
-//     field: "office_position",
-//     headerName: "Должность",
-//     width: 130,
-//     numeric: false,
-//     sorting: false,
-//     search: false,
-//   },
-//   {
-//     field: "phone_number",
-//     headerName: "Телефон",
-//     width: 80,
-
-//     sorting: false,
-//     search: false,
-//   },
-//   {
-//     field: "email",
-//     headerName: "Email",
-//     width: 90,
-//     sorting: false,
-//     search: false,
-//   },
-//   {
-//     field: "acceptKey",
-//     headerName: "Ключ",
-//     width: 130,
-//     sorting: false,
-//     search: false,
-//   },
-//   {
-//     field: "actions",
-//     headerName: "",
-//     width: 30,
-//     sorting: false,
-//     search: false,
-//   },
-// ];
-
-// const searchFields = columns.filter((el) => el.search).map((el) => el.field);
-
 export function ClientTable({
   searchValue,
   setSearchValue,
@@ -226,7 +152,7 @@ export function ClientTable({
                         lifetime={data[client].valid_until}
                       />
                     </TableCell>
-                    <TableCell component="th" scope="row">
+                    <TableCell component="th" scope="row" align="center">
                       <ClientRowMenu id={client} />
                     </TableCell>
                   </TableRow>

@@ -32,11 +32,11 @@ const programs = [
   },
   {
     name: "Труба",
-    value: 2,
+    value: 1,
   },
   {
     name: "Экран",
-    value: 1,
+    value: 2,
   },
   {
     name: "Кабель",

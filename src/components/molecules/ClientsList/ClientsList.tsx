@@ -33,7 +33,7 @@ export const columns = [
   {
     field: "last_name",
     headerName: "ФИО",
-    width: 70,
+    width: 100,
     numeric: false,
     sorting: true,
     search: true,
@@ -65,14 +65,14 @@ export const columns = [
   {
     field: "acceptKey",
     headerName: "Ключ",
-    width: 130,
+    width: 110,
     sorting: false,
     search: false,
   },
   {
     field: "actions",
-    headerName: "",
-    width: 30,
+    headerName: "Правки",
+    width: 20,
     sorting: false,
     search: false,
   },

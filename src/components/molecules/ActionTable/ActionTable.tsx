@@ -134,7 +134,7 @@ export function ActionTable({
           >
             {moment(act.date, moment.ISO_8601).format("DD.MM.YYYY")}
             <br />
-            {moment(act.date, moment.ISO_8601).format("hh:mm")}
+            {moment(act.date, moment.ISO_8601).format("HH:mm")}
           </TableCell>
 
           <TableCell component="th" scope="row" align="center">
@@ -189,7 +189,7 @@ export function ActionTable({
           aria-label={
             clientId
               ? `Таблица действий клиента ${clients[clientId].last_name}`
-              : "Таблица действий для всех клиентов"
+              : "Таблица действий всех клиентов"
           }
           size="small"
         >

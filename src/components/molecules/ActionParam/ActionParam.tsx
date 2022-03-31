@@ -8,16 +8,19 @@ export interface ActionParamInterface {
 
 export const sheldMainParams = {
   param1: "Напряжение",
+  param1Dim: "кВ",
   param2: "Длина линии",
 };
 
 export const cableMainParams = {
   param1: "Напряжение",
+  param1Dim: "кВ",
   param2: "Длина линии",
 };
 
 export const pipeMainParams = {
   param1: "Диаметр кабеля",
+  param1Dim: "мм",
   param2: "Число кабелей в трубе",
 };
 
@@ -36,7 +39,8 @@ export function ActionParam({
       <>
         <Grid item>
           <Typography variant="body2">
-            {result[type - 1].param1}: {json.param1}
+            {result[type - 1].param1}: {json.param1}{" "}
+            {result[type - 1].param1Dim}
           </Typography>
         </Grid>
         <Grid item>
