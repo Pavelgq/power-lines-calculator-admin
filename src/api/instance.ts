@@ -5,6 +5,7 @@ export interface apiParams {
   acceptToken?: string;
 }
 
+// baseURL: `http://localhost:8080/api/v1`,
 export const apiInstance = ({ token = "", acceptToken = "" }: apiParams) => {
   const config: AxiosRequestConfig<any> = {
     baseURL: `https://hidden-inlet-89012.herokuapp.com/api/v1`,

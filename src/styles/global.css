@@ -12,3 +12,7 @@
 .fix-table-cell {
   table-layout: fixed;
 }
+
+.noPadding {
+  padding: 0;
+}

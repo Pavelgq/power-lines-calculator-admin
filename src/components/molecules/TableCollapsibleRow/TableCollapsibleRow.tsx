@@ -11,15 +11,114 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
+import { Link } from "react-router-dom";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import moment from "moment";
+import { useSelector } from "react-redux";
+import { firstUpperChar } from "../../../helpers/format";
+import {
+  ProgramType,
+  Categories,
+  ActionFullInterface,
+  ActionSemiFullInterface,
+} from "../../../interfaces/action.interface";
+import { DownloadFile } from "../DownloadFile/DownloadFile";
+import { selectAllClients } from "../../../store/clientsStore";
+import { TableCollapsibleRowProps } from "./TableCollapsibleRow.props";
+import { ActionParam } from "../ActionParam/ActionParam";
 
-export function TableCollapsibleRow() {
+export function TableCollapsibleRow({
+  actionData,
+  columns,
+}: TableCollapsibleRowProps): JSX.Element {
   const [open, setOpen] = useState(false);
+  const clients = useSelector(selectAllClients);
+
+  const mainTableRow = (
+    action: ActionFullInterface | ActionSemiFullInterface
+  ) => (
+    <>
+      <TableCell
+        component="th"
+        scope="row"
+        align="center"
+        sx={{ maxWidth: columns[0].width }}
+        className="no-wrap-text fix-table-cell"
+      >
+        {clients[action.client_id].ordinal}
+      </TableCell>
+      <TableCell
+        component="th"
+        scope="row"
+        align="center"
+        sx={{ maxWidth: columns[1].width }}
+        className="no-wrap-text fix-table-cell"
+      >
+        <Link to={`/clients/${action.client_id}`}>
+          {firstUpperChar(clients[action.client_id].last_name)} <br />
+          {firstUpperChar(clients[action.client_id].first_name)}
+        </Link>
+      </TableCell>
+      <TableCell
+        component="th"
+        scope="row"
+        align="center"
+        sx={{ maxWidth: columns[2].width }}
+        className="no-wrap-text fix-table-cell"
+      >
+        {moment(action.date, moment.ISO_8601).format("DD.MM.YYYY")}
+        <br />
+        {moment(action.date, moment.ISO_8601).format("HH:mm")}
+      </TableCell>
+
+      <TableCell component="th" scope="row" align="center">
+        <Typography variant="body2">
+          {ProgramType[action.program_type]}
+        </Typography>
+        <Typography variant="body2">
+          {Categories[action.type] as string}
+        </Typography>
+      </TableCell>
+      <TableCell
+        component="th"
+        scope="row"
+        align="center"
+        sx={{ maxWidth: columns[5].width }}
+        className="no-wrap-text fix-table-cell"
+      >
+        <Typography variant="body2">{action.project_name}</Typography>
+      </TableCell>
+
+      <TableCell
+        component="th"
+        scope="row"
+        align="center"
+        sx={{ maxWidth: columns[6].width }}
+        className="no-wrap-text fix-table-cell"
+      >
+        <ActionParam params={action.params} type={action.program_type} />
+      </TableCell>
+
+      <TableCell component="th" scope="row" align="center">
+        <DownloadFile path={action.path_to_data}>
+          <FileDownloadIcon />
+        </DownloadFile>
+      </TableCell>
+    </>
+  );
+
   return (
     <>
-      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-        <TableCell>
+      <TableRow>
+        <TableCell
+          component="th"
+          scope="row"
+          align="center"
+          sx={{ maxWidth: 15 }}
+          className="noPadding no-wrap-text fix-table-cell"
+        >
           <IconButton
             aria-label="expand row"
             size="small"
@@ -29,40 +128,44 @@ export function TableCollapsibleRow() {
           </IconButton>
         </TableCell>
         {/* Обычная строка */}
+        {mainTableRow(actionData)}
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-          {/* <Collapse in={open} timeout="auto" unmountOnExit>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
+          <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Typography variant="h6" gutterBottom component="div">
-                История дейсвий
+                История сессии
               </Typography>
-              <Table size="small" aria-label="purchases">
+              <Table
+                size="small"
+                aria-label="История сессии"
+                sx={{ minWidth: 650 }}
+              >
                 <TableHead>
                   <TableRow>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Customer</TableCell>
-                    <TableCell align="right">Amount</TableCell>
-                    <TableCell align="right">Total price ($)</TableCell>
+                    {columns.map((n) => (
+                      <TableCell
+                        key={n.field}
+                        align="center"
+                        sx={{ width: n.width }}
+                      >
+                        <span>{n.headerName}</span>
+                      </TableCell>
+                    ))}
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
-                      <TableCell component="th" scope="row">
-                        {historyRow.date}
-                      </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell align="right">{historyRow.amount}</TableCell>
-                      <TableCell align="right">
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {actionData.group &&
+                    actionData.group.map((subAction) => (
+                      <TableRow key={subAction.id}>
+                        {mainTableRow(subAction)}
+                      </TableRow>
+                    ))}
                 </TableBody>
               </Table>
             </Box>
-          </Collapse> */}
+          </Collapse>
         </TableCell>
       </TableRow>
     </>

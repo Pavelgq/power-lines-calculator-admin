@@ -135,9 +135,9 @@ export function ClientTable({
                         <Typography noWrap variant="body2">
                           {formatePhone(data[client].phone_number)}
                         </Typography>
-                        <MuiLink href={`tel:${data[client].email}`}>
-                          {data[client].email}
-                        </MuiLink>
+                      </MuiLink>
+                      <MuiLink href={`tel:${data[client].email}`}>
+                        {data[client].email}
                       </MuiLink>
                     </TableCell>
                     <TableCell

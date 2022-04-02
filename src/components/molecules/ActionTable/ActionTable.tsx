@@ -22,8 +22,18 @@ import { ActionParam } from "../ActionParam/ActionParam";
 import { Loading } from "../../atoms/Loading/Loading";
 import { selectIsLoadingActions } from "../../../store/actionStore";
 import styles from "./ActionTable.module.css";
+import { TableCollapsibleRow } from "../TableCollapsibleRow/TableCollapsibleRow";
 
-const columns = [
+export interface ActionColumnParamsI {
+  field: string;
+  headerName: string;
+  width: number;
+  numeric: boolean;
+  sorting: boolean;
+  search: boolean;
+}
+
+const columns: ActionColumnParamsI[] = [
   {
     field: "id",
     headerName: "№",
@@ -100,83 +110,19 @@ export function ActionTable({
     const dataView =
       data &&
       data.map((act) => (
-        <TableRow
-          key={act.id}
-          sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-        >
-          <TableCell
-            component="th"
-            scope="row"
-            align="center"
-            sx={{ maxWidth: columns[0].width }}
-            className="no-wrap-text fix-table-cell"
-          >
-            {clients[act.client_id].ordinal}
-          </TableCell>
-          <TableCell
-            component="th"
-            scope="row"
-            align="center"
-            sx={{ maxWidth: columns[1].width }}
-            className="no-wrap-text fix-table-cell"
-          >
-            <Link to={`/clients/${act.client_id}`}>
-              {firstUpperChar(clients[act.client_id].last_name)} <br />
-              {firstUpperChar(clients[act.client_id].first_name)}
-            </Link>
-          </TableCell>
-          <TableCell
-            component="th"
-            scope="row"
-            align="center"
-            sx={{ maxWidth: columns[2].width }}
-            className="no-wrap-text fix-table-cell"
-          >
-            {moment(act.date, moment.ISO_8601).format("DD.MM.YYYY")}
-            <br />
-            {moment(act.date, moment.ISO_8601).format("HH:mm")}
-          </TableCell>
-
-          <TableCell component="th" scope="row" align="center">
-            <Typography variant="body2">
-              {ProgramType[act.program_type]}
-            </Typography>
-            <Typography variant="body2">
-              {Categories[act.type] as string}
-            </Typography>
-          </TableCell>
-          <TableCell
-            component="th"
-            scope="row"
-            align="center"
-            sx={{ maxWidth: columns[5].width }}
-            className="no-wrap-text fix-table-cell"
-          >
-            <Typography variant="body2">{act.project_name}</Typography>
-          </TableCell>
-
-          <TableCell
-            component="th"
-            scope="row"
-            align="center"
-            sx={{ maxWidth: columns[6].width }}
-            className="no-wrap-text fix-table-cell"
-          >
-            <ActionParam params={act.params} type={act.program_type} />
-          </TableCell>
-
-          <TableCell component="th" scope="row" align="center">
-            <DownloadFile path={act.path_to_data}>
-              <FileDownloadIcon />
-            </DownloadFile>
-          </TableCell>
-        </TableRow>
+        <TableCollapsibleRow key={act.id} actionData={act} columns={columns} />
       ));
     if (!isLoading && data && data.length) {
       return dataView;
     }
     if (!data || data.length === 0) {
-      return <span className={styles.notFound}>Действий не найдено</span>;
+      return (
+        <TableRow>
+          <TableCell>
+            <span className={styles.notFound}>Действий не найдено</span>
+          </TableCell>
+        </TableRow>
+      );
     }
     return <Loading />;
   };
@@ -195,6 +141,13 @@ export function ActionTable({
         >
           <TableHead>
             <TableRow>
+              <TableCell
+                align="center"
+                sx={{ width: 34 }}
+                className="noPadding"
+              >
+                <span> </span>
+              </TableCell>
               {columns.map((n) => (
                 <TableCell key={n.field} align="center" sx={{ width: n.width }}>
                   <span>{n.headerName}</span>
