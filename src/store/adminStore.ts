@@ -9,6 +9,7 @@ export interface AdminStoreI {
   error: Error | null;
   auth: boolean;
   token: string;
+  message: string;
 }
 
 const initialState: AdminStoreI = {
@@ -17,6 +18,7 @@ const initialState: AdminStoreI = {
   error: null,
   auth: false,
   token: "",
+  message: ""
 };
 
 export const adminSlice = createSlice({
@@ -37,9 +39,11 @@ export const adminSlice = createSlice({
     },
     profileAdminSuccess: (state, action) => {
       state.info = {
+        id: action.payload.id,
         login: action.payload.login,
         status: action.payload.status,
       };
+      state.token = action.payload.token;
       state.auth = true;
       state.isLoading = false;
     },
@@ -68,9 +72,18 @@ export const adminSlice = createSlice({
       state.isLoading = false;
     },
     changeAdminFetch: (state, action) => {
+      
       state.isLoading = true;
     },
     changeAdminSuccess: (state, action) => {
+      state.info = {
+        id: action.payload.id,
+        login: action.payload.login,
+        status: action.payload.status,
+      };
+      state.token = action.payload.token;
+      localStorage.setItem('token', action.payload.token);
+      state.auth = true;
       state.isLoading = false;
     },
     changeAdminFailure: (state, action) => {

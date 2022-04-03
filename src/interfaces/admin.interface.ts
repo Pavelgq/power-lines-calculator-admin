@@ -5,11 +5,20 @@ export enum ROLES {
 }
 
 export interface AdminDataInterface {
+  id: string;
   login: string;
   password?: string;
   status: ROLES;
   message?: string;
 }
+
+export interface AdminChangeDataInterface {
+  login: string;
+  password: string;
+  repeatPassword?: string;
+  status: ROLES;
+}
+
 
 export interface AdminLoginInterface {
   login: string;

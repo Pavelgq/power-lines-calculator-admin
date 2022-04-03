@@ -9,11 +9,16 @@ import {
   getAdminSuccess,
   profileAdminSuccess,
   logoutAdmin,
+  changeAdminFailure,
+  changeAdminSuccess,
+  deleteAdminFailure,
+  deleteAdminSuccess,
 } from "../store/adminStore";
 import {
   AdminDataInterface,
   AdminFullInterface,
   AdminLoginInterface,
+  ROLES,
 } from "../interfaces/admin.interface";
 
 function* loginAdminWorker(action: { payload: any; type: string }) {
@@ -39,18 +44,72 @@ function* createAdminFetchWorker(action: { payload: any; type: string }) {
   try {
     const admin = new Admin();
 
-    const { token, id } = action.payload;
+    const { token, adminData } = action.payload;
+
+    if (adminData.password !== adminData.repeatPassword) {
+      throw new Error('Пароли не совпадают');
+    }
+
     const candidate: AxiosResponseHeaders = yield call(
-      admin.getAdmin,
-      id,
-      token
+      admin.createAdmin,
+      token, 
+      {login: adminData.login, password: adminData.password, status: ROLES.ADMIN}
     );
 
     const res: AdminFullInterface = yield candidate.data;
     console.log(res);
     yield put(createAdminSuccess(res));
   } catch (e) {
+    if (typeof e  === 'string') {
+      yield put(createAdminFailure({message: e}));
+    }
     yield put(createAdminFailure(e));
+  }
+}
+
+function* changeAdminFetchWorker(action: { payload: any; type: string }) {
+  try {
+    const admin = new Admin();
+    console.log(action.payload)
+    const { token, adminData } = action.payload;
+    if (adminData.password !== adminData.repeatPassword) {
+      throw new Error('Пароли не совпадают');
+    }
+    const candidate: AxiosResponseHeaders = yield call(
+      admin.changeAdmin,
+      adminData.id,
+      token,
+      adminData.login,
+      adminData.password
+    );
+
+    const res: AdminFullInterface = yield candidate.data;
+    console.log(res);
+    yield put(changeAdminSuccess(res));
+  } catch (e) {
+    if (typeof e  === 'string') {
+      yield put(changeAdminFailure({message: e}));
+    }
+    yield put(changeAdminFailure(e));
+  }
+}
+
+function* deleteAdminFetchWorker(action: { payload: any; type: string }) {
+  try {
+    const admin = new Admin();
+    console.log(action.payload)
+    const { token, id, login, password } = action.payload;
+    const candidate: AxiosResponseHeaders = yield call(
+      admin.deleteAdmin,
+      id,
+      token,
+    );
+
+    const res: AdminFullInterface = yield candidate.data;
+    console.log(res);
+    yield put(deleteAdminSuccess(res));
+  } catch (e) {
+    yield put(deleteAdminFailure(e));
   }
 }
 
@@ -76,6 +135,8 @@ function* adminSaga() {
     takeEvery("admin/logoutAdmin", logoutAdminWorker),
     takeEvery("admin/loginAdmin", loginAdminWorker),
     takeEvery("admin/createAdminFetch", createAdminFetchWorker),
+    takeEvery("admin/changeAdminFetch", changeAdminFetchWorker),
+    takeEvery("admin/deleteAdminFetch", deleteAdminFetchWorker),
     takeEvery("admin/profileAdmin", profileAdminWorker),
   ]);
 }

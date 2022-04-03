@@ -179,7 +179,7 @@ export function Sidebar() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                <MenuItem onClick={handleCloseNavMenu}>
+                <MenuItem onClick={() => handleNav("/accaunt")}>
                   <Typography textAlign="center">Личный кабинет</Typography>
                 </MenuItem>
                 <MenuItem onClick={handleLogOut}>

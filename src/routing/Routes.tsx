@@ -8,6 +8,7 @@ import { Authentication } from "../pages/Authentication/Authentication";
 import { Clients } from "../pages/Clients/Clients";
 import { PrivateRoute } from "./PrivateRouter";
 import { AllActions } from "../pages/AllActions/AllActions";
+import { PersonalAccaunt } from "../pages/PersonalAccaunt/PersonalAccaunt";
 
 export function RoutesList(props: any): JSX.Element {
   const { isLoggedIn } = props;
@@ -37,6 +38,12 @@ export function RoutesList(props: any): JSX.Element {
             }
           />
         </Route>
+        <Route
+          path="accaunt"
+          element={
+            <PrivateRoute roles={[ROLES.ADMIN]} component={PersonalAccaunt} />
+          }
+        />
       </Route>
     </Routes>
   );
