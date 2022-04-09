@@ -18,30 +18,49 @@ export function RoutesList(props: any): JSX.Element {
         <Route index element={<Authentication />} />
         <Route
           path="clients"
-          element={<PrivateRoute roles={[ROLES.ADMIN]} component={Clients} />}
-        >
-          <Route
-            path=":clientId"
-            element={<PrivateRoute roles={[ROLES.ADMIN]} component={Clients} />}
-          />
-        </Route>
-        <Route
-          path="actions"
           element={
-            <PrivateRoute roles={[ROLES.ADMIN]} component={AllActions} />
+            <PrivateRoute
+              roles={[ROLES.ADMIN, ROLES.USER]}
+              component={Clients}
+            />
           }
         >
           <Route
             path=":clientId"
             element={
-              <PrivateRoute roles={[ROLES.ADMIN]} component={AllActions} />
+              <PrivateRoute
+                roles={[ROLES.ADMIN, ROLES.USER]}
+                component={Clients}
+              />
+            }
+          />
+        </Route>
+        <Route
+          path="actions"
+          element={
+            <PrivateRoute
+              roles={[ROLES.ADMIN, ROLES.USER]}
+              component={AllActions}
+            />
+          }
+        >
+          <Route
+            path=":clientId"
+            element={
+              <PrivateRoute
+                roles={[ROLES.ADMIN, ROLES.USER]}
+                component={AllActions}
+              />
             }
           />
         </Route>
         <Route
           path="accaunt"
           element={
-            <PrivateRoute roles={[ROLES.ADMIN]} component={PersonalAccaunt} />
+            <PrivateRoute
+              roles={[ROLES.ADMIN, ROLES.USER]}
+              component={PersonalAccaunt}
+            />
           }
         />
       </Route>

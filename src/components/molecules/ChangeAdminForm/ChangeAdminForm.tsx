@@ -79,7 +79,7 @@ export function ChangeAdminForm({ action }: ChangeAdminFormProps): JSX.Element {
             error={!!errors.password}
             label="Новый пароль"
             helperText={errors.password ? errors.password.message : ""}
-            type="text"
+            type="password"
             variant="outlined"
             {...register("password")}
           />
@@ -93,7 +93,7 @@ export function ChangeAdminForm({ action }: ChangeAdminFormProps): JSX.Element {
             helperText={
               errors.repeatPassword ? errors.repeatPassword.message : ""
             }
-            type="text"
+            type="password"
             variant="outlined"
             {...register("repeatPassword")}
           />

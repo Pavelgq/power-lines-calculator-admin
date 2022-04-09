@@ -53,7 +53,7 @@ function* createAdminFetchWorker(action: { payload: any; type: string }) {
     const candidate: AxiosResponseHeaders = yield call(
       admin.createAdmin,
       token, 
-      {login: adminData.login, password: adminData.password, status: ROLES.ADMIN}
+      {login: adminData.login, password: adminData.password, status: ROLES.USER}
     );
 
     const res: AdminFullInterface = yield candidate.data;

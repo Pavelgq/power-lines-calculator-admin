@@ -62,7 +62,7 @@ export function ClientTable({
                       direction={
                         sortConfig.field === n.field
                           ? sortConfig.direction
-                          : "asc"
+                          : "desc"
                       }
                       onClick={() => sortingField(n.field)}
                     >

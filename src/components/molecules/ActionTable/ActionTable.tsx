@@ -148,11 +148,17 @@ export function ActionTable({
               >
                 <span> </span>
               </TableCell>
-              {columns.map((n) => (
-                <TableCell key={n.field} align="center" sx={{ width: n.width }}>
-                  <span>{n.headerName}</span>
-                </TableCell>
-              ))}
+              {columns
+                .filter((col) => col.field !== "filePath")
+                .map((n) => (
+                  <TableCell
+                    key={n.field}
+                    align="center"
+                    sx={{ width: n.width }}
+                  >
+                    <span>{n.headerName}</span>
+                  </TableCell>
+                ))}
             </TableRow>
           </TableHead>
           <TableBody>{dataRows()}</TableBody>

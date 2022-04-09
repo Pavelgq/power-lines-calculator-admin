@@ -9,10 +9,15 @@ import {
   Container,
 } from "@mui/material";
 import React, { ReactNode, useState } from "react";
+import { useSelector } from "react-redux";
 import { ChangeAdminForm } from "../../components/molecules/ChangeAdminForm/ChangeAdminForm";
+import { ROLES } from "../../interfaces/admin.interface";
+import { selectCurrentAdmin } from "../../store/adminStore";
 
 export function PersonalAccaunt() {
   const [value, setValue] = useState("1");
+
+  const admin = useSelector(selectCurrentAdmin);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -23,8 +28,10 @@ export function PersonalAccaunt() {
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
-            <Tab label="Изменить данные пользователя" value="1" />
-            <Tab label="Создать администратора" value="2" />
+            <Tab label="Изменить данные аккаунта" value="1" />
+            {admin?.status === ROLES.ADMIN && (
+              <Tab label="Добавить сотрудника" value="2" />
+            )}
           </TabList>
         </Box>
         <TabPanel value="1">

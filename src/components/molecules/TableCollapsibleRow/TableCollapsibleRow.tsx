@@ -36,9 +36,7 @@ export function TableCollapsibleRow({
   const [open, setOpen] = useState(false);
   const clients = useSelector(selectAllClients);
 
-  const mainTableRow = (
-    action: ActionFullInterface | ActionSemiFullInterface
-  ) => (
+  const mainTableRow = (action: ActionFullInterface) => (
     <>
       <TableCell
         component="th"
@@ -85,7 +83,7 @@ export function TableCollapsibleRow({
         component="th"
         scope="row"
         align="center"
-        sx={{ maxWidth: columns[5].width }}
+        sx={{ maxWidth: columns[4].width }}
         className="no-wrap-text fix-table-cell"
       >
         <Typography variant="body2">{action.project_name}</Typography>
@@ -95,7 +93,50 @@ export function TableCollapsibleRow({
         component="th"
         scope="row"
         align="center"
-        sx={{ maxWidth: columns[6].width }}
+        sx={{ maxWidth: columns[4].width }}
+        className="no-wrap-text fix-table-cell"
+      >
+        <ActionParam params={action.params} type={action.program_type} />
+      </TableCell>
+    </>
+  );
+  const collapsedTableRow = (action: ActionSemiFullInterface) => (
+    <>
+      <TableCell
+        component="th"
+        scope="row"
+        align="center"
+        sx={{ maxWidth: columns[2].width }}
+        className="no-wrap-text fix-table-cell"
+      >
+        {moment(action.date, moment.ISO_8601).format("DD.MM.YYYY")}
+        <br />
+        {moment(action.date, moment.ISO_8601).format("HH:mm")}
+      </TableCell>
+
+      <TableCell component="th" scope="row" align="center">
+        <Typography variant="body2">
+          {ProgramType[action.program_type]}
+        </Typography>
+        <Typography variant="body2">
+          {Categories[action.type] as string}
+        </Typography>
+      </TableCell>
+      <TableCell
+        component="th"
+        scope="row"
+        align="center"
+        sx={{ maxWidth: columns[4].width }}
+        className="no-wrap-text fix-table-cell"
+      >
+        <Typography variant="body2">{action.project_name}</Typography>
+      </TableCell>
+
+      <TableCell
+        component="th"
+        scope="row"
+        align="center"
+        sx={{ maxWidth: columns[5].width }}
         className="no-wrap-text fix-table-cell"
       >
         <ActionParam params={action.params} type={action.program_type} />
@@ -108,7 +149,6 @@ export function TableCollapsibleRow({
       </TableCell>
     </>
   );
-
   return (
     <>
       <TableRow>
@@ -144,22 +184,26 @@ export function TableCollapsibleRow({
               >
                 <TableHead>
                   <TableRow>
-                    {columns.map((n) => (
-                      <TableCell
-                        key={n.field}
-                        align="center"
-                        sx={{ width: n.width }}
-                      >
-                        <span>{n.headerName}</span>
-                      </TableCell>
-                    ))}
+                    {columns
+                      .filter(
+                        (col) => col.field !== "id" && col.field !== "name"
+                      )
+                      .map((n) => (
+                        <TableCell
+                          key={n.field}
+                          align="center"
+                          sx={{ width: n.width }}
+                        >
+                          <span>{n.headerName}</span>
+                        </TableCell>
+                      ))}
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {actionData.group &&
                     actionData.group.map((subAction) => (
                       <TableRow key={subAction.id}>
-                        {mainTableRow(subAction)}
+                        {collapsedTableRow(subAction)}
                       </TableRow>
                     ))}
                 </TableBody>

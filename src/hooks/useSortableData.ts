@@ -10,7 +10,7 @@ export const useSortableData = <T extends { [id: string]: any }>(
   config: {
     field: string;
     direction: "desc" | "asc" | undefined;
-  } = { field: "ordinal", direction: "asc" },
+  } = { field: "ordinal", direction: "desc" },
   
 ) => {
   const [sortConfig, setSortConfig] = useState(config);
