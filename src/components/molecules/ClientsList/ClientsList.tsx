@@ -71,7 +71,7 @@ export const columns = [
   },
   {
     field: "actions",
-    headerName: "Правки",
+    headerName: "",
     width: 20,
     sorting: false,
     search: false,
