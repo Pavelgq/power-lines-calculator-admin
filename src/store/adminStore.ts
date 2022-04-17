@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { start } from "repl";
-import { AdminDataInterface } from "../interfaces/admin.interface";
+import { AdminDataInterface, AdminFullInterface } from "../interfaces/admin.interface";
 import { RootState } from "./store";
 
 export interface AdminStoreI {
   info: AdminDataInterface | null;
+  admins: AdminFullInterface[];
   isLoading: boolean;
   error: Error | null;
   auth: boolean;
@@ -14,6 +15,7 @@ export interface AdminStoreI {
 
 const initialState: AdminStoreI = {
   info: null,
+  admins: [],
   isLoading: false,
   error: null,
   auth: false,
@@ -57,8 +59,17 @@ export const adminSlice = createSlice({
       state.auth = true;
     },
     getAdminFailure: (state, action) => {
-      console.log(action.payload);
       state.error = action.payload.message;
+      state.isLoading = false;
+    },
+    getAdminsFetch: (state, action) => {
+      // state.isLoading = true;
+    },
+    getAdminsSuccess: (state, action) => {
+      state.admins = action.payload;
+      state.isLoading = false;
+    },
+    getAdminsFailure: (state, action) => {
       state.isLoading = false;
     },
     createAdminFetch: (state, action) => {
@@ -111,7 +122,10 @@ export const {
   getAdminFetch,
   getAdminSuccess,
   getAdminFailure,
+  getAdminsFetch,
   createAdminFetch,
+  getAdminsSuccess,
+  getAdminsFailure,
   createAdminSuccess,
   createAdminFailure,
   changeAdminFetch,
@@ -125,6 +139,7 @@ export const {
 export default adminSlice.reducer;
 
 export const selectCurrentAdmin = (state: RootState) => state.admin.info;
+export const selectAdmins = (state: RootState) => state.admin.admins;
 export const selectIsAuthenticated = (state: RootState) => state.admin.auth;
 export const selectIsError = (state: RootState) => state.admin.error;
 export const selectIsLoadingAdmin = (state: RootState) => state.admin.isLoading;

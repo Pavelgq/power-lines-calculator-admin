@@ -26,6 +26,8 @@ import { ClientRowMenu } from "../ClientRowMenu/ClientRowMenu";
 import { Loading } from "../../atoms/Loading/Loading";
 import { columns } from "../ClientsList/ClientsList";
 
+import styles from "./ClientTable.module.css";
+
 export function ClientTable({
   searchValue,
   setSearchValue,
@@ -55,7 +57,12 @@ export function ClientTable({
           <TableHead>
             <TableRow>
               {columns.map((n) => (
-                <TableCell key={n.field} align="center" sx={{ width: n.width }}>
+                <TableCell
+                  key={n.field}
+                  align="center"
+                  sx={{ width: n.width }}
+                  className={styles.tableCell}
+                >
                   {n.sorting ? (
                     <TableSortLabel
                       active
@@ -118,7 +125,7 @@ export function ClientTable({
                       scope="row"
                       align="center"
                       sx={{ maxWidth: columns[2].width }}
-                      className="no-wrap-text fix-table-cell"
+                      // className="no-wrap-text fix-table-cell"
                     >
                       {data[client].company.toUpperCase()}
                     </TableCell>
@@ -127,10 +134,16 @@ export function ClientTable({
                       scope="row"
                       align="center"
                       sx={{ maxWidth: columns[3].width }}
+                      className={styles.tableCell}
                     >
                       {firstUpperChar(data[client].office_position)}
                     </TableCell>
-                    <TableCell component="th" scope="row" align="center">
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      align="center"
+                      className={styles.tableCell}
+                    >
                       <MuiLink href={`tel:${data[client].phone_number}`}>
                         <Typography noWrap variant="body2">
                           {formatePhone(data[client].phone_number)}
@@ -144,7 +157,7 @@ export function ClientTable({
                       component="th"
                       scope="row"
                       align="center"
-                      className="no-wrap-text fix-table-cell"
+                      className={styles.tableCell}
                     >
                       <ClientKey
                         clientId={Number(client)}

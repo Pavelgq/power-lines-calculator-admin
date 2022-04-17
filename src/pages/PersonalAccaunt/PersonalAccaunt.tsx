@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import React, { ReactNode, useState } from "react";
 import { useSelector } from "react-redux";
+import { AdminsTable } from "../../components/molecules/AdminsTable/AdminsTable";
 import { ChangeAdminForm } from "../../components/molecules/ChangeAdminForm/ChangeAdminForm";
 import { ROLES } from "../../interfaces/admin.interface";
 import { selectCurrentAdmin } from "../../store/adminStore";
@@ -32,6 +33,9 @@ export function PersonalAccaunt() {
             {admin?.status === ROLES.ADMIN && (
               <Tab label="Добавить сотрудника" value="2" />
             )}
+            {admin?.status === ROLES.ADMIN && (
+              <Tab label="Все сотрудники" value="3" />
+            )}
           </TabList>
         </Box>
         <TabPanel value="1">
@@ -43,6 +47,10 @@ export function PersonalAccaunt() {
         <TabPanel value="2">
           <Divider sx={{ marginBottom: 2 }} />
           <ChangeAdminForm action="create" />
+        </TabPanel>
+        <TabPanel value="3">
+          <Divider sx={{ marginBottom: 2 }} />
+          <AdminsTable />
         </TabPanel>
       </TabContext>
     </Box>

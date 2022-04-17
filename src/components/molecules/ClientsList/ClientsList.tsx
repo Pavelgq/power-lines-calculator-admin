@@ -25,7 +25,7 @@ export const columns = [
   {
     field: "ordinal",
     headerName: "№",
-    width: 20,
+    width: 40,
     numeric: false,
     sorting: true,
     search: false,
@@ -57,7 +57,7 @@ export const columns = [
   {
     field: "contacts",
     headerName: "Контакты",
-    width: 160,
+    width: 230,
 
     sorting: false,
     search: false,
@@ -65,7 +65,7 @@ export const columns = [
   {
     field: "acceptKey",
     headerName: "Ключ",
-    width: 110,
+    width: 90,
     sorting: false,
     search: false,
   },
@@ -144,8 +144,8 @@ export function ClientsList() {
         alignItems="center"
         spacing={2}
       >
-        <Grid item xs justifyContent="center" alignItems="center">
-          <Container>
+        <Grid item xs={2} justifyContent="space-between" alignItems="center">
+          <Container className={styles.noPadding}>
             <Button
               type="submit"
               variant="contained"
@@ -161,7 +161,7 @@ export function ClientsList() {
             />
           </Container>
         </Grid>
-        <Grid item xs={7}>
+        <Grid item xs={8}>
           <Search
             value={searchValue}
             handleChange={setSearchValue}

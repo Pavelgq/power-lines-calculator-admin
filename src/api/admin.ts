@@ -20,6 +20,12 @@ export class Admin {
     return api.get(`/admin/${id}`);
   }
 
+  getAdmins(token: string) {
+    const api = apiInstance({ token });
+
+    return api.get(`/admin/all`);
+  }
+
   createAdmin(token: string, { login, password, status }: AdminChangeDataInterface) {
     const api = apiInstance({token});
 

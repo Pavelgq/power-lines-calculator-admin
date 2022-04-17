@@ -152,6 +152,8 @@ export function TableCollapsibleRow({
   return (
     <>
       <TableRow>
+        {/* Обычная строка */}
+        {mainTableRow(actionData)}
         <TableCell
           component="th"
           scope="row"
@@ -167,48 +169,44 @@ export function TableCollapsibleRow({
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        {/* Обычная строка */}
-        {mainTableRow(actionData)}
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div">
-                История сессии
-              </Typography>
-              <Table
-                size="small"
-                aria-label="История сессии"
-                sx={{ minWidth: 650 }}
-              >
-                <TableHead>
-                  <TableRow>
-                    {columns
-                      .filter(
-                        (col) => col.field !== "id" && col.field !== "name"
-                      )
-                      .map((n) => (
-                        <TableCell
-                          key={n.field}
-                          align="center"
-                          sx={{ width: n.width }}
-                        >
-                          <span>{n.headerName}</span>
-                        </TableCell>
-                      ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {actionData.group &&
-                    actionData.group.map((subAction) => (
-                      <TableRow key={subAction.id}>
-                        {collapsedTableRow(subAction)}
-                      </TableRow>
+            {/* <Box sx={{ margin: 1 }}> */}
+            <Typography variant="h6" gutterBottom component="div">
+              История сессии
+            </Typography>
+            <Table
+              size="small"
+              aria-label="История сессии"
+              sx={{ minWidth: 650 }}
+            >
+              <TableHead>
+                <TableRow>
+                  {columns
+                    .filter((col) => col.field !== "id" && col.field !== "name")
+                    .map((n) => (
+                      <TableCell
+                        key={n.field}
+                        align="center"
+                        sx={{ width: n.width }}
+                      >
+                        <span>{n.headerName}</span>
+                      </TableCell>
                     ))}
-                </TableBody>
-              </Table>
-            </Box>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {actionData.group &&
+                  actionData.group.map((subAction) => (
+                    <TableRow key={subAction.id}>
+                      {collapsedTableRow(subAction)}
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+            {/* </Box> */}
           </Collapse>
         </TableCell>
       </TableRow>

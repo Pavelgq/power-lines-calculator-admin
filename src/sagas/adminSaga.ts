@@ -13,6 +13,8 @@ import {
   changeAdminSuccess,
   deleteAdminFailure,
   deleteAdminSuccess,
+  getAdminsSuccess,
+  getAdminsFailure,
 } from "../store/adminStore";
 import {
   AdminDataInterface,
@@ -37,6 +39,20 @@ function* loginAdminWorker(action: { payload: any; type: string }) {
     } else {
       yield put(getAdminFailure(e));
     }
+  }
+}
+
+function* getClientsFetchWorker(action: {payload: any, type: string}) {
+  try {
+    const admin = new Admin();
+    const { token } = action.payload;
+
+    const adminData: AxiosResponseHeaders = yield call(admin.getAdmins, token);
+    const formatingAdminData: AdminFullInterface[] = yield adminData.data;
+    yield put(getAdminsSuccess(formatingAdminData));
+  } catch (e) {
+    const error = e as AxiosError;
+     yield put(getAdminsFailure(e));
   }
 }
 
@@ -98,7 +114,7 @@ function* deleteAdminFetchWorker(action: { payload: any; type: string }) {
   try {
     const admin = new Admin();
     console.log(action.payload)
-    const { token, id, login, password } = action.payload;
+    const { token, id } = action.payload;
     const candidate: AxiosResponseHeaders = yield call(
       admin.deleteAdmin,
       id,
@@ -138,6 +154,7 @@ function* adminSaga() {
     takeEvery("admin/changeAdminFetch", changeAdminFetchWorker),
     takeEvery("admin/deleteAdminFetch", deleteAdminFetchWorker),
     takeEvery("admin/profileAdmin", profileAdminWorker),
+    takeEvery("admin/getAdminsFetch", getClientsFetchWorker),
   ]);
 }
 

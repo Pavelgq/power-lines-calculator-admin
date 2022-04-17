@@ -141,13 +141,6 @@ export function ActionTable({
         >
           <TableHead>
             <TableRow>
-              <TableCell
-                align="center"
-                sx={{ width: 34 }}
-                className="noPadding"
-              >
-                <span> </span>
-              </TableCell>
               {columns
                 .filter((col) => col.field !== "filePath")
                 .map((n) => (
@@ -159,6 +152,13 @@ export function ActionTable({
                     <span>{n.headerName}</span>
                   </TableCell>
                 ))}
+              <TableCell
+                align="center"
+                sx={{ width: 34 }}
+                className="noPadding"
+              >
+                <span> </span>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>{dataRows()}</TableBody>
