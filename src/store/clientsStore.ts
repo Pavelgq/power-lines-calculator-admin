@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import moment from "moment";
 import { string } from "yup/lib/locale";
 import { ClientDataInterface } from "../interfaces/client.interface";
 import { RootState } from "./store";
@@ -107,6 +108,7 @@ export const clientsSlice = createSlice({
     "accept/createAcceptKeySuccess": (state, action) => {
       const { clientId } = action.payload;
       state.data[clientId].isAccept = true;
+      state.data[clientId].update = moment().format();
       state.data[clientId].client_key = action.payload.key;
       state.data[clientId].valid_until = action.payload.validDate;
       console.log("createAcceptKeySuccess in client", action);

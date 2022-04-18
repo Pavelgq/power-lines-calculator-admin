@@ -174,9 +174,6 @@ export function TableCollapsibleRow({
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             {/* <Box sx={{ margin: 1 }}> */}
-            <Typography variant="h6" gutterBottom component="div">
-              История сессии
-            </Typography>
             <Table
               size="small"
               aria-label="История сессии"
