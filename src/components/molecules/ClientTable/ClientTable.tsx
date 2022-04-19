@@ -127,7 +127,7 @@ export function ClientTable({
                       sx={{ maxWidth: columns[2].width }}
                       // className="no-wrap-text fix-table-cell"
                     >
-                      {data[client].company.toUpperCase()}
+                      {data[client].company}
                     </TableCell>
                     <TableCell
                       component="th"
@@ -146,7 +146,10 @@ export function ClientTable({
                     >
                       <MuiLink href={`tel:${data[client].phone_number}`}>
                         <Typography noWrap variant="body2">
-                          {formatePhone(data[client].phone_number)}
+                          {
+                            /* {formatePhone(data[client].phone_number)} */
+                            data[client].phone_number
+                          }
                         </Typography>
                       </MuiLink>
                       <MuiLink href={`tel:${data[client].email}`}>
