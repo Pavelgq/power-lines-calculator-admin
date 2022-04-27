@@ -87,13 +87,13 @@ function* changeAdminFetchWorker(action: { payload: any; type: string }) {
   try {
     const admin = new Admin();
     console.log(action.payload)
-    const { token, adminData } = action.payload;
+    const { token, adminData, id } = action.payload;
     if (adminData.password !== adminData.repeatPassword) {
       throw new Error('Пароли не совпадают');
     }
     const candidate: AxiosResponseHeaders = yield call(
       admin.changeAdmin,
-      adminData.id,
+      id,
       token,
       adminData.login,
       adminData.password

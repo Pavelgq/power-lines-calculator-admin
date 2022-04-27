@@ -20,13 +20,13 @@ export function ClientCardList({ items }: ClientCardListProps) {
     return <Loading />;
   }
   return (
-    <div>
+    <Grid container gap={2} direction="column">
       {items.length &&
         items.map((clientId: number) => (
           <Grid item key={clientId}>
             <ClientCard client={data[clientId]} />
           </Grid>
         ))}
-    </div>
+    </Grid>
   );
 }

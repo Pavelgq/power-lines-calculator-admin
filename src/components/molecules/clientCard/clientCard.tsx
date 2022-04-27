@@ -23,6 +23,8 @@ import { AlertDialog } from "../AlertDialog/AlertDialog";
 import { formatePhone } from "../../../helpers/format";
 import { ClientRowMenu } from "../ClientRowMenu/ClientRowMenu";
 
+import styles from "./ClientCard.module.css";
+
 export function ClientCard({
   client,
   color = "white",
@@ -31,18 +33,16 @@ export function ClientCard({
   const dispatch = useDispatch();
 
   return (
-    <Card>
+    <Card className={styles.container}>
       <CardContent>
-        <Link to={`/clients/${client.id}`}>
-          <Typography variant="h5" component="h3">
-            {client.first_name} {client.last_name}
-          </Typography>
-        </Link>
+        <Typography variant="h5" component="h3">
+          {client.first_name} {client.last_name}
+        </Typography>
         <Typography gutterBottom variant="body2" color="text.secondary">
           {client.office_position}
         </Typography>
         <Typography variant="body1" color="text.secondary">
-          Компания &quot;{client.company}&quot;
+          {client.company}
         </Typography>
         <List
           sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
@@ -56,7 +56,7 @@ export function ClientCard({
             <ListItemText
               primary={
                 <MuiLink href={`tel:${client.phone_number}`}>
-                  {formatePhone(client.phone_number)}
+                  {client.phone_number}
                 </MuiLink>
               }
               secondary={
@@ -68,12 +68,11 @@ export function ClientCard({
           </ListItem>
         </List>
         <Typography variant="body2">
-          Ключ:{" "}
-          {/* <ClientKey
-            clientId={Number(client)}
+          <ClientKey
+            clientId={Number(client.id)}
             keyValue={client.client_key}
             lifetime={client.valid_until}
-          /> */}
+          />
         </Typography>
       </CardContent>
       <ClientRowMenu id={client.id} />

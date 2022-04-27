@@ -223,16 +223,20 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
       </Grid>
 
       <Grid item marginTop={2}>
-        <ActionTable
-          data={clientActions}
-          limit={limit}
-          page={page}
-          total={totalItems}
-          sort={sortParams}
-          handleSort={setSortParams}
-          handleChangePage={handleChangePage}
-          handleChangeLimit={handleChangeLimit}
-        />
+        {clientActions?.length ? (
+          <ActionTable
+            data={clientActions}
+            limit={limit}
+            page={page}
+            total={totalItems}
+            sort={sortParams}
+            handleSort={setSortParams}
+            handleChangePage={handleChangePage}
+            handleChangeLimit={handleChangeLimit}
+          />
+        ) : (
+          <span className={styles.notFound}>Действий не найдено</span>
+        )}
       </Grid>
     </Grid>
   );

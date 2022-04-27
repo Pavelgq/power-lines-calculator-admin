@@ -12,47 +12,39 @@ import React, { ReactNode, useState } from "react";
 import { useSelector } from "react-redux";
 import { AdminsTable } from "../../components/molecules/AdminsTable/AdminsTable";
 import { ChangeAdminForm } from "../../components/molecules/ChangeAdminForm/ChangeAdminForm";
+import { EditAdminForm } from "../../components/molecules/EditAdminForm/EditAdminForm";
 import { ROLES } from "../../interfaces/admin.interface";
 import { selectCurrentAdmin } from "../../store/adminStore";
 
 export function PersonalAccaunt() {
   const [value, setValue] = useState("1");
+  const [openCreate, setOpenCreate] = useState(false);
 
   const admin = useSelector(selectCurrentAdmin);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setValue(newValue);
+  const handleCreate = () => {
+    if (admin?.status === "admin") {
+      setOpenCreate(!openCreate);
+    }
   };
 
   return (
     <Box sx={{ width: "100%", typography: "body1" }}>
-      <TabContext value={value}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs example">
-            <Tab label="Изменить данные аккаунта" value="1" />
-            {admin?.status === ROLES.ADMIN && (
-              <Tab label="Добавить сотрудника" value="2" />
-            )}
-            {admin?.status === ROLES.ADMIN && (
-              <Tab label="Все сотрудники" value="3" />
-            )}
-          </TabList>
-        </Box>
-        <TabPanel value="1">
-          <Divider sx={{ marginBottom: 2 }} />
-          <ChangeAdminForm action="change" />
-          <Divider sx={{ marginTop: 2, marginBottom: 2 }} />
-          <Button variant="contained">Удалить аккаунт</Button>
-        </TabPanel>
-        <TabPanel value="2">
-          <Divider sx={{ marginBottom: 2 }} />
-          <ChangeAdminForm action="create" />
-        </TabPanel>
-        <TabPanel value="3">
-          <Divider sx={{ marginBottom: 2 }} />
-          <AdminsTable />
-        </TabPanel>
-      </TabContext>
+      <EditAdminForm
+        action="create"
+        open={openCreate}
+        setOpen={setOpenCreate}
+      />
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        onClick={handleCreate}
+      >
+        Добавить администратора
+      </Button>
+      {/* <Divider sx={{ marginBottom: 2 }} /> */}
+      <AdminsTable />
     </Box>
   );
 }

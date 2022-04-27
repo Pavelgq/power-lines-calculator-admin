@@ -26,9 +26,7 @@ export function AlertDialog({
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">
-        Вы уверены, что хотите удалить пользователя?
-      </DialogTitle>
+      <DialogTitle id="alert-dialog-title">Вы уверены?</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
           Удаление приведет к безвозвратной потере данных.

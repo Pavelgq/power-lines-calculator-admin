@@ -87,14 +87,22 @@ export const adminSlice = createSlice({
       state.isLoading = true;
     },
     changeAdminSuccess: (state, action) => {
-      state.info = {
+      const adminData = {
         id: action.payload.id,
         login: action.payload.login,
         status: action.payload.status,
       };
-      state.token = action.payload.token;
-      localStorage.setItem('token', action.payload.token);
-      state.auth = true;
+     
+      if (action.payload.id === state.info?.id) {
+        state.info = adminData;
+        state.token = action.payload.token;
+        localStorage.setItem('token', action.payload.token)
+        state.auth = true;
+      } else {
+        const adminIndex = state.admins.findIndex(el => el.id === action.payload.id);
+        state.admins[adminIndex] = {token: action.payload.token, ...adminData};
+      };
+      
       state.isLoading = false;
     },
     changeAdminFailure: (state, action) => {
