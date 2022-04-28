@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Paper,
   Table,
@@ -17,13 +18,13 @@ import { AdminFullInterface } from "../../../interfaces/admin.interface";
 import {
   deleteAdminFetch,
   getAdminsFetch,
-  selectAdmins,
+  selectAllAdmins,
 } from "../../../store/adminStore";
 import { ClientRowMenu } from "../ClientRowMenu/ClientRowMenu";
 import { AdminRowMenu } from "../AdminRowMenu/AdminRowMenu";
 
 const columns = [
-  { field: "id", headerName: "ID", width: 70 },
+  { field: "id", headerName: "№", width: 70 },
   { field: "login", headerName: "Логин", width: 130 },
   { field: "status", headerName: "Статус", width: 130 },
   // { field: "action", headerName: "Действия", width: 50 },
@@ -32,7 +33,7 @@ const columns = [
 export function AdminsTable() {
   const dispatch = useDispatch();
   const [adminsData, setAdminsData] = useState<AdminFullInterface[]>([]);
-  const admins = useSelector(selectAdmins);
+  const admins = useSelector(selectAllAdmins);
   const [token] = useLocalStorage("token");
 
   useEffect(() => {
@@ -47,13 +48,13 @@ export function AdminsTable() {
   }, []);
   return (
     <TableContainer component={Paper}>
-      <Table>
+      <Table sx={{ minWidth: 1000 }} size="small">
         <TableHead>
           <TableRow>
             {columns.map((column, i) => (
               <TableCell key={column.field}>{column.headerName}</TableCell>
             ))}
-            <TableCell>Действия</TableCell>
+            <TableCell> </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

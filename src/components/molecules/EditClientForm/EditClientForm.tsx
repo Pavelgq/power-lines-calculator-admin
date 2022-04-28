@@ -50,6 +50,7 @@ export function EditClientForm({
     reset,
     handleSubmit,
     watch,
+    trigger,
     formState: { errors },
   } = useForm<ClientDataInterface>({
     resolver: yupResolver(schema),
@@ -68,9 +69,10 @@ export function EditClientForm({
     setOpen(false);
   };
 
-  const handleAction = () => {
-    handleSubmit(onSubmit);
-    if (Object.keys(errors).length === 0) {
+  const handleAction = async () => {
+    const result = await trigger();
+    if (result && Object.keys(errors).length === 0) {
+      handleSubmit(onSubmit);
       handleClose();
     }
   };

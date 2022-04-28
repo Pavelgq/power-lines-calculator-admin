@@ -35,16 +35,20 @@ export function PersonalAccaunt() {
         open={openCreate}
         setOpen={setOpenCreate}
       />
-      <Button
-        type="submit"
-        variant="contained"
-        color="primary"
-        onClick={handleCreate}
-      >
-        Добавить администратора
-      </Button>
+
       {/* <Divider sx={{ marginBottom: 2 }} /> */}
-      <AdminsTable />
+      <Container maxWidth="lg">
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          onClick={handleCreate}
+          sx={{ marginBottom: 5 }}
+        >
+          Добавить сотрудника
+        </Button>
+        <AdminsTable />
+      </Container>
     </Box>
   );
 }

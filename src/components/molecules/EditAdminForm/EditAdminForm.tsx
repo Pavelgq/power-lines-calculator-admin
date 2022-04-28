@@ -17,10 +17,11 @@ import { AdminChangeDataInterface } from "../../../interfaces/admin.interface";
 import {
   changeAdminFetch,
   createAdminFetch,
-  selectAdmins,
+  selectAllAdmins,
   selectCurrentAdmin,
 } from "../../../store/adminStore";
 import useLocalStorage from "../../../hooks/useLocalStorage";
+import { CustomSnackbar } from "../CustomSnackbar/CustomSnackbar";
 
 interface EditAdminFormProps {
   action: "change" | "create";
@@ -43,17 +44,18 @@ export function EditAdminForm({
   const admin =
     action === "create"
       ? useSelector(selectCurrentAdmin)
-      : useSelector(selectAdmins)[id];
+      : useSelector(selectAllAdmins).find((el) => el.id === id);
   const {
     control,
     register,
     reset,
     handleSubmit,
     watch,
+    trigger,
     formState: { errors },
   } = useForm<AdminChangeDataInterface>({
     resolver: yupResolver(schema),
-    defaultValues: action === "change" ? { ...admin } : {},
+    defaultValues: action === "change" ? { login: admin?.login } : {},
   });
   const [token] = useLocalStorage("token");
 
@@ -71,9 +73,10 @@ export function EditAdminForm({
     setOpen(false);
   };
 
-  const handleAction = () => {
-    handleSubmit(onSubmit);
-    if (Object.keys(errors).length === 0) {
+  const handleAction = async () => {
+    const result = await trigger();
+    if (result && Object.keys(errors).length === 0) {
+      handleSubmit(onSubmit);
       handleClose();
     }
   };

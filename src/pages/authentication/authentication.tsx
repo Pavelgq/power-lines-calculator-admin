@@ -19,6 +19,7 @@ import {
   selectIsError,
 } from "../../store/adminStore";
 import styles from "./Authentication.module.css";
+import { CustomSnackbar } from "../../components/molecules/CustomSnackbar/CustomSnackbar";
 
 export function Authentication(): JSX.Element {
   const [login, setLogin] = useState<string>("");
@@ -59,23 +60,23 @@ export function Authentication(): JSX.Element {
   return (
     <Grid container spacing={2} direction="column" alignItems="center">
       {auth && (
-        <Snackbar open={auth} autoHideDuration={1000}>
-          <Alert severity="success" sx={{ width: "100%" }}>
-            Авторизация успешна!
-          </Alert>
-        </Snackbar>
+        <CustomSnackbar
+          trigger={auth}
+          message="Авторизация успешна!"
+          variant="success"
+        />
+      )}
+      {error && (
+        <CustomSnackbar
+          trigger={error && true}
+          message={error}
+          variant="error"
+        />
       )}
       <Grid item>
         <Typography variant="h5" component="h2">
           Авторизация
         </Typography>
-      </Grid>
-      <Grid item>
-        {error && (
-          <Snackbar open={error && true} autoHideDuration={1000}>
-            <Alert severity="error">{error}</Alert>
-          </Snackbar>
-        )}
       </Grid>
       <Grid item>
         <form onSubmit={handleSubmit}>

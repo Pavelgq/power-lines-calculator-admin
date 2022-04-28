@@ -1,5 +1,5 @@
 import { Tooltip, IconButton, Menu, MenuItem, Typography } from "@mui/material";
-import { useState, MouseEvent } from "react";
+import { useState, MouseEvent, useEffect } from "react";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +11,13 @@ import {
 } from "../../../store/clientsStore";
 import { AdminRowMenuProps } from "./AdminRowMenu.props";
 import { EditAdminForm } from "../EditAdminForm/EditAdminForm";
-import { deleteAdminFetch } from "../../../store/adminStore";
+import {
+  deleteAdminFetch,
+  selectAllAdmins,
+  selectCurrentAdmin,
+  selectIsError,
+} from "../../../store/adminStore";
+import { CustomSnackbar } from "../CustomSnackbar/CustomSnackbar";
 
 export function AdminRowMenu({ id }: AdminRowMenuProps): JSX.Element {
   const navigate = useNavigate();
@@ -22,8 +28,22 @@ export function AdminRowMenu({ id }: AdminRowMenuProps): JSX.Element {
   const [token] = useLocalStorage("token");
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
-  const clientData = useSelector(selectAllClients)[id];
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const adminData = useSelector(selectAllAdmins).find((el) => el.id === id);
+  const currentData = useSelector(selectCurrentAdmin);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (success.length > 0) {
+        setSuccess("");
+      }
+      if (error.length > 0) {
+        setError("");
+      }
+    }, 1000);
+  }, [error]);
 
   const handleOpenActionMenu = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorElAction(event.currentTarget);
@@ -37,6 +57,13 @@ export function AdminRowMenu({ id }: AdminRowMenuProps): JSX.Element {
     if (!id) {
       return;
     }
+    if (
+      adminData?.status === "admin" &&
+      adminData.id !== Number(currentData?.id)
+    ) {
+      setError("Вы не можете изменить данные другого администратора");
+      return;
+    }
     setOpenUpdate(!openUpdate);
     handleCloseActionMenu();
   };
@@ -44,6 +71,14 @@ export function AdminRowMenu({ id }: AdminRowMenuProps): JSX.Element {
     if (!id) {
       return;
     }
+    if (
+      adminData?.status === "admin" &&
+      adminData.id !== Number(currentData?.id)
+    ) {
+      setError("Вы не можете удалить другого администратора");
+      return;
+    }
+
     setOpenAlert(!openAlert);
     handleCloseActionMenu();
   };
@@ -56,6 +91,20 @@ export function AdminRowMenu({ id }: AdminRowMenuProps): JSX.Element {
 
   return (
     <>
+      {error && (
+        <CustomSnackbar
+          trigger={error.length > 0}
+          message={error}
+          variant="error"
+        />
+      )}
+      {success && (
+        <CustomSnackbar
+          trigger={success.length > 0}
+          message={success}
+          variant="success"
+        />
+      )}
       <EditAdminForm
         action="change"
         open={openUpdate}
@@ -96,7 +145,7 @@ export function AdminRowMenu({ id }: AdminRowMenuProps): JSX.Element {
           <Typography textAlign="center">Изменить данные</Typography>
         </MenuItem>
         <MenuItem onClick={handleToggleAlert}>
-          <Typography textAlign="center">Удалить аккаунт</Typography>
+          <Typography textAlign="center">Удалить сотрудника</Typography>
         </MenuItem>
       </Menu>
     </>

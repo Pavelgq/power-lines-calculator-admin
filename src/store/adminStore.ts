@@ -28,6 +28,7 @@ export const adminSlice = createSlice({
   initialState,
   reducers: {
     loginAdmin: (state, action) => {
+      state.error = null;
       state.isLoading = true;
       state.info = action.payload;
     },
@@ -147,7 +148,7 @@ export const {
 export default adminSlice.reducer;
 
 export const selectCurrentAdmin = (state: RootState) => state.admin.info;
-export const selectAdmins = (state: RootState) => state.admin.admins;
+export const selectAllAdmins = (state: RootState) => state.admin.admins;
 export const selectIsAuthenticated = (state: RootState) => state.admin.auth;
 export const selectIsError = (state: RootState) => state.admin.error;
 export const selectIsLoadingAdmin = (state: RootState) => state.admin.isLoading;
