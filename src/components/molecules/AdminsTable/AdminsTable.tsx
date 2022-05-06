@@ -60,7 +60,7 @@ export function AdminsTable() {
         <TableBody>
           {adminsData.map((admin, i) => (
             <TableRow key={admin.login}>
-              <TableCell>{admin.id}</TableCell>
+              <TableCell>{i + 1}</TableCell>
               <TableCell>{admin.login}</TableCell>
               <TableCell>{admin.status}</TableCell>
               <TableCell>

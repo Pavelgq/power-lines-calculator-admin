@@ -195,6 +195,9 @@ export function TableCollapsibleRow({
                 </TableRow>
               </TableHead>
               <TableBody>
+                <TableRow key={actionData.id}>
+                  {collapsedTableRow(actionData)}
+                </TableRow>
                 {actionData.group &&
                   actionData.group.map((subAction) => (
                     <TableRow key={subAction.id}>

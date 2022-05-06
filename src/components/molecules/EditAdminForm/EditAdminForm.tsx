@@ -61,8 +61,6 @@ export function EditAdminForm({
 
   const dispatch = useDispatch();
   const onSubmit: SubmitHandler<AdminChangeDataInterface> = (adminData) => {
-    console.log(adminData);
-
     dispatch(
       action === "change"
         ? changeAdminFetch({ adminData, id, token })
