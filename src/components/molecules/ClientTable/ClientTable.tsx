@@ -65,6 +65,7 @@ export function ClientTable({
                 >
                   {n.sorting ? (
                     <TableSortLabel
+                      className={styles.tableSortLabel}
                       active
                       direction={
                         sortConfig.field === n.field
