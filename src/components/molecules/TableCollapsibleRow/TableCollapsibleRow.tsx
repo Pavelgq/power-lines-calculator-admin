@@ -71,22 +71,33 @@ export function TableCollapsibleRow({
         {moment(action.date, moment.ISO_8601).format("HH:mm")}
       </TableCell>
 
-      <TableCell component="th" scope="row" align="center">
-        <Typography variant="body2">
-          {ProgramType[action.program_type]}
-        </Typography>
-        <Typography variant="body2">
-          {Categories[action.type] as string}
-        </Typography>
-      </TableCell>
       <TableCell
         component="th"
         scope="row"
         align="center"
-        sx={{ maxWidth: columns[4].width }}
+        sx={{ maxWidth: columns[3].width }}
         className="no-wrap-text fix-table-cell"
       >
-        <Typography variant="body2">{action.project_name}</Typography>
+        <Typography variant="body2">
+          {(action.group?.length &&
+            Math.round(
+              moment
+                .duration(
+                  moment(action.group[action.group.length - 1].date || "").diff(
+                    moment(action.date)
+                  )
+                )
+                .asMinutes()
+            )) ||
+            "< 1"}{" "}
+          мин.
+        </Typography>
+      </TableCell>
+
+      <TableCell component="th" scope="row" align="center">
+        <Typography variant="body2">
+          {ProgramType[action.program_type]}
+        </Typography>
       </TableCell>
 
       <TableCell

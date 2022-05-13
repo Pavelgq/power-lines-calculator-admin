@@ -32,7 +32,56 @@ export interface ActionColumnParamsI {
   sorting: boolean;
   search: boolean;
 }
-
+const headerColumns: ActionColumnParamsI[] = [
+  {
+    field: "id",
+    headerName: "№",
+    width: 20,
+    numeric: false,
+    sorting: true,
+    search: false,
+  },
+  {
+    field: "name",
+    headerName: "ФИО",
+    width: 90,
+    numeric: false,
+    sorting: true,
+    search: true,
+  },
+  {
+    field: "date",
+    headerName: "Время захода",
+    width: 70,
+    numeric: false,
+    sorting: true,
+    search: true,
+  },
+  {
+    field: "session",
+    headerName: "Длительность",
+    width: 70,
+    numeric: false,
+    sorting: false,
+    search: true,
+  },
+  {
+    field: "program_name",
+    headerName: "Программа",
+    width: 70,
+    numeric: false,
+    sorting: true,
+    search: true,
+  },
+  {
+    field: "params",
+    headerName: "Параметры",
+    width: 120,
+    numeric: false,
+    sorting: false,
+    search: false,
+  },
+];
 const columns: ActionColumnParamsI[] = [
   {
     field: "id",
@@ -141,17 +190,11 @@ export function ActionTable({
         >
           <TableHead>
             <TableRow>
-              {columns
-                .filter((col) => col.field !== "filePath")
-                .map((n) => (
-                  <TableCell
-                    key={n.field}
-                    align="center"
-                    sx={{ width: n.width }}
-                  >
-                    <span>{n.headerName}</span>
-                  </TableCell>
-                ))}
+              {headerColumns.map((n) => (
+                <TableCell key={n.field} align="center" sx={{ width: n.width }}>
+                  <span>{n.headerName}</span>
+                </TableCell>
+              ))}
               <TableCell
                 align="center"
                 sx={{ width: 34 }}
