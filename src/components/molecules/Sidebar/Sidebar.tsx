@@ -10,6 +10,7 @@ import {
   Button,
   Tooltip,
   Avatar,
+  Badge,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { FormEvent, MouseEvent, useState } from "react";
@@ -24,6 +25,10 @@ import {
 } from "../../../store/adminStore";
 
 const pages = [
+  {
+    title: "Запросы",
+    link: "/requests",
+  },
   {
     title: "Пользователи",
     link: "/clients",
@@ -124,13 +129,16 @@ export function Sidebar() {
                 }}
               >
                 {pages.map((page) => (
-                  <MenuItem
-                    key={page.title}
-                    onClick={() => handleNav(page.link)}
-                  >
-                    <Link to={page.link} />
-                    <Typography textAlign="center">{page.title}</Typography>
-                  </MenuItem>
+                  <Badge badgeContent={4} color="secondary">
+                    <MenuItem
+                      key={page.title}
+                      onClick={() => handleNav(page.link)}
+                    >
+                      <Link to={page.link} />
+
+                      <Typography textAlign="center">{page.title}</Typography>
+                    </MenuItem>
+                  </Badge>
                 ))}
               </Menu>
             </Box>
@@ -144,14 +152,20 @@ export function Sidebar() {
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages.map((page) => (
-                <Button
-                  className={styles.menuItem}
-                  key={page.title}
-                  onClick={() => handleNav(page.link)}
-                  sx={{ my: 2, color: "white", display: "block" }}
+                <Badge
+                  badgeContent={2}
+                  color="secondary"
+                  className={styles.wrapper}
                 >
-                  {page.title}
-                </Button>
+                  <Button
+                    className={styles.menuItem}
+                    key={page.title}
+                    onClick={() => handleNav(page.link)}
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
+                    {page.title}
+                  </Button>
+                </Badge>
               ))}
             </Box>
             <Typography variant="body1" sx={{ marginRight: 1 }}>

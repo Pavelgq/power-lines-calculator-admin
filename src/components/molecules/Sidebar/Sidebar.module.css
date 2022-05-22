@@ -2,10 +2,18 @@
   margin-bottom: 30px;
 }
 
+.wrapper .menuItem {
+   margin-left: 1.5rem;
+}
+
+.wrapper:first-child .menuItem {
+  margin-left: 0;
+}
+
 .menuItem {
   margin-top: 4px;
   margin-bottom: 4px;
-  margin-right: 1.5rem;
+ 
   font-family: TTNormsMedium,
   Arial,
   serif;
@@ -21,6 +29,7 @@
   overflow: hidden;
   border-radius: 0;
 }
+
 
 .menuItem::before {
   background: none repeat scroll 0 0 transparent;

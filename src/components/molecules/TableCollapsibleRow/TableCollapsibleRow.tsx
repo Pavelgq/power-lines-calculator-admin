@@ -90,7 +90,7 @@ export function TableCollapsibleRow({
                 .asMinutes()
             )) ||
             "< 1"}{" "}
-          мин.
+          мин
         </Typography>
       </TableCell>
 
@@ -120,14 +120,14 @@ export function TableCollapsibleRow({
         sx={{ maxWidth: columns[2].width }}
         className="no-wrap-text fix-table-cell"
       >
-        {moment(action.date, moment.ISO_8601).format("DD.MM.YYYY")}
-        <br />
+        {/* {moment(action.date, moment.ISO_8601).format("DD.MM.YYYY")}
+        <br /> */}
         {moment(action.date, moment.ISO_8601).format("HH:mm")}
       </TableCell>
 
       <TableCell component="th" scope="row" align="center">
         <Typography variant="body2">
-          {ProgramType[action.program_type]}
+          {/* {ProgramType[action.program_type]} */}
         </Typography>
         <Typography variant="body2">
           {Categories[action.type] as string}
