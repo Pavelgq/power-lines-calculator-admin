@@ -42,7 +42,7 @@ function* loginAdminWorker(action: { payload: any; type: string }) {
   }
 }
 
-function* getClientsFetchWorker(action: {payload: any, type: string}) {
+function* getClientsFetchWorker(action: { payload: any; type: string }) {
   try {
     const admin = new Admin();
     const { token } = action.payload;
@@ -52,7 +52,7 @@ function* getClientsFetchWorker(action: {payload: any, type: string}) {
     yield put(getAdminsSuccess(formatingAdminData));
   } catch (e) {
     const error = e as AxiosError;
-     yield put(getAdminsFailure(e));
+    yield put(getAdminsFailure(e));
   }
 }
 
@@ -63,21 +63,25 @@ function* createAdminFetchWorker(action: { payload: any; type: string }) {
     const { token, adminData } = action.payload;
 
     if (adminData.password !== adminData.repeatPassword) {
-      throw new Error('Пароли не совпадают');
+      throw new Error("Пароли не совпадают");
     }
 
     const candidate: AxiosResponseHeaders = yield call(
       admin.createAdmin,
-      token, 
-      {login: adminData.login, password: adminData.password, status: ROLES.USER}
+      token,
+      {
+        login: adminData.login,
+        password: adminData.password,
+        status: ROLES.USER,
+      }
     );
 
     const res: AdminFullInterface = yield candidate.data;
     console.log(res);
     yield put(createAdminSuccess(res));
   } catch (e) {
-    if (typeof e  === 'string') {
-      yield put(createAdminFailure({message: e}));
+    if (typeof e === "string") {
+      yield put(createAdminFailure({ message: e }));
     }
     yield put(createAdminFailure(e));
   }
@@ -86,10 +90,10 @@ function* createAdminFetchWorker(action: { payload: any; type: string }) {
 function* changeAdminFetchWorker(action: { payload: any; type: string }) {
   try {
     const admin = new Admin();
-    console.log(action.payload)
+    console.log(action.payload);
     const { token, adminData, id } = action.payload;
     if (adminData.password !== adminData.repeatPassword) {
-      throw new Error('Пароли не совпадают');
+      throw new Error("Пароли не совпадают");
     }
     const candidate: AxiosResponseHeaders = yield call(
       admin.changeAdmin,
@@ -103,8 +107,8 @@ function* changeAdminFetchWorker(action: { payload: any; type: string }) {
     console.log(res);
     yield put(changeAdminSuccess(res));
   } catch (e) {
-    if (typeof e  === 'string') {
-      yield put(changeAdminFailure({message: e}));
+    if (typeof e === "string") {
+      yield put(changeAdminFailure({ message: e }));
     }
     yield put(changeAdminFailure(e));
   }
@@ -113,12 +117,12 @@ function* changeAdminFetchWorker(action: { payload: any; type: string }) {
 function* deleteAdminFetchWorker(action: { payload: any; type: string }) {
   try {
     const admin = new Admin();
-    console.log(action.payload)
+    console.log(action.payload);
     const { token, id } = action.payload;
     const candidate: AxiosResponseHeaders = yield call(
       admin.deleteAdmin,
       id,
-      token,
+      token
     );
 
     const res: AdminFullInterface = yield candidate.data;

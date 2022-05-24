@@ -18,46 +18,49 @@ export const stableSort = <T>(
 export const isNumber = (data: string) =>
   Number.isInteger(Number(data)) ? Number(data) : data;
 
-
 export const checkTimeInterval = (time: string, interval: string): boolean => {
-  
-
-  if (!time && interval !== 'all') {
+  if (!time && interval !== "all") {
     return false;
   }
   switch (interval) {
-    case 'all': 
-      console.log(time, interval, moment(time).format(), moment().subtract(1, 'years').format(), moment(time).isAfter(moment().subtract(1, 'year') ) );
+    case "all":
+      console.log(
+        time,
+        interval,
+        moment(time).format(),
+        moment().subtract(1, "years").format(),
+        moment(time).isAfter(moment().subtract(1, "year"))
+      );
       return true;
-    case 'day':
-      if (moment(time).isAfter(moment().subtract(1, 'days') )) {
+    case "day":
+      if (moment(time).isAfter(moment().subtract(1, "days"))) {
         return true;
       }
-    break;
-    case 'week':
-      if (moment(time).isAfter(moment().subtract(7, 'days') )) {
+      break;
+    case "week":
+      if (moment(time).isAfter(moment().subtract(7, "days"))) {
         return true;
       }
-    break;
-    case 'month':
-      if (moment(time).isAfter(moment().subtract(1, 'months') )) {
+      break;
+    case "month":
+      if (moment(time).isAfter(moment().subtract(1, "months"))) {
         return true;
       }
-    break;
-    case 'quarter':
-      if (moment(time).isAfter(moment().subtract(3, 'months') )) {
+      break;
+    case "quarter":
+      if (moment(time).isAfter(moment().subtract(3, "months"))) {
         return true;
       }
-    break;
-    case 'year':
-      if (moment(time).isAfter(moment().subtract(1, 'years') )) {
+      break;
+    case "year":
+      if (moment(time).isAfter(moment().subtract(1, "years"))) {
         return true;
       }
-    break;
-  
+      break;
+
     default:
       break;
   }
 
   return false;
-}
+};

@@ -10,18 +10,21 @@ export const useSortableData = <T extends { [id: string]: any }>(
   config: {
     field: string;
     direction: "desc" | "asc" | undefined;
-  } = { field: "ordinal", direction: "desc" },
-  
+  } = { field: "ordinal", direction: "desc" }
 ) => {
   const [sortConfig, setSortConfig] = useState(config);
 
   const sortedItems = useMemo(() => {
     let sortableItems = [...items];
-    if (searchValue ) {
+    if (searchValue) {
       sortableItems = sortableItems.filter((id) => {
         for (let i = 0; i < searchFields.length; i += 1) {
           const currentField = searchFields[i];
-          if (sortData[id][currentField].toLowerCase().includes(searchValue.toLowerCase())) {
+          if (
+            sortData[id][currentField]
+              .toLowerCase()
+              .includes(searchValue.toLowerCase())
+          ) {
             return true;
           }
         }
@@ -29,10 +32,10 @@ export const useSortableData = <T extends { [id: string]: any }>(
       });
     }
 
-    if (timeInterval !== 'all') {
+    if (timeInterval !== "all") {
       sortableItems = sortableItems.filter((id) => {
         for (let i = 0; i < searchFields.length; i += 1) {
-          console.log(sortData[id].update, timeInterval)
+          console.log(sortData[id].update, timeInterval);
           if (checkTimeInterval(sortData[id].update, timeInterval)) {
             return true;
           }

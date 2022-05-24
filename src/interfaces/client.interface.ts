@@ -11,4 +11,6 @@ export interface ClientDataInterface {
   update?: string;
   valid_until?: string;
   isAccept?: boolean;
+  request?: boolean;
 }
+

@@ -6,11 +6,12 @@ import {
   Typography,
   ButtonBase,
   Popover,
+  Button,
 } from "@mui/material";
 import { useState, MouseEvent } from "react";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ClientRowMenuInterface } from "./ClientRowMenu.interface";
 import { EditClientForm } from "../EditClientForm/EditClientForm";
 import useLocalStorage from "../../../hooks/useLocalStorage";
@@ -25,6 +26,7 @@ export function ClientRowMenu({
   id,
   isKey = false,
 }: ClientRowMenuInterface): JSX.Element {
+  const location = useLocation();
   const navigate = useNavigate();
   const [anchorElAction, setAnchorElAction] = useState<null | HTMLElement>(
     null

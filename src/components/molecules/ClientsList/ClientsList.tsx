@@ -29,6 +29,7 @@ export const columns = [
     numeric: false,
     sorting: true,
     search: false,
+    request: true,
   },
   {
     field: "last_name",
@@ -37,6 +38,7 @@ export const columns = [
     numeric: false,
     sorting: true,
     search: true,
+    request: true,
   },
   {
     field: "company",
@@ -45,6 +47,7 @@ export const columns = [
     numeric: false,
     sorting: true,
     search: true,
+    request: true,
   },
   {
     field: "office_position",
@@ -53,6 +56,7 @@ export const columns = [
     numeric: false,
     sorting: false,
     search: false,
+    request: true,
   },
   {
     field: "contacts",
@@ -61,6 +65,7 @@ export const columns = [
 
     sorting: false,
     search: false,
+    request: true,
   },
   {
     field: "acceptKey",
@@ -75,6 +80,7 @@ export const columns = [
     width: 20,
     sorting: false,
     search: false,
+    request: true,
   },
 ];
 

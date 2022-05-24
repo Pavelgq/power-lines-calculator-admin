@@ -74,8 +74,13 @@ export function Authentication(): JSX.Element {
         />
       )}
       <Grid item>
+        <Typography variant="h4" component="h1" hidden>
+          Программа ТЭК - администратор
+        </Typography>
+      </Grid>
+      <Grid item>
         <Typography variant="h5" component="h2">
-          Авторизация
+          Вход для сотрудника
         </Typography>
       </Grid>
       <Grid item>

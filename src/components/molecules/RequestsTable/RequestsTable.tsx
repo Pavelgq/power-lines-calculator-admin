@@ -28,7 +28,7 @@ import { columns } from "../ClientsList/ClientsList";
 
 import styles from "./ClientTable.module.css";
 
-export function ClientTable({
+export function RequestsTable({
   searchValue,
   setSearchValue,
   sortConfig,
@@ -58,7 +58,7 @@ export function ClientTable({
         >
           <TableHead>
             <TableRow>
-              {columns.map((n) => (
+              {columns.filter((n) => n.request).map((n) => (
                 <TableCell
                   key={n.field}
                   align="center"

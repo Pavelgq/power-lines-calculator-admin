@@ -1,4 +1,7 @@
-import { AdminChangeDataInterface, AdminLoginInterface } from "../interfaces/admin.interface";
+import {
+  AdminChangeDataInterface,
+  AdminLoginInterface,
+} from "../interfaces/admin.interface";
 import { apiInstance } from "./instance";
 
 export class Admin {
@@ -26,20 +29,23 @@ export class Admin {
     return api.get(`/admin/all`);
   }
 
-  createAdmin(token: string, { login, password, status }: AdminChangeDataInterface) {
-    const api = apiInstance({token});
+  createAdmin(
+    token: string,
+    { login, password, status }: AdminChangeDataInterface
+  ) {
+    const api = apiInstance({ token });
 
     return api.post("/admin/create", { login, password, status });
   }
 
   changeAdmin(id: number, token: string, login: string, password: string) {
-    const api = apiInstance({token});
+    const api = apiInstance({ token });
 
     return api.put(`/admin/${id}`, { login, password });
   }
 
-  deleteAdmin(id:number, token: string) {
-    const api = apiInstance({token});
+  deleteAdmin(id: number, token: string) {
+    const api = apiInstance({ token });
 
     return api.delete(`/admin/${id}`);
   }

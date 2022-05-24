@@ -19,7 +19,6 @@ export interface AdminChangeDataInterface {
   status: ROLES;
 }
 
-
 export interface AdminLoginInterface {
   login: string;
   password: string;

@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { start } from "repl";
-import { AdminDataInterface, AdminFullInterface } from "../interfaces/admin.interface";
+import {
+  AdminDataInterface,
+  AdminFullInterface,
+} from "../interfaces/admin.interface";
 import { RootState } from "./store";
 
 export interface AdminStoreI {
@@ -20,7 +23,7 @@ const initialState: AdminStoreI = {
   error: null,
   auth: false,
   token: "",
-  message: ""
+  message: "",
 };
 
 export const adminSlice = createSlice({
@@ -84,7 +87,6 @@ export const adminSlice = createSlice({
       state.isLoading = false;
     },
     changeAdminFetch: (state, action) => {
-      
       state.isLoading = true;
     },
     changeAdminSuccess: (state, action) => {
@@ -93,17 +95,22 @@ export const adminSlice = createSlice({
         login: action.payload.login,
         status: action.payload.status,
       };
-     
+
       if (action.payload.id === state.info?.id) {
         state.info = adminData;
         state.token = action.payload.token;
-        localStorage.setItem('token', action.payload.token)
+        localStorage.setItem("token", action.payload.token);
         state.auth = true;
       } else {
-        const adminIndex = state.admins.findIndex(el => el.id === action.payload.id);
-        state.admins[adminIndex] = {token: action.payload.token, ...adminData};
-      };
-      
+        const adminIndex = state.admins.findIndex(
+          (el) => el.id === action.payload.id
+        );
+        state.admins[adminIndex] = {
+          token: action.payload.token,
+          ...adminData,
+        };
+      }
+
       state.isLoading = false;
     },
     changeAdminFailure: (state, action) => {

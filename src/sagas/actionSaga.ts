@@ -110,11 +110,11 @@ function* getActionFileWorker(action: { payload: any; type: string }) {
       clientAction.getActionFile,
       path
     );
-    console.log("getClientActions", res, {data: res.data, path});
+    console.log("getClientActions", res, { data: res.data, path });
     // TODO: Как это сделать?
-    yield put(getActionFileSuccess({data: res.data, path}));
+    yield put(getActionFileSuccess({ data: res.data, path }));
   } catch (error) {
-    console.log('err', error)
+    console.log("err", error);
     yield put(getActionFileFailure(error));
   }
 }
