@@ -17,7 +17,7 @@ import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { ClientKey } from "../..";
 import { firstUpperChar, formatePhone } from "../../../helpers/format";
-import { ClientTableInterface } from "./ClientTable.props";
+import { ClientTableProps } from "./ClientTable.props";
 import {
   selectAllClients,
   selectIsLoadingClient,
@@ -38,8 +38,7 @@ export function ClientTable({
   handleChangePage,
   rowsPerPage,
   handleChangeRowsPerPage,
-}: ClientTableInterface): JSX.Element {
-
+}: ClientTableProps): JSX.Element {
   const location = useLocation();
   const data = useSelector(selectAllClients);
   const isLoading = useSelector(selectIsLoadingClient);

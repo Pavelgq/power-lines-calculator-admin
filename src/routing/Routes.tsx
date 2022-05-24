@@ -4,8 +4,8 @@ import { MainLayout } from "../components/templates/MainLayout/MainLayout";
 import { ROLES } from "../interfaces/admin.interface";
 import { ClientActions } from "../pages/ClientActions/ClientActions";
 
-import { Authentication } from "../pages/authentication/authentication";
-import { Clients } from "../pages/clients/clients";
+import { Authentication } from "../pages/Authentication/Authentication";
+import { Clients } from "../pages/Clients/Clients";
 import { PrivateRoute } from "./PrivateRouter";
 import { AllActions } from "../pages/AllActions/AllActions";
 import { PersonalAccaunt } from "../pages/PersonalAccaunt/PersonalAccaunt";

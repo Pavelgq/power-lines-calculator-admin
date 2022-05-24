@@ -1,6 +1,6 @@
 import { ClientDataInterface } from "../../../interfaces/client.interface";
 
-export interface ClientTableInterface {
+export interface ClientTableProps {
   searchValue: string;
   setSearchValue: React.Dispatch<React.SetStateAction<string>>;
   sortConfig: {

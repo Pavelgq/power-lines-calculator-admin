@@ -140,5 +140,8 @@ export default clientsSlice.reducer;
 export const selectAllClients = (state: RootState) => state.clients.data;
 export const selectAllIds = (state: RootState) => state.clients.allIds;
 
+export const selectAcceptClients = (state: RootState) => Object.keys(state.clients.data).filter(id => !state.clients.data[id].request);
+export const selectRequestClients = (state: RootState) => Object.keys(state.clients.data).filter(id => state.clients.data[id].request);
+
 export const selectIsLoadingClient = (state: RootState) =>
   state.clients.isLoading;

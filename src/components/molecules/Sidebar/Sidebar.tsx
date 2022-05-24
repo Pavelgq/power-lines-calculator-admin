@@ -23,11 +23,13 @@ import {
   selectCurrentAdmin,
   selectIsAuthenticated,
 } from "../../../store/adminStore";
+import { selectRequestClients } from "../../../store/clientsStore";
 
 const pages = [
   {
     title: "Запросы",
     link: "/requests",
+    badge: true,
   },
   {
     title: "Пользователи",
@@ -47,6 +49,7 @@ export function Sidebar() {
   const dispatch = useDispatch();
   const admin = useSelector(selectCurrentAdmin);
   const auth = useSelector(selectIsAuthenticated);
+  const requestsCount = useSelector(selectRequestClients).length;
 
   const handleOpenNavMenu = (
     event: MouseEvent<HTMLButtonElement | HTMLAnchorElement>
@@ -129,7 +132,10 @@ export function Sidebar() {
                 }}
               >
                 {pages.map((page) => (
-                  <Badge badgeContent={4} color="secondary">
+                  <Badge
+                    badgeContent={page.badge && requestsCount}
+                    color="secondary"
+                  >
                     <MenuItem
                       key={page.title}
                       onClick={() => handleNav(page.link)}
@@ -153,7 +159,7 @@ export function Sidebar() {
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages.map((page) => (
                 <Badge
-                  badgeContent={2}
+                  badgeContent={page.badge && requestsCount}
                   color="secondary"
                   className={styles.wrapper}
                 >

@@ -17,7 +17,9 @@ import { selectAllClients, selectAllIds } from "../../../store/clientsStore";
 import { ClientCardList } from "../ClientCardList/ClietnCardList";
 import { ClientTable } from "../ClientTable/ClientTable";
 import { CreateClientForm } from "../CreateClientForm/CreateClientForm";
+import { RequestsTable } from "../RequestsTable/RequestsTable";
 import { Search } from "../Search/Search";
+import { ClientListProps } from "./ClientList.props";
 
 import styles from "./ClientsList.module.css";
 
@@ -86,7 +88,10 @@ export const columns = [
 
 const searchFields = columns.filter((el) => el.search).map((el) => el.field);
 
-export function ClientsList() {
+export function ClientsList({
+  Component,
+  selectForIds,
+}: ClientListProps): JSX.Element {
   const navigate = useNavigate();
   const { clientId } = useParams() || "";
   const [windowsX, windowsY] = useWindowSize();
@@ -101,7 +106,7 @@ export function ClientsList() {
   const [token] = useLocalStorage("token");
 
   const data = useSelector(selectAllClients);
-  const allIds = useSelector(selectAllIds);
+  const allIds = useSelector(selectForIds);
 
   const { items, sortConfig, sortingField } = useSortableData<{
     [id: string]: ClientDataInterface;
@@ -192,21 +197,18 @@ export function ClientsList() {
         </Grid>
       </Grid>
       <Grid item>
-        {windowsX > 1000 ? (
-          <ClientTable
-            items={items}
-            searchValue={searchValue}
-            setSearchValue={setSearchValue}
-            sortConfig={sortConfig}
-            sortingField={sortingField}
-            page={page}
-            handleChangePage={handleChangePage}
-            rowsPerPage={rowsPerPage}
-            handleChangeRowsPerPage={handleChangeRowsPerPage}
-          />
-        ) : (
-          <ClientCardList items={items} />
-        )}
+        <Component
+          items={items}
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+          sortConfig={sortConfig}
+          sortingField={sortingField}
+          page={page}
+          handleChangePage={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          handleChangeRowsPerPage={handleChangeRowsPerPage}
+        />
+        {/* {windowsX > 1000 ? tableView() : <ClientCardList items={items} />} */}
       </Grid>
     </Grid>
   );

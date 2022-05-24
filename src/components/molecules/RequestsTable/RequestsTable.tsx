@@ -17,7 +17,6 @@ import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { ClientKey } from "../..";
 import { firstUpperChar, formatePhone } from "../../../helpers/format";
-import { ClientTableInterface } from "./ClientTable.props";
 import {
   selectAllClients,
   selectIsLoadingClient,
@@ -26,7 +25,9 @@ import { ClientRowMenu } from "../ClientRowMenu/ClientRowMenu";
 import { Loading } from "../../atoms/Loading/Loading";
 import { columns } from "../ClientsList/ClientsList";
 
-import styles from "./ClientTable.module.css";
+import styles from "../ClientTable/ClientTable.module.css";
+import { RequestRowMenu } from "../RequestRowMenu/RequestRowMenu";
+import { ClientTableProps } from "../ClientTable/ClientTable.props";
 
 export function RequestsTable({
   searchValue,
@@ -38,8 +39,7 @@ export function RequestsTable({
   handleChangePage,
   rowsPerPage,
   handleChangeRowsPerPage,
-}: ClientTableInterface): JSX.Element {
-
+}: ClientTableProps): JSX.Element {
   const location = useLocation();
   const data = useSelector(selectAllClients);
   const isLoading = useSelector(selectIsLoadingClient);
@@ -58,31 +58,33 @@ export function RequestsTable({
         >
           <TableHead>
             <TableRow>
-              {columns.filter((n) => n.request).map((n) => (
-                <TableCell
-                  key={n.field}
-                  align="center"
-                  sx={{ width: n.width }}
-                  className={styles.tableCell}
-                >
-                  {n.sorting ? (
-                    <TableSortLabel
-                      className={styles.tableSortLabel}
-                      active
-                      direction={
-                        sortConfig.field === n.field
-                          ? sortConfig.direction
-                          : "desc"
-                      }
-                      onClick={() => sortingField(n.field)}
-                    >
-                      {n.headerName}
-                    </TableSortLabel>
-                  ) : (
-                    <span>{n.headerName}</span>
-                  )}
-                </TableCell>
-              ))}
+              {columns
+                .filter((n) => n.request)
+                .map((n) => (
+                  <TableCell
+                    key={n.field}
+                    align="center"
+                    sx={{ width: n.width }}
+                    className={styles.tableCell}
+                  >
+                    {n.sorting ? (
+                      <TableSortLabel
+                        className={styles.tableSortLabel}
+                        active
+                        direction={
+                          sortConfig.field === n.field
+                            ? sortConfig.direction
+                            : "desc"
+                        }
+                        onClick={() => sortingField(n.field)}
+                      >
+                        {n.headerName}
+                      </TableSortLabel>
+                    ) : (
+                      <span>{n.headerName}</span>
+                    )}
+                  </TableCell>
+                ))}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -159,20 +161,8 @@ export function RequestsTable({
                         {data[client].email}
                       </MuiLink>
                     </TableCell>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      align="center"
-                      className={styles.tableCell}
-                    >
-                      <ClientKey
-                        clientId={Number(client)}
-                        keyValue={data[client].client_key}
-                        lifetime={data[client].valid_until}
-                      />
-                    </TableCell>
                     <TableCell component="th" scope="row" align="center">
-                      <ClientRowMenu id={client} />
+                      <RequestRowMenu id={client} />
                     </TableCell>
                   </TableRow>
                 ))}

@@ -5,6 +5,7 @@ import { Outlet, useParams } from "react-router-dom";
 
 import {
   getClientsFetch,
+  selectAcceptClients,
   selectAllClients,
   selectIsLoadingClient,
 } from "../../store/clientsStore";
@@ -12,6 +13,7 @@ import useLocalStorage from "../../hooks/useLocalStorage";
 
 import { useWindowSize } from "../../hooks/useWindowsSize";
 import { ClientsList } from "../../components/molecules/ClientsList/ClientsList";
+import { ClientTable } from "../../components/molecules/ClientTable/ClientTable";
 
 export function Clients(): JSX.Element {
   const { clientId } = useParams();
@@ -34,7 +36,10 @@ export function Clients(): JSX.Element {
   return (
     <main>
       <Container>
-        <ClientsList />
+        <ClientsList
+          Component={ClientTable}
+          selectForIds={selectAcceptClients}
+        />
       </Container>
     </main>
   );
