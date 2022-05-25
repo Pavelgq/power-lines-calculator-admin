@@ -91,7 +91,7 @@ export function RequestsTable({
             {items &&
               items
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((client, index) => (
+                .map((client, index, arr) => (
                   <TableRow
                     key={client}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -107,7 +107,9 @@ export function RequestsTable({
                       className="no-wrap-text fix-table-cell"
                     >
                       <Typography variant="body2" component="h3">
-                        {data[client].ordinal}
+                        {/* {data[client].ordinal} */}
+                        {sortConfig.field === 'ordinal' && sortConfig.direction === 'asc' ? index + 1 : arr.length - index}
+                        
                       </Typography>
                     </TableCell>
                     <TableCell

@@ -19,13 +19,10 @@ import {
 
 function* getClientsFetchWorker(action: { payload: any; type: string }) {
   try {
-    console.log("getClientsFetch", action);
     const client = new Client();
     const { token } = action.payload;
     const res: AxiosResponseHeaders = yield call(client.getAllClients, token);
-    console.log("getClientsFetch", res);
     const clientsData: ClientDataInterface[] = yield res.data;
-    console.log("getClientsFetch", clientsData);
     yield put(getClientsSuccess(clientsData));
   } catch (e) {
     yield put(getClientsFailure(e));
@@ -34,7 +31,6 @@ function* getClientsFetchWorker(action: { payload: any; type: string }) {
 
 function* getOneClientFetchWorker(action: { payload: any; type: string }) {
   try {
-    console.log("getOneClientFetch", action);
     const client = new Client();
     const { token, id } = action.payload;
     const res: AxiosResponseHeaders = yield call(
@@ -42,9 +38,7 @@ function* getOneClientFetchWorker(action: { payload: any; type: string }) {
       token,
       id
     );
-    console.log("getOneClientFetch", res);
     const clientsData: ClientDataInterface = yield res.data;
-    console.log("getOneClientFetch", clientsData);
     yield put(getOneClientSuccess(clientsData));
   } catch (e) {
     yield put(getOneClientFailure(e));
@@ -60,9 +54,7 @@ function* createClientsFetchWorker(action: { payload: any; type: string }) {
       token,
       clientData
     );
-    console.log(candidate);
     const res: AnswerInterface = yield candidate.data;
-    console.log(res);
     yield put(createClientSuccess(res));
     yield put(getClientsFetch({ token }));
   } catch (e) {
@@ -80,9 +72,7 @@ function* updateClientFetchWorker(action: { payload: any; type: string }) {
       clientId,
       clientData
     );
-    console.log(candidate);
     const res: AnswerInterface = yield candidate.data;
-    console.log(res);
     yield put(updateClientSuccess({ ...res, ...clientData }));
   } catch (error) {
     yield put(updateClientFailure(error));
@@ -98,9 +88,40 @@ function* deleteClientFetchWorker(action: { payload: any; type: string }) {
       token,
       id
     );
-    console.log(candidate);
     const res: AnswerInterface = yield candidate.data;
-    console.log(res);
+    yield put(deleteClientSuccess({ ...res, id }));
+    yield put(getClientsFetch({ token }));
+  } catch (error) {
+    yield put(deleteClientFailure(error));
+  }
+}
+
+function* acceptRequestFetchWorker(action: { payload: any; type: string }) {
+  try {
+    const client = new Client();
+    const { token, clientId, clientData} = action.payload;
+    const candidate: AxiosResponseHeaders = yield call(
+      client.acceptRequest,
+      token,
+      clientId,
+    );
+    const res: AnswerInterface = yield candidate.data;
+    yield put(updateClientSuccess({ ...res, ...clientData }));
+  } catch (error) {
+    yield put(updateClientFailure(error));
+  }
+}
+
+function* rejectRequestFetchWorker(action: { payload: any; type: string }) {
+  try {
+    const client = new Client();
+    const { token, id } = action.payload;
+    const candidate: AxiosResponseHeaders = yield call(
+      client.rejectRequest,
+      token,
+      id
+    );
+    const res: AnswerInterface = yield candidate.data;
     yield put(deleteClientSuccess({ ...res, id }));
     yield put(getClientsFetch({ token }));
   } catch (error) {
@@ -114,6 +135,8 @@ function* clientsSaga() {
     takeEvery("clients/createClientsFetch", createClientsFetchWorker),
     takeEvery("clients/updateClientsFetch", updateClientFetchWorker),
     takeEvery("clients/deleteClientFetch", deleteClientFetchWorker),
+    takeEvery("clients/acceptRequestFetch", acceptRequestFetchWorker),
+    takeEvery("clients/rejectRequestFetch", rejectRequestFetchWorker),
   ]);
 }
 

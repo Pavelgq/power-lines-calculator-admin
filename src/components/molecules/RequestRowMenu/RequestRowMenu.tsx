@@ -1,14 +1,32 @@
 import { Button, Container, Grid } from "@mui/material";
+import { MouseEvent } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import useLocalStorage from "../../../hooks/useLocalStorage";
+import { acceptRequestFetch, selectAllClients, rejectRequestFetch } from "../../../store/clientsStore";
 import { RequestRowMenuProps } from "./RequestRowMenu.props";
 
 export function RequestRowMenu({ id }: RequestRowMenuProps) {
+
+  const dispatch = useDispatch();
+  const client = useSelector(selectAllClients)[id];
+
+  const [token] = useLocalStorage("token");
+
+  const handleAccept = (e: MouseEvent) => {
+    dispatch(acceptRequestFetch({ clientId: id, clientData: { ...client, request: false }, token }))
+  }
+  
+  const handleReject = (e: MouseEvent) => {
+    dispatch(rejectRequestFetch({ token, id }));
+  }
+
   return (
-    <Grid container direction="row">
+    <Grid container direction="row" wrap="nowrap" gap={1}>
       <Grid item>
-        <Button color="success">Принять</Button>
+        <Button variant='contained' color="success" onClick={handleAccept}>Принять</Button>
       </Grid>
       <Grid item>
-        <Button color="error">Отклонить</Button>
+        <Button variant='contained' color="error" onClick={handleReject}>Отклонить</Button>
       </Grid>
     </Grid>
   );

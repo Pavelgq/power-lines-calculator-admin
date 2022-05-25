@@ -103,6 +103,12 @@ export const clientsSlice = createSlice({
     deleteClientFailure: (state, action) => {
       state.isLoading = false;
     },
+    acceptRequestFetch: (state, action) => {
+      state.isLoading = true;
+    },
+    rejectRequestFetch: (state, action) => {
+      state.isLoading = true;
+    }
   },
   extraReducers: {
     "accept/createAcceptKeySuccess": (state, action) => {
@@ -111,7 +117,6 @@ export const clientsSlice = createSlice({
       state.data[clientId].update = moment().format();
       state.data[clientId].client_key = action.payload.key;
       state.data[clientId].valid_until = action.payload.validDate;
-      console.log("createAcceptKeySuccess in client", action);
     },
   },
 });
@@ -133,6 +138,8 @@ export const {
   deleteClientFetch,
   deleteClientSuccess,
   deleteClientFailure,
+  acceptRequestFetch,
+  rejectRequestFetch
 } = clientsSlice.actions;
 
 export default clientsSlice.reducer;

@@ -133,11 +133,12 @@ export function Sidebar() {
               >
                 {pages.map((page) => (
                   <Badge
+                     key={page.title}
                     badgeContent={page.badge && requestsCount}
                     color="secondary"
                   >
                     <MenuItem
-                      key={page.title}
+                     
                       onClick={() => handleNav(page.link)}
                     >
                       <Link to={page.link} />
@@ -162,10 +163,10 @@ export function Sidebar() {
                   badgeContent={page.badge && requestsCount}
                   color="secondary"
                   className={styles.wrapper}
+                   key={page.title}
                 >
                   <Button
                     className={styles.menuItem}
-                    key={page.title}
                     onClick={() => handleNav(page.link)}
                     sx={{ my: 2, color: "white", display: "block" }}
                   >

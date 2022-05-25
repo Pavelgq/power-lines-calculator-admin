@@ -35,4 +35,16 @@ export class Client {
 
     return api.delete(`/client/${id}`);
   };
+
+  acceptRequest = (token: string, id: number) => {
+    const api = apiInstance({ token });
+
+    return api.put(`/request/${id}`);
+  }
+
+  rejectRequest = (token: string, id: number) => {
+    const api = apiInstance({ token });
+
+    return api.delete(`/request/${id}`);
+  }
 }
