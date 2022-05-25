@@ -108,8 +108,10 @@ export function RequestsTable({
                     >
                       <Typography variant="body2" component="h3">
                         {/* {data[client].ordinal} */}
-                        {sortConfig.field === 'ordinal' && sortConfig.direction === 'asc' ? index + 1 : arr.length - index}
-                        
+                        {sortConfig.field === "ordinal" &&
+                        sortConfig.direction === "asc"
+                          ? index + 1
+                          : arr.length - index}
                       </Typography>
                     </TableCell>
                     <TableCell
@@ -123,7 +125,8 @@ export function RequestsTable({
                         <Link to={`/actions/${client}`}>
                           {firstUpperChar(data[client].last_name)}
                           <br />
-                          {firstUpperChar(data[client].first_name)}
+                          {data[client].first_name &&
+                            firstUpperChar(data[client].first_name)}
                         </Link>
                       </Typography>
                     </TableCell>

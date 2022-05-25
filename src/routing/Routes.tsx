@@ -4,7 +4,7 @@ import { MainLayout } from "../components/templates/MainLayout/MainLayout";
 import { ROLES } from "../interfaces/admin.interface";
 import { ClientActions } from "../pages/ClientActions/ClientActions";
 
-import { Authentication } from "../pages/authentication/Authentication";
+import { Authentication } from "../pages/Authentication/Authentication";
 import { Clients } from "../pages/Clients/Clients";
 import { PrivateRoute } from "./PrivateRouter";
 import { AllActions } from "../pages/AllActions/AllActions";

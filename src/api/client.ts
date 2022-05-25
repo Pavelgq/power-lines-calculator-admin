@@ -39,12 +39,12 @@ export class Client {
   acceptRequest = (token: string, id: number) => {
     const api = apiInstance({ token });
 
-    return api.put(`/request/${id}`);
+    return api.put(`/client/request/${id}`);
   }
 
   rejectRequest = (token: string, id: number) => {
     const api = apiInstance({ token });
 
-    return api.delete(`/request/${id}`);
+    return api.delete(`/client/request/${id}`);
   }
 }
