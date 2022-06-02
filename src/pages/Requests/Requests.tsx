@@ -15,6 +15,7 @@ import useLocalStorage from "../../hooks/useLocalStorage";
 import { useWindowSize } from "../../hooks/useWindowsSize";
 import { ClientsList } from "../../components/molecules/ClientsList/ClientsList";
 import { RequestsTable } from "../../components/molecules/RequestsTable/RequestsTable";
+import { RequestsList } from "../../components/molecules/RequestsList/RequestsList";
 
 export function Requests(): JSX.Element {
   const { clientId } = useParams();
@@ -37,7 +38,7 @@ export function Requests(): JSX.Element {
   return (
     <main>
       <Container>
-        <ClientsList
+        <RequestsList
           Component={RequestsTable}
           selectForIds={selectRequestClients}
         />

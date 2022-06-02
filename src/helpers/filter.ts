@@ -57,7 +57,6 @@ export const checkTimeInterval = (time: string, interval: string): boolean => {
         return true;
       }
       break;
-
     default:
       break;
   }

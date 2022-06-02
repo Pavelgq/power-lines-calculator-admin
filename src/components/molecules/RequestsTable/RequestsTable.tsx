@@ -15,13 +15,11 @@ import {
 import { useSelector } from "react-redux";
 
 import { Link, useLocation } from "react-router-dom";
-import { ClientKey } from "../..";
-import { firstUpperChar, formatePhone } from "../../../helpers/format";
+import { firstUpperChar } from "../../../helpers/format";
 import {
   selectAllClients,
   selectIsLoadingClient,
 } from "../../../store/clientsStore";
-import { ClientRowMenu } from "../ClientRowMenu/ClientRowMenu";
 import { Loading } from "../../atoms/Loading/Loading";
 import { columns } from "../ClientsList/ClientsList";
 

@@ -32,11 +32,21 @@ export const useSortableData = <T extends { [id: string]: any }>(
       });
     }
 
-    if (timeInterval !== "all") {
+    if (timeInterval !== "all" && timeInterval !== 'not') {
       sortableItems = sortableItems.filter((id) => {
         for (let i = 0; i < searchFields.length; i += 1) {
-          console.log(sortData[id].update, timeInterval);
           if (checkTimeInterval(sortData[id].update, timeInterval)) {
+            return true;
+          }
+        }
+        return false;
+      });
+    }
+
+    if (timeInterval === 'not') {
+      sortableItems = sortableItems.filter((id) => {
+        for (let i = 0; i < searchFields.length; i += 1) {
+          if (!sortData[id].isAccept) {
             return true;
           }
         }

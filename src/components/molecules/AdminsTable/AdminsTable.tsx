@@ -52,7 +52,9 @@ export function AdminsTable() {
         <TableHead>
           <TableRow>
             {columns.map((column, i) => (
-              <TableCell key={column.field}>{column.headerName}</TableCell>
+              <TableCell key={column.field} align="center">
+                {column.headerName}
+              </TableCell>
             ))}
             <TableCell> </TableCell>
           </TableRow>
@@ -60,10 +62,10 @@ export function AdminsTable() {
         <TableBody>
           {adminsData.map((admin, i) => (
             <TableRow key={admin.login}>
-              <TableCell>{i + 1}</TableCell>
-              <TableCell>{admin.login}</TableCell>
-              <TableCell>{admin.status}</TableCell>
-              <TableCell>
+              <TableCell align="center">{i + 1}</TableCell>
+              <TableCell align="center">{admin.login}</TableCell>
+              <TableCell align="center">{admin.status}</TableCell>
+              <TableCell align="center">
                 <AdminRowMenu id={admin.id} />
               </TableCell>
             </TableRow>

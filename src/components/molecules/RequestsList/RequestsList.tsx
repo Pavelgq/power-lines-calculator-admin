@@ -19,7 +19,7 @@ import { ClientTable } from "../ClientTable/ClientTable";
 import { CreateClientForm } from "../CreateClientForm/CreateClientForm";
 import { RequestsTable } from "../RequestsTable/RequestsTable";
 import { Search } from "../Search/Search";
-import { ClientListProps } from "./ClientList.props";
+import { RequestsListProps } from "./RequestsList.props";
 
 import styles from "./ClientsList.module.css";
 
@@ -88,10 +88,10 @@ export const columns = [
 
 const searchFields = columns.filter((el) => el.search).map((el) => el.field);
 
-export function ClientsList({
+export function RequestsList({
   Component,
   selectForIds,
-}: ClientListProps): JSX.Element {
+}: RequestsListProps): JSX.Element {
   const navigate = useNavigate();
   const { clientId } = useParams() || "";
   const [windowsX, windowsY] = useWindowSize();
@@ -129,74 +129,8 @@ export function ClientsList({
     setPage(0);
   };
 
-  const handleOpenCreate = () => {
-    setSelectClient(0);
-    setOpenAddClientDialog(true);
-  };
-
-  const handleDeleteFilterUser = () => {
-    const path = `/clients`;
-    navigate(path);
-    setSearchValue("");
-    setPage(0);
-  };
-
-  const handleTimeFilter = (event: SelectChangeEvent) => {
-    setTimeFilter(event.target.value as string);
-    setPage(0);
-  };
-
   return (
     <Grid container spacing={2} direction="column">
-      <Grid
-        container
-        wrap="nowrap"
-        justifyContent="center"
-        alignItems="center"
-        spacing={2}
-      >
-        {/* <Grid item xs={2} justifyContent="space-between" alignItems="center">
-          <Container className={styles.noPadding}>
-            <Button
-              type="submit"
-              variant="contained"
-              size="small"
-              onClick={handleOpenCreate}
-            >
-              Добавить пользователя
-            </Button>
-            <CreateClientForm
-              title="Добавить"
-              open={openAddClientDialog}
-              setOpen={setOpenAddClientDialog}
-            />
-          </Container>
-        </Grid> */}
-        <Grid item xs={10}>
-          <Search
-            value={searchValue}
-            handleChange={setSearchValue}
-            filterUser={clientId && data[clientId].last_name}
-            deleteFilterUser={handleDeleteFilterUser}
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <Select
-            className={styles.select}
-            defaultValue="all"
-            value={timeFilter}
-            onChange={handleTimeFilter}
-          >
-            <MenuItem value="all">все ключи</MenuItem>
-            <MenuItem value="day">за день</MenuItem>
-            <MenuItem value="week">за неделю</MenuItem>
-            <MenuItem value="month">за месяц</MenuItem>
-            <MenuItem value="quarter">за квартал</MenuItem>
-            <MenuItem value="year">за год</MenuItem>
-            <MenuItem value="not">нет ключа</MenuItem>
-          </Select>
-        </Grid>
-      </Grid>
       <Grid item>
         <Component
           items={items}
