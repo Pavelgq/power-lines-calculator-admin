@@ -1,5 +1,4 @@
-import { ActionFullInterface } from "../../../interfaces/action.interface";
-import { ActionColumnParamsI } from "../ActionTable/ActionTable";
+import { ActionColumnParamsI, ActionFullInterface } from "../../../interfaces/action.interface";
 
 export interface TableCollapsibleRowProps {
   actionData: ActionFullInterface;

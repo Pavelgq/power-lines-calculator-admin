@@ -24,9 +24,9 @@ import {
 } from "../../../store/clientsStore";
 import { ClientRowMenu } from "../ClientRowMenu/ClientRowMenu";
 import { Loading } from "../../atoms/Loading/Loading";
-import { columns } from "../ClientsList/ClientsList";
 
 import styles from "./ClientTable.module.css";
+import { clientFields, columns } from "../../../data/clientsData";
 
 export function ClientTable({
   searchValue,
@@ -57,7 +57,8 @@ export function ClientTable({
         >
           <TableHead>
             <TableRow>
-              {columns.map((n) => (
+              {clientFields.map((field) => columns[columns.findIndex((el) => el.field === field)])
+                .map((n) => (
                 <TableCell
                   key={n.field}
                   align="center"

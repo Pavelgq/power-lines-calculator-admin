@@ -2,7 +2,6 @@ import React from "react";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { MainLayout } from "../components/templates/MainLayout/MainLayout";
 import { ROLES } from "../interfaces/admin.interface";
-import { ClientActions } from "../pages/ClientActions/ClientActions";
 
 import { Authentication } from "../pages/Authentication/Authentication";
 import { Clients } from "../pages/Clients/Clients";

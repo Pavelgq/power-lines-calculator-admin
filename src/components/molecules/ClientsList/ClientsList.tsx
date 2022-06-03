@@ -9,6 +9,7 @@ import {
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import { columns } from "../../../data/clientsData";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import { useSortableData } from "../../../hooks/useSortableData";
 import { useWindowSize } from "../../../hooks/useWindowsSize";
@@ -23,68 +24,7 @@ import { ClientListProps } from "./ClientList.props";
 
 import styles from "./ClientsList.module.css";
 
-export const columns = [
-  {
-    field: "ordinal",
-    headerName: "№",
-    width: 40,
-    numeric: false,
-    sorting: true,
-    search: false,
-    request: true,
-  },
-  {
-    field: "last_name",
-    headerName: "ФИО",
-    width: 120,
-    numeric: false,
-    sorting: true,
-    search: true,
-    request: true,
-  },
-  {
-    field: "company",
-    headerName: "Компания",
-    width: 180,
-    numeric: false,
-    sorting: true,
-    search: true,
-    request: true,
-  },
-  {
-    field: "office_position",
-    headerName: "Должность",
-    width: 130,
-    numeric: false,
-    sorting: false,
-    search: false,
-    request: true,
-  },
-  {
-    field: "contacts",
-    headerName: "Контакты",
-    width: 230,
 
-    sorting: false,
-    search: false,
-    request: true,
-  },
-  {
-    field: "acceptKey",
-    headerName: "Ключ",
-    width: 90,
-    sorting: false,
-    search: false,
-  },
-  {
-    field: "actions",
-    headerName: "",
-    width: 20,
-    sorting: false,
-    search: false,
-    request: true,
-  },
-];
 
 const searchFields = columns.filter((el) => el.search).map((el) => el.field);
 

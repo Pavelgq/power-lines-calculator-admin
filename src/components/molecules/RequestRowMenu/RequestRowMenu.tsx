@@ -1,6 +1,8 @@
 import { Button, Container, Grid } from "@mui/material";
 import { MouseEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import AddIcon from '@mui/icons-material/Add';
+import BlockIcon from '@mui/icons-material/Block';
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import {
   acceptRequestFetch,
@@ -9,6 +11,7 @@ import {
   deleteClientFetch,
 } from "../../../store/clientsStore";
 import { RequestRowMenuProps } from "./RequestRowMenu.props";
+
 
 export function RequestRowMenu({ id }: RequestRowMenuProps) {
   const dispatch = useDispatch();
@@ -34,12 +37,12 @@ export function RequestRowMenu({ id }: RequestRowMenuProps) {
     <Grid container direction="row" wrap="nowrap" gap={1}>
       <Grid item>
         <Button variant="contained" color="success" onClick={handleAccept}>
-          Принять
+          <AddIcon/>
         </Button>
       </Grid>
       <Grid item>
         <Button variant="contained" color="error" onClick={handleReject}>
-          Отклонить
+          <BlockIcon/>
         </Button>
       </Grid>
     </Grid>

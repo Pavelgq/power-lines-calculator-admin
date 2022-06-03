@@ -1,19 +1,15 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Container } from "@mui/material";
-import { Outlet, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import {
   getClientsFetch,
-  selectAcceptClients,
-  selectAllClients,
-  selectIsLoadingClient,
   selectRequestClients,
 } from "../../store/clientsStore";
 import useLocalStorage from "../../hooks/useLocalStorage";
 
 import { useWindowSize } from "../../hooks/useWindowsSize";
-import { ClientsList } from "../../components/molecules/ClientsList/ClientsList";
 import { RequestsTable } from "../../components/molecules/RequestsTable/RequestsTable";
 import { RequestsList } from "../../components/molecules/RequestsList/RequestsList";
 
@@ -30,10 +26,6 @@ export function Requests(): JSX.Element {
     dispatch(getClientsFetch({ token }));
     return () => {};
   }, []);
-
-  // if (clientId) {
-  //   return <Outlet />;
-  // }
 
   return (
     <main>

@@ -1,3 +1,13 @@
+export interface ClientColumnI {
+  field: string;
+  headerName: string;
+  width: number;
+  numeric?: boolean;
+  sorting?: boolean;
+  search?: boolean;
+}
+
+
 export interface ClientDataInterface {
   ordinal?: number;
   first_name: string;
@@ -12,5 +22,6 @@ export interface ClientDataInterface {
   valid_until?: string;
   isAccept?: boolean;
   request?: boolean;
+  creation_date: string;
 }
 

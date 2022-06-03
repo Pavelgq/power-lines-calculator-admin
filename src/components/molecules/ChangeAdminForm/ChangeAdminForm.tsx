@@ -38,7 +38,6 @@ export function ChangeAdminForm({ action }: ChangeAdminFormProps): JSX.Element {
 
   const dispatch = useDispatch();
   const onSubmit: SubmitHandler<AdminChangeDataInterface> = (adminData) => {
-    console.log(adminData);
 
     dispatch(
       action === "change"

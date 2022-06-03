@@ -6,140 +6,17 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Typography,
   TablePagination,
 } from "@mui/material";
-import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import moment from "moment";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { ActionTableInterface } from "./ActionTable.props";
 import { selectAllClients } from "../../../store/clientsStore";
-import { DownloadFile } from "../DownloadFile/DownloadFile";
-import { firstUpperChar } from "../../../helpers/format";
-import { Categories, ProgramType } from "../../../interfaces/action.interface";
-import { ActionParam } from "../ActionParam/ActionParam";
 import { Loading } from "../../atoms/Loading/Loading";
 import { selectIsLoadingActions } from "../../../store/actionStore";
 import styles from "./ActionTable.module.css";
 import { TableCollapsibleRow } from "../TableCollapsibleRow/TableCollapsibleRow";
+import { columns, headerColumns } from "../../../data/actionData";
 
-export interface ActionColumnParamsI {
-  field: string;
-  headerName: string;
-  width: number;
-  numeric: boolean;
-  sorting: boolean;
-  search: boolean;
-}
-const headerColumns: ActionColumnParamsI[] = [
-  {
-    field: "id",
-    headerName: "№",
-    width: 20,
-    numeric: false,
-    sorting: true,
-    search: false,
-  },
-  {
-    field: "name",
-    headerName: "ФИО",
-    width: 90,
-    numeric: false,
-    sorting: true,
-    search: true,
-  },
-  {
-    field: "date",
-    headerName: "Время захода",
-    width: 70,
-    numeric: false,
-    sorting: true,
-    search: true,
-  },
-  {
-    field: "session",
-    headerName: "Длительность",
-    width: 70,
-    numeric: false,
-    sorting: false,
-    search: true,
-  },
-  {
-    field: "program_name",
-    headerName: "Программа",
-    width: 70,
-    numeric: false,
-    sorting: true,
-    search: true,
-  },
-  {
-    field: "params",
-    headerName: "Параметры",
-    width: 120,
-    numeric: false,
-    sorting: false,
-    search: false,
-  },
-];
-const columns: ActionColumnParamsI[] = [
-  {
-    field: "id",
-    headerName: "№",
-    width: 20,
-    numeric: false,
-    sorting: true,
-    search: false,
-  },
-  {
-    field: "name",
-    headerName: "ФИО",
-    width: 90,
-    numeric: false,
-    sorting: true,
-    search: true,
-  },
-  {
-    field: "date",
-    headerName: "Время",
-    width: 70,
-    numeric: false,
-    sorting: true,
-    search: true,
-  },
-  {
-    field: "program_type",
-    headerName: "Событие",
-    width: 70,
-    numeric: false,
-    sorting: false,
-    search: true,
-  },
-  {
-    field: "project_name",
-    headerName: "Название",
-    width: 70,
-    numeric: false,
-    sorting: true,
-    search: true,
-  },
-  {
-    field: "params",
-    headerName: "Параметры",
-    width: 120,
-    numeric: false,
-    sorting: false,
-    search: false,
-  },
-  {
-    field: "filePath",
-    headerName: "Данные",
-    width: 20,
-    numeric: false,
-    sorting: false,
-    search: false,
-  },
-];
 
 export function ActionTable({
   clientId = 0,

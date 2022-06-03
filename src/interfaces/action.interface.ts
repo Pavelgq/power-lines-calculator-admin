@@ -43,3 +43,12 @@ export interface ActionFullInterface {
   params?: string;
   group?: ActionSemiFullInterface[];
 }
+
+export interface ActionColumnParamsI {
+  field: string;
+  headerName: string;
+  width: number;
+  numeric: boolean;
+  sorting: boolean;
+  search: boolean;
+}

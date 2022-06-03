@@ -12,8 +12,7 @@ import {
 import useLocalStorage from "../../hooks/useLocalStorage";
 
 import { useWindowSize } from "../../hooks/useWindowsSize";
-import { ClientsList } from "../../components/molecules/ClientsList/ClientsList";
-import { ClientTable } from "../../components/molecules/ClientTable/ClientTable";
+import { ClientsList, ClientTable } from "../../components";
 
 export function Clients(): JSX.Element {
   const { clientId } = useParams();
@@ -28,10 +27,6 @@ export function Clients(): JSX.Element {
     dispatch(getClientsFetch({ token }));
     return () => {};
   }, []);
-
-  // if (clientId) {
-  //   return <Outlet />;
-  // }
 
   return (
     <main>

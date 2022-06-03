@@ -1,19 +1,12 @@
-import { TabContext, TabList, TabPanel } from "@mui/lab";
 import {
   Box,
-  Tabs,
-  Tab,
-  Typography,
   Button,
-  Divider,
   Container,
 } from "@mui/material";
-import React, { ReactNode, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { AdminsTable } from "../../components/molecules/AdminsTable/AdminsTable";
-import { ChangeAdminForm } from "../../components/molecules/ChangeAdminForm/ChangeAdminForm";
 import { EditAdminForm } from "../../components/molecules/EditAdminForm/EditAdminForm";
-import { ROLES } from "../../interfaces/admin.interface";
 import { selectCurrentAdmin } from "../../store/adminStore";
 
 export function PersonalAccaunt() {
@@ -36,7 +29,6 @@ export function PersonalAccaunt() {
         setOpen={setOpenCreate}
       />
 
-      {/* <Divider sx={{ marginBottom: 2 }} /> */}
       <Container maxWidth="lg">
         <Button
           type="submit"

@@ -15,17 +15,18 @@ import {
 import { useSelector } from "react-redux";
 
 import { Link, useLocation } from "react-router-dom";
+import moment from "moment";
 import { firstUpperChar } from "../../../helpers/format";
 import {
   selectAllClients,
   selectIsLoadingClient,
 } from "../../../store/clientsStore";
 import { Loading } from "../../atoms/Loading/Loading";
-import { columns } from "../ClientsList/ClientsList";
 
 import styles from "../ClientTable/ClientTable.module.css";
 import { RequestRowMenu } from "../RequestRowMenu/RequestRowMenu";
 import { ClientTableProps } from "../ClientTable/ClientTable.props";
+import { columns, requestFields } from "../../../data/clientsData";
 
 export function RequestsTable({
   searchValue,
@@ -56,8 +57,7 @@ export function RequestsTable({
         >
           <TableHead>
             <TableRow>
-              {columns
-                .filter((n) => n.request)
+              {requestFields.map((field) => columns[columns.findIndex((el) => el.field === field)])
                 .map((n) => (
                   <TableCell
                     key={n.field}
@@ -105,7 +105,6 @@ export function RequestsTable({
                       className="no-wrap-text fix-table-cell"
                     >
                       <Typography variant="body2" component="h3">
-                        {/* {data[client].ordinal} */}
                         {sortConfig.field === "ordinal" &&
                         sortConfig.direction === "asc"
                           ? index + 1
@@ -120,12 +119,30 @@ export function RequestsTable({
                       className="no-wrap-text fix-table-cell"
                     >
                       <Typography variant="body2" component="h3">
-                        <Link to={`/actions/${client}`}>
+                        {moment(data[client].creation_date, moment.ISO_8601).format("DD.MM.YYYY")}
+                        <br />
+                        {moment(data[client].creation_date, moment.ISO_8601).format("HH:mm")}
+                      </Typography>
+                    </TableCell>
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      align="center"
+                      sx={{ maxWidth: columns[1].width }}
+                      className="no-wrap-text fix-table-cell"
+                    >
+                      <Typography variant="body2" component="h3">
+                        {data[client].valid_until ? (<Link to={`/actions/${client}`}>
                           {firstUpperChar(data[client].last_name)}
                           <br />
                           {data[client].first_name &&
                             firstUpperChar(data[client].first_name)}
-                        </Link>
+                        </Link>) : (
+                            <>{firstUpperChar(data[client].last_name)}
+                          <br />
+                          {data[client].first_name &&
+                            firstUpperChar(data[client].first_name)}</>
+                        )}
                       </Typography>
                     </TableCell>
                     <TableCell
