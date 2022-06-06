@@ -27,17 +27,17 @@ import { selectRequestClients } from "../../../store/clientsStore";
 
 const pages = [
   {
-    title: "Запросы",
-    link: "/requests",
-    badge: true,
-  },
-  {
     title: "Пользователи",
     link: "/clients",
   },
   {
     title: "Действия",
     link: "/actions",
+  },
+  {
+    title: "Запросы",
+    link: "/requests",
+    badge: true,
   },
 ];
 const settings = ["Добавить администратора", "Изменить пароль", "Выход"];
@@ -133,14 +133,11 @@ export function Sidebar() {
               >
                 {pages.map((page) => (
                   <Badge
-                     key={page.title}
+                    key={page.title}
                     badgeContent={page.badge && requestsCount}
                     color="secondary"
                   >
-                    <MenuItem
-                     
-                      onClick={() => handleNav(page.link)}
-                    >
+                    <MenuItem onClick={() => handleNav(page.link)}>
                       <Link to={page.link} />
 
                       <Typography textAlign="center">{page.title}</Typography>
@@ -163,7 +160,7 @@ export function Sidebar() {
                   badgeContent={page.badge && requestsCount}
                   color="secondary"
                   className={styles.wrapper}
-                   key={page.title}
+                  key={page.title}
                 >
                   <Button
                     className={styles.menuItem}

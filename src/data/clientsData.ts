@@ -3,7 +3,7 @@ import { ClientColumnI } from "../interfaces/client.interface";
 
 
 export const clientFields = ['ordinal', 'last_name', 'company', 'office_position', 'contacts', 'acceptKey', 'actions'];
-export const requestFields = ['ordinal', 'date', 'last_name', 'company', 'office_position', 'contacts', 'actions'];
+export const requestFields = ['ordinal',  'last_name', 'company', 'office_position', 'contacts', 'date', 'actions'];
 export const columns: ClientColumnI[] = [
   {
     field: "ordinal",
