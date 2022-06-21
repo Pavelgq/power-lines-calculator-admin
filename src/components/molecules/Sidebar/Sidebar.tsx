@@ -31,13 +31,13 @@ const pages = [
     link: "/clients",
   },
   {
-    title: "Действия",
-    link: "/actions",
-  },
-  {
     title: "Запросы",
     link: "/requests",
     badge: true,
+  },
+  {
+    title: "Действия",
+    link: "/actions",
   },
 ];
 const settings = ["Добавить администратора", "Изменить пароль", "Выход"];

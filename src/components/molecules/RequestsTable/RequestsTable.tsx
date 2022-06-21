@@ -23,7 +23,7 @@ import {
 } from "../../../store/clientsStore";
 import { Loading } from "../../atoms/Loading/Loading";
 
-import styles from "../ClientTable/ClientTable.module.css";
+import styles from "./RequestsTable.module.css";
 import { RequestRowMenu } from "../RequestRowMenu/RequestRowMenu";
 import { ClientTableProps } from "../ClientTable/ClientTable.props";
 import { columns, requestFields } from "../../../data/clientsData";
@@ -53,7 +53,7 @@ export function RequestsTable({
         <Table
           aria-label="Таблица клиентов"
           sx={{ minWidth: 1000 }}
-          size="small"
+          // size="small"
         >
           <TableHead>
             <TableRow>
@@ -165,6 +165,7 @@ export function RequestsTable({
                       scope="row"
                       align="center"
                       className={styles.tableCell}
+                      sx={{ maxWidth: columns[5].width }}
                     >
                       <MuiLink href={`tel:${data[client].phone_number}`}>
                         <Typography noWrap variant="body2">
@@ -182,7 +183,7 @@ export function RequestsTable({
                       component="th"
                       scope="row"
                       align="center"
-                      sx={{ maxWidth: columns[1].width }}
+                      sx={{ maxWidth: columns[5].width }}
                       className="no-wrap-text fix-table-cell"
                     >
                       <Typography variant="body2" component="h3">
@@ -197,7 +198,12 @@ export function RequestsTable({
                         ).format("HH:mm")}
                       </Typography>
                     </TableCell>
-                    <TableCell component="th" scope="row" align="center">
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      align="center"
+                      sx={{ maxWidth: 110 }}
+                    >
                       <RequestRowMenu id={client} />
                     </TableCell>
                   </TableRow>

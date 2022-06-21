@@ -1,0 +1,5 @@
+.button {
+  min-width: 38px;
+  box-sizing: border-box;
+  padding: 6px 5px;
+}

@@ -129,9 +129,32 @@ export function RequestsList({
     setPage(0);
   };
 
+  const handleDeleteFilterUser = () => {
+    const path = `/clients`;
+    navigate(path);
+    setSearchValue("");
+    setPage(0);
+  };
+
   return (
-    <Grid container spacing={2} direction="column">
-      <Grid item>
+    <Grid container spacing={2} direction="column" paddingLeft={0}>
+      <Grid
+        container
+        wrap="nowrap"
+        justifyContent="center"
+        alignItems="center"
+        spacing={2}
+      >
+        <Grid item xs={12}>
+          <Search
+            value={searchValue}
+            handleChange={setSearchValue}
+            filterUser={clientId && data[clientId].last_name}
+            deleteFilterUser={handleDeleteFilterUser}
+          />
+        </Grid>
+      </Grid>
+      <Grid item paddingRight={2}>
         <Component
           items={items}
           searchValue={searchValue}
