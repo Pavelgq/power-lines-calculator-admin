@@ -5,16 +5,17 @@ export interface apiParams {
   acceptToken?: string;
 }
 
+// baseURL: `https://hidden-inlet-89012.herokuapp.com/api/v1`,
 // baseURL: `http://localhost:8080/api/v1`,
 export const apiInstance = ({ token = "", acceptToken = "" }: apiParams) => {
   const config: AxiosRequestConfig<any> = {
-    baseURL: `https://hidden-inlet-89012.herokuapp.com/api/v1`,
+    baseURL: `http://calcdata.energotek.ru/api/v1`,
     headers: {
       "Content-Type": "application/json",
       token: `${token}`,
       "accept-token": `${acceptToken}`,
     },
-    timeout: 5000,
+    timeout: 2000,
   };
 
   return axios.create(config);

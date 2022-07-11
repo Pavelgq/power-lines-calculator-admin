@@ -115,7 +115,7 @@ export const clientsSlice = createSlice({
       const { clientId } = action.payload;
       state.data[clientId].isAccept = true;
       state.data[clientId].update = moment().format();
-      state.data[clientId].client_key = action.payload.key;
+      state.data[clientId].client_key = action.payload?.key || state.data[clientId].client_key;
       state.data[clientId].valid_until = action.payload.validDate;
     },
   },
