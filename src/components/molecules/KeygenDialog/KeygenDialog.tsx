@@ -15,7 +15,7 @@ import { LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { ru } from "date-fns/locale";
 import { useDispatch, useSelector } from "react-redux";
-import { createAcceptKey } from "../../../store/acceptStore";
+import { changeAcceptKey, createAcceptKey } from "../../../store/acceptStore";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import { firstUpperChar } from "../../../helpers/format";
 import { selectAllClients } from "../../../store/clientsStore";
@@ -31,6 +31,7 @@ export function KeygenDialog({
   toggle,
   handleClose,
 }: KeygenDialogProps) {
+  const [changeAccept, setChangeAccept] = useState(false);
   const [dateValue, setDateValue] = useState<Date | null>(new Date());
   const [token] = useLocalStorage("token");
   const clients = useSelector(selectAllClients);
@@ -43,8 +44,14 @@ export function KeygenDialog({
   const generateAcceptKey = () => {
     const newDate = {
       validDate: dateValue,
+      changeAccept,
     };
-    dispatch(createAcceptKey({ token, clientId, data: newDate }));
+    if (clients[clientId]?.isAccept) {
+      dispatch(changeAcceptKey({ token, clientId, data: newDate }));
+    } else {
+      dispatch(createAcceptKey({ token, clientId, data: newDate }));
+    }
+
     handleClose(false);
   };
 

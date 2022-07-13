@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import useLocalStorage from "../hooks/useLocalStorage";
 import {
   profileAdmin,
@@ -10,6 +10,8 @@ import {
 } from "../store/adminStore";
 import { AccessDenied } from "../pages/AccessDenied/AccessDenied";
 import { ROLES } from "../interfaces/admin.interface";
+import { Loading } from "../components";
+import { Authentication } from "../pages/Authentication/Authentication";
 
 interface PrivateRouteProps {
   component: React.ComponentType;
@@ -27,20 +29,20 @@ export function PrivateRoute({
   const isLoading = useSelector(selectIsLoadingAdmin);
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const userHasRequiredRole = !!(user && roles.includes(user.status));
-
+  const location = useLocation();
   const dispatch = useDispatch();
-
   const [token] = useLocalStorage("token");
-
+  console.log(location, isAuthenticated, userHasRequiredRole, user);
   useEffect(() => {
     if (isAuthenticated) {
       return;
     }
+    console.log("profile");
     dispatch(profileAdmin({ token }));
-  }, []);
+  }, [isAuthenticated]);
 
   if (isLoading) {
-    return <span>Загрузка...</span>;
+    return <Loading />;
   }
 
   if (isAuthenticated && userHasRequiredRole) {
@@ -51,5 +53,10 @@ export function PrivateRoute({
     return <AccessDenied />;
   }
 
-  return <Navigate to="/" />;
+  if (!isAuthenticated && location.pathname !== "/") {
+    return <Authentication />;
+  }
+  return <Outlet />;
+
+  // return <Navigate to="/" />;
 }

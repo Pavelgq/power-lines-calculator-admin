@@ -33,6 +33,13 @@ export const acceptSlice = createSlice({
     getAcceptKey(state, action) {},
     getAcceptKeySuccess(state, action) {},
     getAcceptKeyFailure(state, action) {},
+    changeAcceptKey(state, action) {
+      state.isLoading = true;
+    },
+    changeAcceptKeySuccess(state, action) {
+      state.isLoading = false;
+    },
+    changeAcceptKeyFailure(state, action) {},
     deleteAcceptKey(state, action) {},
     deleteAcceptKeySuccess(state) {},
     deleteAcceptKeyFailure(state, action) {},
@@ -49,6 +56,9 @@ export const {
   getAcceptKey,
   getAcceptKeySuccess,
   getAcceptKeyFailure,
+  changeAcceptKey,
+  changeAcceptKeySuccess,
+  changeAcceptKeyFailure,
   deleteAcceptKey,
   deleteAcceptKeySuccess,
   deleteAcceptKeyFailure,

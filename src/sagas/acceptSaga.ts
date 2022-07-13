@@ -14,6 +14,8 @@ import {
   createAcceptKeyFailure,
   getAcceptKeySuccess,
   getAcceptKeyFailure,
+  changeAcceptKeySuccess,
+  changeAcceptKeyFailure,
   deleteAcceptKeyFailure,
   deleteAcceptKeySuccess,
 } from "../store/acceptStore";
@@ -77,6 +79,33 @@ function* getAcceptKeyWorker(action: {
   }
 }
 
+function* changeAcceptKeyWorker(action: {
+  payload: {
+    token: string;
+    clientId: string;
+    data: AcceptDateInterface;
+  };
+  type: string;
+}) {
+  try {
+    const acceptKey = new Accept();
+    const { token, clientId, data } = action.payload;
+    const res: AxiosResponseHeaders = yield call(
+      acceptKey.changeAcceptKey,
+      token,
+      Number(clientId),
+      data
+    );
+    const newKey: AcceptKeyInterface = yield res.data;
+    yield put(
+      changeAcceptKeySuccess({ ...newKey, clientId, validDate: data.validDate })
+    );
+  } catch (error) {
+    yield put(changeAcceptKeyFailure(error));
+  }
+  
+}
+
 function* deleteAcceptKeyWorker(action: {
   payload: { token: string; clientId: number };
   type: string;
@@ -100,6 +129,7 @@ function* acceptSaga() {
     takeEvery("accept/checkAcceptKey", checkAcceptKeyWorker),
     takeEvery("accept/createAcceptKey", createAcceptKeyWorker),
     takeEvery("accept/getAcceptKey", getAcceptKeyWorker),
+    takeEvery("accept/changeAcceptKey", changeAcceptKeyWorker),
     takeEvery("accept/deleteAcceptKey", deleteAcceptKeyWorker),
   ]);
 }

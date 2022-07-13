@@ -15,7 +15,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import { FormEvent, MouseEvent, useState } from "react";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./Sidebar.module.css";
 import {
@@ -77,6 +77,7 @@ export function Sidebar() {
   const handleLogOut = () => {
     handleCloseUserMenu();
     dispatch(logoutAdmin());
+    <Navigate to="/" />;
   };
 
   if (!auth) {

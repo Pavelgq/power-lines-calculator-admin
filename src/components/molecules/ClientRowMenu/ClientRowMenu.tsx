@@ -77,7 +77,6 @@ export function ClientRowMenu({
   };
 
   const handleCopy = (event: React.MouseEvent<HTMLLIElement>) => {
-    console.log(clientData?.client_key);
     if (clientData?.client_key) {
       // document.execCommand("copy");
       navigator.clipboard.writeText(clientData.client_key);

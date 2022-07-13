@@ -39,6 +39,7 @@ export const adminSlice = createSlice({
       state.info = null;
       state.token = "";
       state.auth = false;
+      state.isLoading = false;
     },
     profileAdmin: (state, action) => {
       state.isLoading = true;

@@ -9,7 +9,7 @@ export interface apiParams {
 // baseURL: `http://localhost:8080/api/v1`,
 export const apiInstance = ({ token = "", acceptToken = "" }: apiParams) => {
   const config: AxiosRequestConfig<any> = {
-    baseURL: `http://calcdata.energotek.ru/api/v1`,
+    baseURL: `https://calcdata.energotek.ru/api/v1`,
     headers: {
       "Content-Type": "application/json",
       token: `${token}`,

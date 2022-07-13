@@ -4,6 +4,7 @@ export interface AcceptTokenInterface {
 
 export interface AcceptDateInterface {
   validDate: Date;
+  changeKey?: boolean;
 }
 
 export interface AcceptKeyInterface {

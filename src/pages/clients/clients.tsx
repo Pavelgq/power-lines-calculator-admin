@@ -17,16 +17,6 @@ import { ClientsList, ClientTable } from "../../components";
 export function Clients(): JSX.Element {
   const { clientId } = useParams();
   const [windowsX, windowsY] = useWindowSize();
-  const [token] = useLocalStorage("token");
-  const [viewToggle, setViewToggle] = useState("table");
-  const [selectClient, setSelectClient] = useState(0);
-  const dispatch = useDispatch();
-  const [openAddClientDialog, setOpenAddClientDialog] = useState(false);
-
-  useEffect(() => {
-    dispatch(getClientsFetch({ token }));
-    return () => {};
-  }, []);
 
   return (
     <main>
