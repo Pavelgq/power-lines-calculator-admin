@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import * as locales from "@mui/material/locale";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, HashRouter } from "react-router-dom";
 import "./styles/global.css";
 import "./styles/index.css";
 import { Provider } from "react-redux";
@@ -29,9 +29,9 @@ ReactDOM.render(
       <ThemeProvider
         theme={createTheme(theme, locales["ruRU" as SupportedLocales])}
       >
-        <BrowserRouter basename="/">
+        <HashRouter basename="/power-lines-calculator-admin/">
           <RoutesList />
-        </BrowserRouter>
+        </HashRouter>
       </ThemeProvider>
     </Provider>
   </React.StrictMode>,
