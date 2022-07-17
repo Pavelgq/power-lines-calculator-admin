@@ -1,7 +1,11 @@
-.select {
+/* .select {
   min-width: 200px;
-}
+} */
 
 .noPadding {
   padding: 0;
+}
+
+@media screen and (max-width: 1000px) {
+  
 }

@@ -1,11 +1,4 @@
-import {
-  Button,
-  Container,
-  Grid,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-} from "@mui/material";
+import { Grid, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -14,17 +7,12 @@ import useLocalStorage from "../../../hooks/useLocalStorage";
 import { useSortableData } from "../../../hooks/useSortableData";
 import { useWindowSize } from "../../../hooks/useWindowsSize";
 import { ClientDataInterface } from "../../../interfaces/client.interface";
-import { selectAllClients, selectAllIds } from "../../../store/clientsStore";
+import { selectAllClients } from "../../../store/clientsStore";
 import { ClientCardList } from "../ClientCardList/ClietnCardList";
-import { ClientTable } from "../ClientTable/ClientTable";
-import { CreateClientForm } from "../CreateClientForm/CreateClientForm";
-import { RequestsTable } from "../RequestsTable/RequestsTable";
 import { Search } from "../Search/Search";
 import { ClientListProps } from "./ClientList.props";
 
 import styles from "./ClientsList.module.css";
-
-
 
 const searchFields = columns.filter((el) => el.search).map((el) => el.field);
 
@@ -90,9 +78,12 @@ export function ClientsList({
     <Grid container spacing={2} direction="column">
       <Grid
         container
-        wrap="nowrap"
+        item
+        wrap="wrap"
         justifyContent="center"
         alignItems="center"
+        direction="row"
+        columns={12}
         spacing={2}
       >
         {/* <Grid item xs={2} justifyContent="space-between" alignItems="center">
@@ -112,7 +103,7 @@ export function ClientsList({
             />
           </Container>
         </Grid> */}
-        <Grid item xs={10}>
+        <Grid item md={10} xs={12}>
           <Search
             value={searchValue}
             handleChange={setSearchValue}
@@ -120,8 +111,9 @@ export function ClientsList({
             deleteFilterUser={handleDeleteFilterUser}
           />
         </Grid>
-        <Grid item xs={2}>
+        <Grid item md={2} xs={12}>
           <Select
+            fullWidth
             className={styles.select}
             defaultValue="all"
             value={timeFilter}
@@ -149,7 +141,6 @@ export function ClientsList({
           rowsPerPage={rowsPerPage}
           handleChangeRowsPerPage={handleChangeRowsPerPage}
         />
-        {/* {windowsX > 1000 ? tableView() : <ClientCardList items={items} />} */}
       </Grid>
     </Grid>
   );

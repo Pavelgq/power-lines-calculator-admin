@@ -77,7 +77,6 @@ export function Sidebar() {
   const handleLogOut = () => {
     handleCloseUserMenu();
     dispatch(logoutAdmin());
-    navigate("/");
   };
 
   if (!auth) {

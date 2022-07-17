@@ -1,5 +1,24 @@
 import { ActionColumnParamsI } from "../interfaces/action.interface";
 
+export const programsType = [
+  {
+    name: "Все",
+    value: 0,
+  },
+  {
+    name: "Труба",
+    value: 1,
+  },
+  {
+    name: "Экран",
+    value: 2,
+  },
+  {
+    name: "Кабель",
+    value: 3,
+  },
+];
+
 export const headerColumns: ActionColumnParamsI[] = [
   {
     field: "id",

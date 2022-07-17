@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { programsType } from "../../../data/actionData";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import { useWindowSize } from "../../../hooks/useWindowsSize";
 import {
@@ -25,25 +26,6 @@ import { ActionTable } from "../ActionTable/ActionTable";
 import { Search } from "../Search/Search";
 
 import styles from "./ActionList.module.css";
-
-const programs = [
-  {
-    name: "Все",
-    value: 0,
-  },
-  {
-    name: "Труба",
-    value: 1,
-  },
-  {
-    name: "Экран",
-    value: 2,
-  },
-  {
-    name: "Кабель",
-    value: 3,
-  },
-];
 
 export interface ClientActionsProps {
   clientId: string | undefined;
@@ -157,7 +139,7 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
       >
         <Grid item>
           <Grid container spacing={1} wrap="nowrap">
-            {programs.map((p) => (
+            {programsType.map((p) => (
               <Grid item key={p.name}>
                 <Button
                   type="submit"

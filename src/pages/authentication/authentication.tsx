@@ -49,14 +49,6 @@ export function Authentication(): JSX.Element {
     };
   }, [auth]);
 
-  // if (auth) {
-  //   return (
-  //     <Container>
-  //       <Alert severity="success">Авторизация успешна!</Alert>
-  //     </Container>
-  //   );
-  // }
-
   return (
     <Grid container spacing={2} direction="column" alignItems="center">
       {auth && (
