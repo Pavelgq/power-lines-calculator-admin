@@ -9,6 +9,8 @@ import { PrivateRoute } from "./PrivateRouter";
 import { AllActions } from "../pages/AllActions/AllActions";
 import { PersonalAccaunt } from "../pages/PersonalAccaunt/PersonalAccaunt";
 import { Requests } from "../pages/Requests/Requests";
+import { AccessDenied } from "../pages/AccessDenied/AccessDenied";
+import { NotFound } from "../pages/NotFound/NotFound";
 
 export function RoutesList(props: any): JSX.Element {
   const { isLoggedIn } = props;
@@ -74,6 +76,7 @@ export function RoutesList(props: any): JSX.Element {
           }
         />
       </Route>
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
