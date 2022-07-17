@@ -8,7 +8,7 @@ import { useSortableData } from "../../../hooks/useSortableData";
 import { useWindowSize } from "../../../hooks/useWindowsSize";
 import { ClientDataInterface } from "../../../interfaces/client.interface";
 import { selectAllClients } from "../../../store/clientsStore";
-import { ClientCardList } from "../ClientCardList/ClietnCardList";
+import { ClientCardList } from "../ClientCardList/ClientCardList";
 import { Search } from "../Search/Search";
 import { ClientListProps } from "./ClientList.props";
 

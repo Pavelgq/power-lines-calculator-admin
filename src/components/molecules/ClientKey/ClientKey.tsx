@@ -24,25 +24,21 @@ export function ClientKey({
         container
         spacing={0.5}
         direction="row"
-        wrap="nowrap"
+        // wrap="nowrap"
         justifyContent="space-between"
         className={styles.container}
       >
         <Grid item>
-          <Grid container direction="column">
-            <Grid item>
-              {!clientData.isAccept ? (
-                <Chip label="Просрочен" color="error" variant="filled" />
-              ) : (
-                <Chip label={keyValue} color="secondary" variant="filled" />
-                // <Typography variant="h5">{keyValue}</Typography>
-              )}
-            </Grid>
-            <Grid item>
-              <Typography variant="caption">
-                до {moment(lifetime, moment.ISO_8601).format("D MMMM YYYY")}
-              </Typography>
-            </Grid>
+          {!clientData.isAccept ? (
+            <Chip label="Просрочен" color="error" variant="filled" />
+          ) : (
+            <Chip label={keyValue} color="secondary" variant="filled" />
+            // <Typography variant="h5">{keyValue}</Typography>
+          )}
+          <Grid item xs={12}>
+            <Typography variant="caption">
+              до {moment(lifetime, moment.ISO_8601).format("D MMMM YYYY")}
+            </Typography>
           </Grid>
         </Grid>
       </Grid>

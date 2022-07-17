@@ -14,7 +14,7 @@ import { useSortableData } from "../../../hooks/useSortableData";
 import { useWindowSize } from "../../../hooks/useWindowsSize";
 import { ClientDataInterface } from "../../../interfaces/client.interface";
 import { selectAllClients, selectAllIds } from "../../../store/clientsStore";
-import { ClientCardList } from "../ClientCardList/ClietnCardList";
+import { ClientCardList } from "../ClientCardList/ClientCardList";
 import { ClientTable } from "../ClientTable/ClientTable";
 import { CreateClientForm } from "../CreateClientForm/CreateClientForm";
 import { RequestsTable } from "../RequestsTable/RequestsTable";
@@ -140,6 +140,7 @@ export function RequestsList({
     <Grid container spacing={2} direction="column" paddingLeft={0}>
       <Grid
         container
+        item
         wrap="nowrap"
         justifyContent="center"
         alignItems="center"
@@ -166,7 +167,6 @@ export function RequestsList({
           rowsPerPage={rowsPerPage}
           handleChangeRowsPerPage={handleChangeRowsPerPage}
         />
-        {/* {windowsX > 1000 ? tableView() : <ClientCardList items={items} />} */}
       </Grid>
     </Grid>
   );

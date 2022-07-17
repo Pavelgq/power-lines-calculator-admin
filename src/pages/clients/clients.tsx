@@ -13,7 +13,7 @@ export function Clients(): JSX.Element {
   return (
     <main>
       <Container>
-        {windowsX > 1000 ? (
+        {windowsX > 1050 ? (
           <ClientsList
             Component={ClientTable}
             selectForIds={selectAcceptClients}

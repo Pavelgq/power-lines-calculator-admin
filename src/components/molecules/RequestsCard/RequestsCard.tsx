@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import ContactIcon from "@mui/icons-material/PermContactCalendar";
 import { useState } from "react";
-import { ClientCardProps } from "./ClientCard.props";
+import { RequestsCardProps } from "./RequestsCard.props";
 import { ClientKey } from "../ClientKey/ClientKey";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import { deleteClientFetch } from "../../../store/clientsStore";
@@ -25,19 +25,20 @@ import { formatePhone } from "../../../helpers/format";
 import { ClientRowMenu } from "../ClientRowMenu/ClientRowMenu";
 
 import styles from "./ClientCard.module.css";
+import { RequestRowMenu } from "../RequestRowMenu/RequestRowMenu";
 
-export function ClientCard({
+export function RequestsCard({
   client,
   color = "white",
-}: ClientCardProps): JSX.Element {
+}: RequestsCardProps): JSX.Element {
   const [token] = useLocalStorage("token");
   const dispatch = useDispatch();
 
   return (
     <Card sx={{ maxWidth: 320 }}>
       <CardContent>
-        <Grid container>
-          <Grid container item justifyContent="space-between">
+        <Grid container alignContent="flex-end" alignItems="flex-end">
+          <Grid container item justifyContent="space-between" wrap="nowrap">
             <Grid item style={{ height: 100 }}>
               <Typography variant="h5" component="h3">
                 {client.first_name} {client.last_name}
@@ -49,11 +50,8 @@ export function ClientCard({
                 {client.company}
               </Typography>
             </Grid>
-            <Grid item>
-              <ClientRowMenu id={client.id} />
-            </Grid>
           </Grid>
-          <Grid container item justifyContent="center">
+          <Grid container item>
             <Grid item>
               <List
                 sx={{
@@ -83,18 +81,12 @@ export function ClientCard({
                 </ListItem>
               </List>
             </Grid>
-            <Grid item>
-              <Typography variant="body2">
-                <ClientKey
-                  clientId={Number(client.id)}
-                  keyValue={client.client_key}
-                  lifetime={client.valid_until}
-                />
-              </Typography>
-            </Grid>
           </Grid>
         </Grid>
       </CardContent>
+      <CardActions>
+        <RequestRowMenu id={client.id} />
+      </CardActions>
     </Card>
   );
 }

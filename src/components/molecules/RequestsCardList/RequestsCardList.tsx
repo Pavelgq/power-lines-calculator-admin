@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import { useSelector } from "react-redux";
-import { ClientCard } from "../..";
+import { ClientCard, RequestsCard } from "../..";
 import {
   selectAllClients,
   selectAllIds,
@@ -12,7 +12,7 @@ interface ClientCardListProps {
   items: number[];
 }
 
-export function ClientCardList({ items }: ClientCardListProps) {
+export function RequestsCardList({ items }: ClientCardListProps) {
   const data = useSelector(selectAllClients);
   const isLoading = useSelector(selectIsLoadingClient);
 
@@ -20,11 +20,11 @@ export function ClientCardList({ items }: ClientCardListProps) {
     return <Loading />;
   }
   return (
-    <Grid container gap={2} direction="column">
+    <Grid container gap={2}>
       {items.length &&
         items.map((clientId: number) => (
           <Grid item key={clientId}>
-            <ClientCard client={data[clientId]} />
+            <RequestsCard client={data[clientId]} />
           </Grid>
         ))}
     </Grid>

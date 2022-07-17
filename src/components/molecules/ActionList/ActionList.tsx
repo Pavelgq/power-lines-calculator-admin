@@ -131,29 +131,26 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
     <Grid container spacing={2} direction="column">
       <Grid
         container
+        item
         spacing={2}
         alignItems="center"
         justifyContent="space-between"
         direction="row"
-        wrap="nowrap"
+        // wrap="nowrap"
       >
-        <Grid item>
-          <Grid container spacing={1} wrap="nowrap">
-            {programsType.map((p) => (
-              <Grid item key={p.name}>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  size="small"
-                  onClick={() => setProgramTypeFilter(p.value)}
-                >
-                  {p.name}
-                </Button>
-              </Grid>
-            ))}
+        {programsType.map((p) => (
+          <Grid item key={p.name}>
+            <Button
+              type="submit"
+              variant="contained"
+              size="small"
+              onClick={() => setProgramTypeFilter(p.value)}
+            >
+              {p.name}
+            </Button>
           </Grid>
-        </Grid>
-        <Grid item xs={7}>
+        ))}
+        <Grid item xs={12} sm={12} md={5}>
           {clientIdSelected ? (
             <Search
               value={searchValue}
@@ -195,9 +192,9 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
             />
           )}
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={12} sm={12} md={2}>
           <Select
-            className={styles.select}
+            fullWidth
             defaultValue="all"
             value={timeFilter}
             onChange={handleTimeFilter}
