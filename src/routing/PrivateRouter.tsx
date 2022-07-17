@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import useLocalStorage from "../hooks/useLocalStorage";
 import {
   profileAdmin,
@@ -25,6 +25,7 @@ export function PrivateRoute({
   roles,
   path = "",
 }: PrivateRouteProps): JSX.Element {
+  const navigate = useNavigate();
   const user = useSelector(selectCurrentAdmin);
   const isLoading = useSelector(selectIsLoadingAdmin);
   const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -40,6 +41,10 @@ export function PrivateRoute({
     console.log("profile");
     dispatch(profileAdmin({ token }));
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    if (!token) navigate("/");
+  }, [token]);
 
   if (isLoading) {
     return <Loading />;

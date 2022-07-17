@@ -20,6 +20,7 @@ import {
   getAllActions,
 } from "../../../store/actionStore";
 import { selectAllClients } from "../../../store/clientsStore";
+import { Loading } from "../../atoms/Loading/Loading";
 import { ActionTable } from "../ActionTable/ActionTable";
 import { Search } from "../Search/Search";
 
@@ -137,6 +138,13 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
     setPage(0);
   };
 
+  const showNotAction = () => {
+    if (isLoading) {
+      return <Loading />;
+    }
+    return <span className={styles.notFound}>Действий не найдено</span>;
+  };
+
   return (
     <Grid container spacing={2} direction="column">
       <Grid
@@ -235,7 +243,7 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
             handleChangeLimit={handleChangeLimit}
           />
         ) : (
-          <span className={styles.notFound}>Действий не найдено</span>
+          showNotAction()
         )}
       </Grid>
     </Grid>
