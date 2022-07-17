@@ -43,7 +43,7 @@ export function PrivateRoute({
   }, [isAuthenticated]);
 
   useEffect(() => {
-    if (!token) navigate("/");
+    if (!token) navigate("/login");
   }, [token]);
 
   if (isLoading) {
@@ -58,7 +58,7 @@ export function PrivateRoute({
     return <AccessDenied />;
   }
 
-  if (!isAuthenticated && location.pathname !== "/") {
+  if (!isAuthenticated && location.pathname !== "/login") {
     return <Authentication />;
   }
   return <Outlet />;

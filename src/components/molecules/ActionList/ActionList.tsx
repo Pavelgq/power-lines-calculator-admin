@@ -132,7 +132,7 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
       <Grid
         container
         item
-        spacing={2}
+        spacing={{ xs: 1, sm: 2 }}
         alignItems="center"
         justifyContent="space-between"
         direction="row"
@@ -150,7 +150,7 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
             </Button>
           </Grid>
         ))}
-        <Grid item xs={12} sm={12} md={5}>
+        <Grid item xs={12} sm={12} md={5} lg={6}>
           {clientIdSelected ? (
             <Search
               value={searchValue}
@@ -192,7 +192,7 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
             />
           )}
         </Grid>
-        <Grid item xs={12} sm={12} md={2}>
+        <Grid item xs={12} sm={12} md={2} lg={2}>
           <Select
             fullWidth
             defaultValue="all"

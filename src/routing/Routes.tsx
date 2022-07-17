@@ -14,16 +14,9 @@ export function RoutesList(props: any): JSX.Element {
   const { isLoggedIn } = props;
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          <PrivateRoute
-            roles={[ROLES.ADMIN, ROLES.USER, ROLES.GUEST]}
-            component={MainLayout}
-          />
-        }
-      >
-        <Route index element={<Authentication />} />
+      <Route path="/login" element={<Authentication />} />
+      <Route path="/" element={<MainLayout />}>
+        <Route index element={<Navigate to="login" />} />
         <Route
           path="clients"
           element={
