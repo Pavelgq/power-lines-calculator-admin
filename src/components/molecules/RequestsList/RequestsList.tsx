@@ -155,7 +155,7 @@ export function RequestsList({
           />
         </Grid>
       </Grid>
-      <Grid item paddingRight={2}>
+      <Grid item>
         <Component
           items={items}
           searchValue={searchValue}

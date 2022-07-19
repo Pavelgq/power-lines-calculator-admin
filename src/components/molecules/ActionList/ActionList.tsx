@@ -209,7 +209,7 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
         </Grid>
       </Grid>
 
-      <Grid item marginTop={2}>
+      <Grid item>
         {clientActions?.length ? (
           <ActionTable
             data={clientActions}
