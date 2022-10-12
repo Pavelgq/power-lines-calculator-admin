@@ -1,6 +1,7 @@
 {
   "name": "power-lines-calculator-admin",
   "version": "1.0.0",
+  "homepage": "https://pavelgq.github.io/power-lines-calculator-admin",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.7.1",
