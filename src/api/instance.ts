@@ -11,10 +11,10 @@ switch (process.env.NODE_ENV) {
     baseUrl = 'http://localhost:8080/api/v1'
     break;
     case 'production':
-    baseUrl = 'https://calcdata.energotek.ru/api/v1'
+    baseUrl = 'https://hidden-inlet-89012.herokuapp.com/api/v1'
     break;
     case 'test':
-    baseUrl = 'https://hidden-inlet-89012.herokuapp.com/api/v1'
+    baseUrl = 'https://calcdata.energotek.ru/api/v1'
     break;
   default:
     baseUrl = 'http://localhost:8080/api/v1'
