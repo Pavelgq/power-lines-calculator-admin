@@ -18,6 +18,7 @@ export function Clients(): JSX.Element {
   const token = useLocalStorage("token");
 
   const handleClick = () => {
+    console.log("click");
     dispatch(downloadClientsFetch({ token }));
   };
   return (
