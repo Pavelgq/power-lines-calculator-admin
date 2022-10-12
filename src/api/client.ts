@@ -47,4 +47,10 @@ export class Client {
 
     return api.delete(`/client/request/${id}`);
   }
+
+  downloadClients = (token: string) => {
+    const api = apiInstance({ token })
+
+    return api.get(`/client/download`)
+  }
 }

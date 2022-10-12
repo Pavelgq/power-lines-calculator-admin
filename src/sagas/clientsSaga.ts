@@ -15,6 +15,8 @@ import {
   getClientsFetch,
   updateClientFailure,
   updateClientSuccess,
+  downloadClientsSuccess,
+  downloadClientsFailure,
 } from "../store/clientsStore";
 
 function* getClientsFetchWorker(action: { payload: any; type: string }) {
@@ -129,6 +131,21 @@ function* rejectRequestFetchWorker(action: { payload: any; type: string }) {
   }
 }
 
+function* downloadClientsFetchWorker(action: {payload: any; type: string}) {
+  try {
+    const client = new Client();
+    const { token } = action.payload; 
+    const res: AxiosResponseHeaders = yield call(
+      client.downloadClients,
+      token
+    );
+    console.log("downloadClientsActions", res, { data: token });
+    yield put(downloadClientsSuccess({ data: res.data, message: 'Файл загружен' }));
+  } catch (error) {
+    yield put(downloadClientsFailure(error))
+  }
+}
+
 function* clientsSaga() {
   yield all([
     takeEvery("clients/getClientsFetch", getClientsFetchWorker),
@@ -137,6 +154,7 @@ function* clientsSaga() {
     takeEvery("clients/deleteClientFetch", deleteClientFetchWorker),
     takeEvery("clients/acceptRequestFetch", acceptRequestFetchWorker),
     takeEvery("clients/rejectRequestFetch", rejectRequestFetchWorker),
+    takeEvery("clients/downloadClientsFetch", downloadClientsFetchWorker),
   ]);
 }
 

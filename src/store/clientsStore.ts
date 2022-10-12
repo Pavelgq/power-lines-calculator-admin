@@ -1,8 +1,10 @@
+import { saveAs } from "file-saver";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import moment from "moment";
 import { string } from "yup/lib/locale";
 import { ClientDataInterface } from "../interfaces/client.interface";
 import { RootState } from "./store";
+import { saveToExcel } from "../helpers/format";
 
 interface ClientStateI {
   data: { [id: string]: ClientDataInterface };
@@ -108,6 +110,23 @@ export const clientsSlice = createSlice({
     },
     rejectRequestFetch: (state, action) => {
       state.isLoading = true;
+    },
+    downloadClientsFetch: (state, action) => {
+      // state.isLoading = true;
+    },
+    downloadClientsSuccess: (state, action) => {
+      // state.isLoading = false;
+      
+      // const at = JSON.stringify(action.payload.data)
+      // console.log(at)
+      // const blob = new Blob([at], {
+      //   type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      // });
+      // saveAs(blob, `data.xlsx`);
+      saveToExcel(action.payload.data)
+    },
+    downloadClientsFailure: (state, action) => {
+      // state.isLoading = false;
     }
   },
   extraReducers: {
@@ -146,7 +165,10 @@ export const {
   deleteClientSuccess,
   deleteClientFailure,
   acceptRequestFetch,
-  rejectRequestFetch
+  rejectRequestFetch,
+  downloadClientsFetch,
+  downloadClientsSuccess,
+  downloadClientsFailure
 } = clientsSlice.actions;
 
 export default clientsSlice.reducer;
