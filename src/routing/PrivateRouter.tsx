@@ -33,12 +33,10 @@ export function PrivateRoute({
   const location = useLocation();
   const dispatch = useDispatch();
   const [token] = useLocalStorage("token");
-  console.log(location, isAuthenticated, userHasRequiredRole, user);
   useEffect(() => {
     if (isAuthenticated) {
       return;
     }
-    console.log("profile");
     dispatch(profileAdmin({ token }));
   }, [isAuthenticated]);
 
