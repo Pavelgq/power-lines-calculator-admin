@@ -22,12 +22,12 @@ const theme = {
     },
   },
 };
-let basename;
-if (process.env.NODE_ENV === "development") {
-  basename = "/power-lines-calculator-admin";
-} else {
-  basename = "/";
-}
+const basename = "/power-lines-calculator-admin";
+// if (process.env.NODE_ENV === "development") {
+//   basename = "/power-lines-calculator-admin";
+// } else {
+//   basename = "/";
+// }
 
 ReactDOM.render(
   <React.StrictMode>
