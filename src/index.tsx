@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import * as locales from "@mui/material/locale";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { HashRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import "./styles/global.css";
 import "./styles/index.css";
 import { Provider } from "react-redux";
@@ -22,12 +22,12 @@ const theme = {
     },
   },
 };
-const basename = "/power-lines-calculator-admin";
-// if (process.env.NODE_ENV === "development") {
-//   basename = "/power-lines-calculator-admin";
-// } else {
-//   basename = "/";
-// }
+let basename = "/power-lines-calculator-admin";
+if (process.env.NODE_ENV === "production") {
+  basename = "/power-lines-calculator-admin";
+} else {
+  basename = "/";
+}
 
 ReactDOM.render(
   <React.StrictMode>
@@ -35,9 +35,9 @@ ReactDOM.render(
       <ThemeProvider
         theme={createTheme(theme, locales["ruRU" as SupportedLocales])}
       >
-        <HashRouter basename={basename}>
+        <BrowserRouter basename={basename}>
           <RoutesList />
-        </HashRouter>
+        </BrowserRouter>
       </ThemeProvider>
     </Provider>
   </React.StrictMode>,
