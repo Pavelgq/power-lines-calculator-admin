@@ -45,6 +45,7 @@ function* createAcceptKeyWorker(action: {
   try {
     const acceptKey = new Accept();
     const { token, clientId, data } = action.payload;
+    
     const res: AxiosResponseHeaders = yield call(
       acceptKey.createAcceptKey,
       token,

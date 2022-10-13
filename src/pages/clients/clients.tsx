@@ -14,12 +14,7 @@ import useLocalStorage from "../../hooks/useLocalStorage";
 export function Clients(): JSX.Element {
   const { clientId } = useParams();
   const [windowsX, windowsY] = useWindowSize();
-  const dispatch = useDispatch();
-  const [token] = useLocalStorage("token");
 
-  const handleClick = () => {
-    dispatch(downloadClientsFetch({ token }));
-  };
   return (
     <main>
       <Container>
@@ -34,7 +29,6 @@ export function Clients(): JSX.Element {
             selectForIds={selectAcceptClients}
           />
         )}
-        <Button onClick={handleClick}>Сохранить в Excel</Button>
       </Container>
     </main>
   );

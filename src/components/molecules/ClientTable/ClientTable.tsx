@@ -1,6 +1,7 @@
 import {
   Link as MuiLink,
   Paper,
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -12,13 +13,14 @@ import {
   Typography,
 } from "@mui/material";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Link, useLocation } from "react-router-dom";
 import { ClientKey } from "../..";
 import { firstUpperChar, formatePhone } from "../../../helpers/format";
 import { ClientTableProps } from "./ClientTable.props";
 import {
+  downloadClientsFetch,
   selectAllClients,
   selectIsLoadingClient,
 } from "../../../store/clientsStore";
@@ -27,6 +29,7 @@ import { Loading } from "../../atoms/Loading/Loading";
 
 import styles from "./ClientTable.module.css";
 import { clientFields, columns } from "../../../data/clientsData";
+import useLocalStorage from "../../../hooks/useLocalStorage";
 
 export function ClientTable({
   searchValue,
@@ -42,10 +45,15 @@ export function ClientTable({
   const location = useLocation();
   const data = useSelector(selectAllClients);
   const isLoading = useSelector(selectIsLoadingClient);
+  const [token] = useLocalStorage("token");
+  const dispatch = useDispatch();
 
   if (isLoading) {
     return <Loading />;
   }
+  const handleClick = () => {
+    dispatch(downloadClientsFetch({ token }));
+  };
 
   return (
     <>
@@ -57,32 +65,36 @@ export function ClientTable({
         >
           <TableHead>
             <TableRow>
-              {clientFields.map((field) => columns[columns.findIndex((el) => el.field === field)])
+              {clientFields
+                .map(
+                  (field) =>
+                    columns[columns.findIndex((el) => el.field === field)]
+                )
                 .map((n) => (
-                <TableCell
-                  key={n.field}
-                  align="center"
-                  sx={{ width: n.width }}
-                  className={styles.tableCell}
-                >
-                  {n.sorting ? (
-                    <TableSortLabel
-                      className={styles.tableSortLabel}
-                      active
-                      direction={
-                        sortConfig.field === n.field
-                          ? sortConfig.direction
-                          : "desc"
-                      }
-                      onClick={() => sortingField(n.field)}
-                    >
-                      {n.headerName}
-                    </TableSortLabel>
-                  ) : (
-                    <span>{n.headerName}</span>
-                  )}
-                </TableCell>
-              ))}
+                  <TableCell
+                    key={n.field}
+                    align="center"
+                    sx={{ width: n.width }}
+                    className={styles.tableCell}
+                  >
+                    {n.sorting ? (
+                      <TableSortLabel
+                        className={styles.tableSortLabel}
+                        active
+                        direction={
+                          sortConfig.field === n.field
+                            ? sortConfig.direction
+                            : "desc"
+                        }
+                        onClick={() => sortingField(n.field)}
+                      >
+                        {n.headerName}
+                      </TableSortLabel>
+                    ) : (
+                      <span>{n.headerName}</span>
+                    )}
+                  </TableCell>
+                ))}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -179,15 +191,20 @@ export function ClientTable({
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={items.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      <div className={styles.wrapper}>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={items.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+        <Button onClick={handleClick} className={styles.saveButton}>
+          Сохранить в Excel
+        </Button>
+      </div>
     </>
   );
 }
