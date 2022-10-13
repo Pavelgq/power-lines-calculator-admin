@@ -5,3 +5,12 @@
 .tableSortLabel {
   margin-left: 18px;
 }
+.wrapper {
+  position: relative;
+}
+
+.saveButton {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+}
