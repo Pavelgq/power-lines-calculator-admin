@@ -112,21 +112,11 @@ export const clientsSlice = createSlice({
       state.isLoading = true;
     },
     downloadClientsFetch: (state, action) => {
-      // state.isLoading = true;
     },
     downloadClientsSuccess: (state, action) => {
-      // state.isLoading = false;
-      
-      // const at = JSON.stringify(action.payload.data)
-      // console.log(at)
-      // const blob = new Blob([at], {
-      //   type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      // });
-      // saveAs(blob, `data.xlsx`);
       saveToExcel(action.payload.data)
     },
     downloadClientsFailure: (state, action) => {
-      // state.isLoading = false;
     }
   },
   extraReducers: {
