@@ -15,10 +15,9 @@ export function Clients(): JSX.Element {
   const { clientId } = useParams();
   const [windowsX, windowsY] = useWindowSize();
   const dispatch = useDispatch();
-  const token = useLocalStorage("token");
+  const [token] = useLocalStorage("token");
 
   const handleClick = () => {
-    console.log("click");
     dispatch(downloadClientsFetch({ token }));
   };
   return (
