@@ -43,6 +43,17 @@ export const acceptSlice = createSlice({
     deleteAcceptKey(state, action) {},
     deleteAcceptKeySuccess(state) {},
     deleteAcceptKeyFailure(state, action) {},
+    sendAcceptKey(state, action) {
+      state.message = '';
+      state.error = null;
+    },
+    sendAcceptKeySuccess(state, action) {
+      state.message = action.payload.message;
+    },
+    sendAcceptKeyFailure(state, action) {
+      state.error = action.payload;
+      state.message = 'Произошла ошибка при отправке ключа'
+    },
   },
 });
 
@@ -62,6 +73,9 @@ export const {
   deleteAcceptKey,
   deleteAcceptKeySuccess,
   deleteAcceptKeyFailure,
+  sendAcceptKey,
+  sendAcceptKeySuccess,
+  sendAcceptKeyFailure,
 } = acceptSlice.actions;
 
 export default acceptSlice.reducer;
@@ -69,3 +83,5 @@ export default acceptSlice.reducer;
 export const selectAcceptKey = (state: RootState) => state.accept.key;
 export const selectIsLoadingAccept = (state: RootState) =>
   state.accept.isLoading;
+export const selectAcceptMessage = (state: RootState) => state.accept.message;
+export const selectAcceptError = (state: RootState) => state.accept.error;

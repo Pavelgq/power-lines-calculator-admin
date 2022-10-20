@@ -18,6 +18,8 @@ import {
   changeAcceptKeyFailure,
   deleteAcceptKeyFailure,
   deleteAcceptKeySuccess,
+  sendAcceptKeyFailure,
+  sendAcceptKeySuccess,
 } from "../store/acceptStore";
 
 function* checkAcceptKeyWorker(action: { payload: any; type: string }) {
@@ -124,6 +126,24 @@ function* deleteAcceptKeyWorker(action: {
     yield put(deleteAcceptKeyFailure(error));
   }
 }
+function* sendAcceptKeyWorker(action: {
+  payload: { token: string; key: string, email: string };
+  type: string;
+}) {
+  try {
+    const acceptKey = new Accept();
+    const {token, key, email} = action.payload;
+    const res: {data: {}} = yield call(
+      acceptKey.sendAcceptKey,
+      token,
+      key,
+      email
+    );
+    yield put(sendAcceptKeySuccess({...res.data}));
+  } catch (error) {
+    yield put(sendAcceptKeyFailure(error));
+  }
+}
 
 function* acceptSaga() {
   yield all([
@@ -132,6 +152,7 @@ function* acceptSaga() {
     takeEvery("accept/getAcceptKey", getAcceptKeyWorker),
     takeEvery("accept/changeAcceptKey", changeAcceptKeyWorker),
     takeEvery("accept/deleteAcceptKey", deleteAcceptKeyWorker),
+    takeEvery("accept/sendAcceptKey", sendAcceptKeyWorker)
   ]);
 }
 

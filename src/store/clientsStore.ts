@@ -114,7 +114,21 @@ export const clientsSlice = createSlice({
     downloadClientsFetch: (state, action) => {
     },
     downloadClientsSuccess: (state, action) => {
-      saveToExcel(action.payload.data)
+      const newData = action.payload.data
+      .filter((el: ClientDataInterface ) => !el.request)
+      .map((el:ClientDataInterface, index: number) => ({
+          id: index + 1,
+          'Имя': el.first_name,
+          'Фамилия': el.last_name,
+          'Компания': el.company,
+          'Должность': el.office_position,
+          'Телефон': el.phone_number,
+          'e-main': el.email,
+          'Дата': moment(el.creation_date).format('DD MMMM YYYY'),
+          'Время': moment(el.creation_date).format('HH:mm')
+        }))
+
+      saveToExcel(newData)
     },
     downloadClientsFailure: (state, action) => {
     }

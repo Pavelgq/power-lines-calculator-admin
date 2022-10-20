@@ -26,4 +26,9 @@ export class Accept {
     const api = apiInstance({ token });
     return api.delete(`/accept/${clientId}`);
   }
+
+  sendAcceptKey(token: string, key: string, email: string) {
+    const api = apiInstance({token});
+    return api.post(`/accept/send`, {key, email})
+  }
 }

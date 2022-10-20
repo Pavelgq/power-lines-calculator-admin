@@ -21,6 +21,12 @@ import {
   selectAllClients,
 } from "../../../store/clientsStore";
 import { KeygenDialog } from "../KeygenDialog/KeygenDialog";
+import {
+  selectAcceptError,
+  selectAcceptMessage,
+  sendAcceptKey,
+} from "../../../store/acceptStore";
+import { CustomSnackbar } from "../CustomSnackbar/CustomSnackbar";
 
 export function ClientRowMenu({
   id,
@@ -38,6 +44,8 @@ export function ClientRowMenu({
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
   const clientData = useSelector(selectAllClients)[id];
+  const error = useSelector(selectAcceptError);
+  const message = useSelector(selectAcceptMessage);
   const dispatch = useDispatch();
 
   const handleOpenActionMenu = (event: MouseEvent<HTMLButtonElement>) => {
@@ -90,6 +98,17 @@ export function ClientRowMenu({
     }
   };
 
+  const handleSend = () => {
+    dispatch(
+      sendAcceptKey({
+        token,
+        key: clientData?.client_key,
+        email: clientData.email,
+      })
+    );
+    handleCloseActionMenu();
+  };
+
   const handleActions = () => {
     const path = `/clients/${id}`;
     navigate(path);
@@ -98,6 +117,20 @@ export function ClientRowMenu({
 
   return (
     <>
+      {/* {message && (
+        <CustomSnackbar
+          trigger={message.length > 0}
+          message={message}
+          variant="success"
+        />
+      )}
+      {error && (
+        <CustomSnackbar
+          trigger={error && true}
+          message={error}
+          variant="error"
+        />
+      )} */}
       <KeygenDialog
         clientId={id}
         toggle={openGenerate}
@@ -151,6 +184,12 @@ export function ClientRowMenu({
         </MenuItem>
         <MenuItem onClick={handleGenerate}>
           <Typography textAlign="center">Генерировать новый ключ</Typography>
+        </MenuItem>
+        <MenuItem
+          onClick={handleSend}
+          disabled={!clientData?.client_key || !clientData.isAccept}
+        >
+          <Typography textAlign="center">Отправить ключ на почту</Typography>
         </MenuItem>
         <MenuItem onClick={handleToggleUpdate}>
           <Typography textAlign="center">Изменить данные</Typography>
