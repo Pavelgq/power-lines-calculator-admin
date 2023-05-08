@@ -23,5 +23,6 @@ export interface ClientDataInterface {
   isAccept?: boolean;
   request?: boolean;
   creation_date: string;
+  admin_flag?: boolean;
 }
 

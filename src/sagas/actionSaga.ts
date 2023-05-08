@@ -16,6 +16,8 @@ import { ClientDataInterface } from "../interfaces/client.interface";
 import {
   createClientActionFailure,
   createClientActionSuccess,
+  downloadActionsFailure,
+  downloadActionsSuccess,
   getActionFileFailure,
   getActionFileSuccess,
   getAllActionsFailure,
@@ -118,6 +120,20 @@ function* getActionFileWorker(action: { payload: any; type: string }) {
     yield put(getActionFileFailure(error));
   }
 }
+function* downloadActionsFetchWorker(action: {payload: any; type: string}) {
+  try {
+    const clientActions = new Action();
+    const { token } = action.payload; 
+    const res: AxiosResponseHeaders = yield call(
+      clientActions.downloadActions,
+      token
+    );
+    console.log("downloadClientsActions", res, { data: token });
+    yield put(downloadActionsSuccess({ data: res.data, message: 'Файл загружен' }));
+  } catch (error) {
+    yield put(downloadActionsFailure(error))
+  }
+}
 
 function* actionSaga() {
   yield all([
@@ -125,6 +141,7 @@ function* actionSaga() {
     takeLatest("actions/getAllActions", getAllActionsWorker),
     takeEvery("actions/getClientActions", getClientActionsWorker),
     takeEvery("actions/getActionFile", getActionFileWorker),
+    takeEvery("clients/downloadActionsFetch", downloadActionsFetchWorker),
   ]);
 }
 

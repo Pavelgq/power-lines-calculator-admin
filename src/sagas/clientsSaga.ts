@@ -139,7 +139,7 @@ function* downloadClientsFetchWorker(action: {payload: any; type: string}) {
       client.downloadClients,
       token
     );
-    console.log("downloadClientsActions", res, { data: token });
+    // console.log("downloadClientsActions", res, { data: token });
     yield put(downloadClientsSuccess({ data: res.data, message: 'Файл загружен' }));
   } catch (error) {
     yield put(downloadClientsFailure(error))

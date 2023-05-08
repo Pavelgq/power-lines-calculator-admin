@@ -1,6 +1,7 @@
 import {
   TableContainer,
   Paper,
+  Button,
   Table,
   TableHead,
   TableRow,
@@ -8,15 +9,18 @@ import {
   TableBody,
   TablePagination,
 } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ActionTableInterface } from "./ActionTable.props";
 import { selectAllClients } from "../../../store/clientsStore";
 import { Loading } from "../../atoms/Loading/Loading";
-import { selectIsLoadingActions } from "../../../store/actionStore";
+import {
+  downloadActionsFetch,
+  selectIsLoadingActions,
+} from "../../../store/actionStore";
 import styles from "./ActionTable.module.css";
 import { TableCollapsibleRow } from "../TableCollapsibleRow/TableCollapsibleRow";
 import { columns, headerColumns } from "../../../data/actionData";
-
+import useLocalStorage from "../../../hooks/useLocalStorage";
 
 export function ActionTable({
   clientId = 0,
@@ -31,6 +35,12 @@ export function ActionTable({
 }: ActionTableInterface): JSX.Element {
   const clients = useSelector(selectAllClients);
   const isLoading = useSelector(selectIsLoadingActions);
+  const [token] = useLocalStorage("token");
+  const dispatch = useDispatch();
+
+  const handleClick = () => {
+    dispatch(downloadActionsFetch({ token }));
+  };
 
   const dataRows = () => {
     const dataView =
@@ -84,15 +94,20 @@ export function ActionTable({
           <TableBody>{dataRows()}</TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={Number(total)}
-        rowsPerPage={limit}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeLimit}
-      />
+      <div className={styles.wrapper}>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={Number(total)}
+          rowsPerPage={limit}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeLimit}
+        />
+        <Button onClick={handleClick} className={styles.saveButton}>
+          Сохранить в Excel
+        </Button>
+      </div>
     </>
   );
 }

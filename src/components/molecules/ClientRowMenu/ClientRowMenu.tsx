@@ -19,6 +19,7 @@ import { AlertDialog } from "../AlertDialog/AlertDialog";
 import {
   deleteClientFetch,
   selectAllClients,
+  updateClientsFetch,
 } from "../../../store/clientsStore";
 import { KeygenDialog } from "../KeygenDialog/KeygenDialog";
 import {
@@ -73,6 +74,18 @@ export function ClientRowMenu({
     }
     setOpenAlert(!openAlert);
     handleCloseActionMenu();
+  };
+
+  const handleToggleAdminFlag = () => {
+    if (!id) return;
+    const newAdminFlag = !clientData.admin_flag;
+    dispatch(
+      updateClientsFetch({
+        clientId: id,
+        clientData: { ...clientData, admin_flag: newAdminFlag },
+        token,
+      })
+    );
   };
 
   const handleDeleteSelectClient = () => {
@@ -190,6 +203,11 @@ export function ClientRowMenu({
           disabled={!clientData?.client_key || !clientData.isAccept}
         >
           <Typography textAlign="center">Отправить ключ на почту</Typography>
+        </MenuItem>
+        <MenuItem onClick={handleToggleAdminFlag}>
+          <Typography textAlign="center">
+            {clientData.admin_flag ? "Запретить отчеты" : "Разрешить отчеты"}
+          </Typography>
         </MenuItem>
         <MenuItem onClick={handleToggleUpdate}>
           <Typography textAlign="center">Изменить данные</Typography>

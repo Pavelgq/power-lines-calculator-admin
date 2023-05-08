@@ -116,7 +116,7 @@ export const clientsSlice = createSlice({
     downloadClientsSuccess: (state, action) => {
       const newData = action.payload.data
       .filter((el: ClientDataInterface ) => !el.request)
-      .map((el:ClientDataInterface, index: number) => ({
+      .map((el:ClientDataInterface & {client_key: string, valid_until: string}, index: number) => ({
           id: index + 1,
           'Имя': el.first_name,
           'Фамилия': el.last_name,
@@ -125,7 +125,9 @@ export const clientsSlice = createSlice({
           'Телефон': el.phone_number,
           'e-main': el.email,
           'Дата': moment(el.creation_date).format('DD MMMM YYYY'),
-          'Время': moment(el.creation_date).format('HH:mm')
+          'Время': moment(el.creation_date).format('HH:mm'),
+          'Ключ': el.client_key,
+          'Срок дейсвия ключа': moment(el.valid_until).format('DD MMMM YYYY')
         }))
 
       saveToExcel(newData)

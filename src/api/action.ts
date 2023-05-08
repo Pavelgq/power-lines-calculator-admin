@@ -51,4 +51,10 @@ export class Action {
 
     return api.get(`action/file/${fileName}`);
   };
+
+  downloadActions = (token: string) => {
+    const api = apiInstance({ token })
+
+    return api.get(`/action/download`)
+  }
 }

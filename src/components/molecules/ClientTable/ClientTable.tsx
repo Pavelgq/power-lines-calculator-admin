@@ -16,6 +16,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import { Link, useLocation } from "react-router-dom";
+import cn from "classnames";
 import { ClientKey } from "../..";
 import { firstUpperChar, formatePhone } from "../../../helpers/format";
 import { ClientTableProps } from "./ClientTable.props";
@@ -108,6 +109,7 @@ export function ClientTable({
                     hover
                     role="checkbox"
                     tabIndex={-1}
+                    className={cn({ [styles.admin]: data[client].admin_flag })}
                   >
                     <TableCell
                       component="th"
