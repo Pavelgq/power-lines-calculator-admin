@@ -4,6 +4,7 @@ import moment from "moment";
 import { ActionFullInterface, Categories, ProgramType } from "../interfaces/action.interface";
 import { RootState } from "./store";
 import { saveToExcel } from "../helpers/format";
+import { ProgramParams } from "../components/molecules/ActionParam/ActionParam";
 
 export interface ActionStoreI {
   data: ActionFullInterface[] | null;
@@ -85,18 +86,27 @@ export const actionSlice = createSlice({
     },
     downloadActionsSuccess: (state, action) => {
       const newData = action.payload.data
-      .map((el:ActionFullInterface & {first_name: string, last_name: string}, index: number) => ({
-          id: index + 1,
-          'Имя': el.first_name,
-          'Фамилия': el.last_name,
-          'Тип': Categories[el.type],
-          'Использованный код': el.accept_key,
-          'Программа': ProgramType[el.program_type],
-          'Параметры': el.params ? JSON.parse(el.params) : {},
-          'Путь к файлу': el.path_to_data,
-          'Дата': moment(el.date).format('DD MMMM YYYY'),
-          'Время': moment(el.date).format('HH:mm')
-        }))
+      .map((el:ActionFullInterface & {first_name: string, last_name: string}, index: number) => {
+        const paramsJson = el.params && JSON.parse(el.params);
+        const param1 = paramsJson?.param1 || '';
+        const param2 = paramsJson?.param2 || '';
+        const programNumber = Number(el.program_type) - 1;
+        const paramsTemplate1 = el.params && `${ProgramParams[programNumber].param1}: ${param1}${ProgramParams[programNumber].param1Dim}`;
+        const paramsTemplate2 = el.params && `${ProgramParams[programNumber].param2}: ${param2}`;
+        return {
+            id: index + 1,
+            'Имя': el.first_name,
+            'Фамилия': el.last_name,
+            'Тип': Categories[el.type],
+            'Использованный код': el.accept_key,
+            'Программа': ProgramType[el.program_type],
+            'Параметр1': paramsTemplate1,
+            'Параметр2': paramsTemplate2,
+            'Путь к файлу': el.path_to_data,
+            'Дата': moment(el.date).format('DD MMMM YYYY'),
+            'Время': moment(el.date).format('HH:mm')
+        }
+      })
       saveToExcel(newData)
     },
     downloadActionsFailure: (state, action) => {

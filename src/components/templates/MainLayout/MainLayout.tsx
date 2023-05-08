@@ -13,7 +13,6 @@ export function MainLayout({ children }: MainLayoutProps): JSX.Element {
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log("Запрос клиентов из MainLayout", isAuthenticated, token);
     if (isAuthenticated && token) dispatch(getClientsFetch({ token }));
     return () => {};
   }, [isAuthenticated, token]);

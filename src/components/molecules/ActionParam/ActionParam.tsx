@@ -24,6 +24,8 @@ export const pipeMainParams = {
   param2: "Число кабелей в трубе",
 };
 
+export const ProgramParams = [pipeMainParams, sheldMainParams, cableMainParams];
+
 export function ActionParam({
   params,
   type,
