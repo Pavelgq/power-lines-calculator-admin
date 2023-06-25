@@ -5,10 +5,19 @@ export enum Categories {
 }
 
 export enum ProgramType {
-  "Труба" = 1,
+  'Все данные' = 0,
+  "Труба",
   "Экран",
   "Кабель",
 }
+
+export enum ProgramTypeName {
+  'all' = 0,
+  "pipe",
+  "ekran",
+  "cable",
+}
+
 
 export interface ActionCreateInterface {
   project_name: string;

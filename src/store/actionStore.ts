@@ -1,7 +1,7 @@
 import { saveAs } from "file-saver";
 import { createSlice } from "@reduxjs/toolkit";
 import moment from "moment";
-import { ActionFullInterface, Categories, ProgramType } from "../interfaces/action.interface";
+import { ActionFullInterface, Categories, ProgramType, ProgramTypeName } from "../interfaces/action.interface";
 import { RootState } from "./store";
 import { saveToExcel, saveToExcelBySheet } from "../helpers/format";
 import { ProgramParams } from "../components/molecules/ActionParam/ActionParam";
@@ -85,14 +85,19 @@ export const actionSlice = createSlice({
     downloadActionsFetch: (state, action) => {
     },
     downloadActionsSuccess: (state, action) => {
+      const {programType} = action.payload;
       const newData = action.payload.data
       .map((el:ActionFullInterface & {first_name: string, last_name: string, company: string}, index: number) => {
         const paramsJson = el.params && JSON.parse(el.params);
         const param1 = paramsJson?.param1 || '';
         const param2 = paramsJson?.param2 || '';
+        const param3 = paramsJson?.param3 || '';
+        const param4 = paramsJson?.param4 || '';
         const programNumber = Number(el.program_type) - 1;
         const paramsTemplate1 = el.params && `${ProgramParams[programNumber].param1}: ${param1}${ProgramParams[programNumber].param1Dim}`;
         const paramsTemplate2 = el.params && `${ProgramParams[programNumber].param2}: ${param2}`;
+        const paramsTemplate3 = el.params && param3 && `${ProgramParams[programNumber].param3}: ${param3}`;
+        const paramsTemplate4 = el.params && param4 && `${ProgramParams[programNumber].param4}: ${param4}`;
         return {
           id: index + 1,
           'Имя': el.first_name,
@@ -104,14 +109,11 @@ export const actionSlice = createSlice({
           'Программа': ProgramType[el.program_type],
           'Параметр1': paramsTemplate1,
           'Параметр2': paramsTemplate2,
+          ...(paramsTemplate3 ? {'Параметр3': paramsTemplate3} : {}),
+          ...(paramsTemplate4 ? {'Параметр4': paramsTemplate4} : {})
         }
       })
-      saveToExcelBySheet([
-        {data: newData as unknown as ActionFullInterface[], sheetName: 'ВСЕ ДЕЙСТВИЯ'},
-        {data: newData.filter((item: { [x: string]: string; }) => item['Программа'] === ProgramType[1]), sheetName: 'ТРУБА'},
-        {data: newData.filter((item: { [x: string]: string; }) => item['Программа'] === ProgramType[2]), sheetName: 'ЭКРАН'},
-        {data: newData.filter((item: { [x: string]: string; }) => item['Программа'] === ProgramType[3]), sheetName: 'КАБЕЛЬ'},
-      ])
+      saveToExcel( newData, ProgramType[programType], ProgramTypeName[programType])
     },
     downloadActionsFailure: (state, action) => {
     }

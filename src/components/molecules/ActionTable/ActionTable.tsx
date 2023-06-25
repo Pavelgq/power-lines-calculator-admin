@@ -29,6 +29,7 @@ export function ActionTable({
   page,
   total,
   sort,
+  programType,
   handleChangePage,
   handleChangeLimit,
   handleSort,
@@ -39,7 +40,7 @@ export function ActionTable({
   const dispatch = useDispatch();
 
   const handleClick = () => {
-    dispatch(downloadActionsFetch({ token }));
+    dispatch(downloadActionsFetch({ token, programType: Number(programType) }));
   };
 
   const dataRows = () => {

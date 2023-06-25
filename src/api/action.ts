@@ -1,4 +1,3 @@
-import queryString from "query-string";
 import { ActionCreateInterface } from "../interfaces/action.interface";
 import { apiInstance } from "./instance";
 
@@ -19,7 +18,6 @@ export class Action {
     const queryFilters = Object.keys(filters).map(
       (el) => `filter[${el}]=${filters[el as keyof object]}`
     );
-    console.log(queryFilters);
     const path = `/action/all?page=${page}&limit=${limit}&period=${period}&sort[${
       sort.field
     }]=${sort.dir}&${queryFilters.join("&")}`;
@@ -31,7 +29,6 @@ export class Action {
     data: ActionCreateInterface
   ) => {
     const api = apiInstance({ acceptToken });
-    console.log("createActionForClient", data);
     return api.post(`/action/add`, data);
   };
 
@@ -52,9 +49,9 @@ export class Action {
     return api.get(`action/file/${fileName}`);
   };
 
-  downloadActions = (token: string) => {
+  downloadActions = (token: string, programType: string) => {
     const api = apiInstance({ token })
 
-    return api.get(`/action/download`)
+    return api.post(`/action/download`, {programType})
   }
 }

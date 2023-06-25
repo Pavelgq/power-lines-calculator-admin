@@ -123,12 +123,13 @@ function* getActionFileWorker(action: { payload: any; type: string }) {
 function* downloadActionsFetchWorker(action: {payload: any; type: string}) {
   try {
     const clientActions = new Action();
-    const { token } = action.payload; 
+    const { token, programType } = action.payload; 
     const res: AxiosResponseHeaders = yield call(
       clientActions.downloadActions,
-      token
+      token,
+      programType,
     );
-    yield put(downloadActionsSuccess({ data: res.data, message: 'Файл загружен' }));
+    yield put(downloadActionsSuccess({ data: res.data, message: 'Файл загружен', programType }));
   } catch (error) {
     yield put(downloadActionsFailure(error))
   }

@@ -217,6 +217,7 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
             page={page}
             total={totalItems}
             sort={sortParams}
+            programType={programType}
             handleSort={setSortParams}
             handleChangePage={handleChangePage}
             handleChangeLimit={handleChangeLimit}

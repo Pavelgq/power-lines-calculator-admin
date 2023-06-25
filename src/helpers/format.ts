@@ -21,7 +21,7 @@ export const firstUpperChar = (str: string) => {
 }
   
 
-export const saveToExcel = (data: ClientDataInterface[], sheetName = 'Data') => {
+export const saveToExcel = (data: {[key: string]: any}, sheetName = 'Data', fileName: string = 'data') => {
   const workSheet = XLSX.utils.json_to_sheet(data);
   const workBook = XLSX.utils.book_new();
 
@@ -30,8 +30,9 @@ export const saveToExcel = (data: ClientDataInterface[], sheetName = 'Data') => 
   const buf = XLSX.write(workBook, { bookType: "xlsx", type: "buffer" });
   // Binary string
   const bin = XLSX.write(workBook, { bookType: "xlsx", type: "binary" });
-  XLSX.writeFile(workBook, "usersData.xlsx");
+  XLSX.writeFile(workBook, `${fileName}.xlsx`);
 };
+
 export const saveToExcelBySheet = (data: {data: {[key: string]: any}[], sheetName: string }[]) => {
   
   const workBook = XLSX.utils.book_new();

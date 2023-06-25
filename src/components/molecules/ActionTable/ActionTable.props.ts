@@ -9,6 +9,7 @@ export interface ActionTableInterface {
   limit: number;
   page: number;
   total: number;
+  programType: string;
   sort: {
     field: string;
     dir: "asc" | "desc";
