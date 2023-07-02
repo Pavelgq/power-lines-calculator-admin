@@ -26,8 +26,8 @@ export const pipeMainParams = {
   param1: "Диаметр кабеля",
   param1Dim: "мм",
   param2: "Число кабелей в трубе",
-  param3: "Тип кабеля траншеи",
-  param4: "Тип кабеля ГНБ",
+  param3: "Тип кабеля",
+  param4: "Способ прокладки",
 };
 
 export const ProgramParams = [pipeMainParams, sheldMainParams, cableMainParams];
@@ -45,17 +45,6 @@ export function ActionParam({
 
     return (
       <>
-        <Grid item>
-          <Typography variant="body2">
-            {result[type - 1].param1}: {json.param1}{" "}
-            {result[type - 1].param1Dim}
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Typography variant="body2">
-            {result[type - 1].param2}: {json.param2}
-          </Typography>
-        </Grid>
         {json.param3 && (
           <Grid item>
             <Typography variant="body2">
@@ -63,10 +52,23 @@ export function ActionParam({
             </Typography>
           </Grid>
         )}
+        <Grid item>
+          <Typography variant="body2">
+            {result[type - 1].param1}: {json.param1}{" "}
+            {result[type - 1].param1Dim}
+          </Typography>
+        </Grid>
         {json.param4 && (
           <Grid item>
             <Typography variant="body2">
               {result[type - 1].param4}: {json.param4}
+            </Typography>
+          </Grid>
+        )}
+        {json.param2 && (
+          <Grid item>
+            <Typography variant="body2">
+              {result[type - 1].param2}: {json.param2}
             </Typography>
           </Grid>
         )}
