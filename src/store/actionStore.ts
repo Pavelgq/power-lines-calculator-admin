@@ -95,7 +95,7 @@ export const actionSlice = createSlice({
         const param4 = paramsJson?.param4 || '';
         const programNumber = Number(el.program_type) - 1;
         const paramsTemplate1 = el.params && `${ProgramParams[programNumber].param1}: ${param1}${ProgramParams[programNumber].param1Dim}`;
-        const paramsTemplate2 = el.params && `${ProgramParams[programNumber].param2}: ${param2}`;
+        const paramsTemplate2 = el.params && `${ProgramParams[programNumber].param2}: ${param2}${ProgramParams[programNumber].param2Dim}`;
         const paramsTemplate3 = el.params && param3 && `${ProgramParams[programNumber].param3}: ${param3}`;
         const paramsTemplate4 = el.params && param4 && `${ProgramParams[programNumber].param4}: ${param4}`;
         return {
