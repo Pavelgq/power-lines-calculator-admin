@@ -8,7 +8,7 @@ export class Action {
       field: string;
       dir: "ASC" | "DESC";
     },
-    period: "all" | "day" | "week" | "month" | "year",
+    period: "all" | "day" | "week" | "month" | "quarter" | "year",
     page: number = 1,
     limit: number = 5,
     filters: object = {}

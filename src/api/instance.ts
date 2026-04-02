@@ -5,33 +5,20 @@ export interface apiParams {
   acceptToken?: string;
 }
 
-// let baseUrl = 'http://localhost:8080/api/v1'
-// switch (process.env.NODE_ENV) {
-//   case 'development':
-//     baseUrl = 'http://localhost:8080/api/v1'
-//     break;
-//     case 'production':
-//     baseUrl = 'https://calcdata.energotek.ru/api/v1'
-//     break;
-//     case 'test':
-//     baseUrl = 'https://hidden-inlet-89012.herokuapp.com/api/v1'
-//     break;
-//   default:
-//     baseUrl = 'http://localhost:8080/api/v1'
-//     break;
-// }
+const DEFAULT_BASE_URL = "https://calcdata.energotek.ru/api/v1";
 
-// baseURL: `https://hidden-inlet-89012.herokuapp.com/api/v1`,
-// baseURL: `http://localhost:8080/api/v1`,
+export const getApiBaseUrl = (): string =>
+  process.env.REACT_APP_API_BASE_URL?.replace(/\/$/, "") || DEFAULT_BASE_URL;
+
 export const apiInstance = ({ token = "", acceptToken = "" }: apiParams) => {
-  const config: AxiosRequestConfig<any> = {
-    baseURL: 'https://calcdata.energotek.ru/api/v1',
+  const config: AxiosRequestConfig = {
+    baseURL: getApiBaseUrl(),
     headers: {
       "Content-Type": "application/json",
       token: `${token}`,
       "accept-token": `${acceptToken}`,
     },
-    timeout: 2000,
+    timeout: Number(process.env.REACT_APP_API_TIMEOUT_MS) || 60000,
   };
 
   return axios.create(config);
