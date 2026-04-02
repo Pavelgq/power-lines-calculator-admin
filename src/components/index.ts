@@ -2,6 +2,7 @@
 
 export * from "./atoms/Card/Card";
 export * from "./atoms/Loading/Loading";
+export * from "./atoms/TableCellValue/TableCellValue";
 
 // molecules
 

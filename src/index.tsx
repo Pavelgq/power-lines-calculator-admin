@@ -29,7 +29,7 @@ ReactDOM.render(
       <ThemeProvider
         theme={createTheme(theme, locales["ruRU" as SupportedLocales])}
       >
-        <BrowserRouter basename="/">
+        <BrowserRouter>
           <RoutesList />
         </BrowserRouter>
       </ThemeProvider>

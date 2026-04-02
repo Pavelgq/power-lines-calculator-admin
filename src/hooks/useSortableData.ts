@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { checkTimeInterval, isNumber } from "../helpers/filter";
+import { TABLE_EMPTY_VALUE } from "../helpers/tableDisplay";
 
 function clientMatchesSearchQuery(
   record: Record<string, unknown> | undefined,
@@ -8,7 +9,7 @@ function clientMatchesSearchQuery(
 ): boolean {
   const haystack = searchFields
     .map((field) => String(record?.[field] ?? "").trim())
-    .filter(Boolean)
+    .filter((s) => s.length > 0 && s !== TABLE_EMPTY_VALUE)
     .join(" ")
     .toLowerCase();
   return haystack.includes(queryLower);

@@ -19,9 +19,10 @@ import { Link, useLocation } from "react-router-dom";
 import { useMemo, useRef } from "react";
 import cn from "classnames";
 import { ClientKey } from "../..";
-import { SearchMatchText } from "../../atoms/SearchMatchText/SearchMatchText";
+import { TableSearchMatchText } from "../../atoms/TableCellValue/TableCellValue";
 import { useTableSearchHighlights } from "../../../hooks/useTableSearchHighlights";
-import { firstUpperChar, formatePhone } from "../../../helpers/format";
+import { firstUpperChar } from "../../../helpers/format";
+import { isTableCellEmpty } from "../../../helpers/tableDisplay";
 import { ClientTableProps } from "./ClientTable.props";
 import {
   downloadClientsFetch,
@@ -114,7 +115,28 @@ export function ClientTable({
             {items &&
               items
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((client, index) => (
+                .map((client, index) => {
+                  const lastName = data[client].last_name ?? "";
+                  const firstName = data[client].first_name ?? "";
+                  const fioLinked =
+                    !isTableCellEmpty(lastName) ||
+                    !isTableCellEmpty(firstName);
+                  const fioContent = (
+                    <>
+                      <TableSearchMatchText
+                        text={lastName}
+                        query={searchValue}
+                        format={(s) => (s ? firstUpperChar(s) : "")}
+                      />
+                      <br />
+                      <TableSearchMatchText
+                        text={firstName}
+                        query={searchValue}
+                        format={(s) => (s ? firstUpperChar(s) : "")}
+                      />
+                    </>
+                  );
+                  return (
                   <TableRow
                     key={client}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -142,19 +164,16 @@ export function ClientTable({
                       className="no-wrap-text fix-table-cell"
                     >
                       <Typography variant="body2" component="h3">
-                        <Link to={`/actions/${client}`}>
-                          <SearchMatchText
-                            text={data[client].last_name ?? ""}
-                            query={searchValue}
-                            format={(s) => (s ? firstUpperChar(s) : "")}
-                          />
-                          <br />
-                          <SearchMatchText
-                            text={data[client].first_name ?? ""}
-                            query={searchValue}
-                            format={(s) => (s ? firstUpperChar(s) : "")}
-                          />
-                        </Link>
+                        {fioLinked ? (
+                          <Link
+                            to={`/actions/${client}`}
+                            style={{ textDecoration: "none" }}
+                          >
+                            {fioContent}
+                          </Link>
+                        ) : (
+                          fioContent
+                        )}
                       </Typography>
                     </TableCell>
                     <TableCell
@@ -164,7 +183,7 @@ export function ClientTable({
                       sx={{ maxWidth: columns[2].width }}
                       // className="no-wrap-text fix-table-cell"
                     >
-                      <SearchMatchText
+                      <TableSearchMatchText
                         text={data[client].company ?? ""}
                         query={searchValue}
                       />
@@ -186,14 +205,14 @@ export function ClientTable({
                     >
                       <MuiLink href={`tel:${data[client].phone_number}`}>
                         <Typography noWrap variant="body2">
-                          {
-                            /* {formatePhone(data[client].phone_number)} */
-                            data[client].phone_number
-                          }
+                          {data[client].phone_number}
                         </Typography>
                       </MuiLink>
-                      <MuiLink href={`tel:${data[client].email}`}>
-                        {data[client].email}
+                      <br />
+                      <MuiLink href={`mailto:${data[client].email}`}>
+                        <Typography variant="body2">
+                          {data[client].email}
+                        </Typography>
                       </MuiLink>
                     </TableCell>
                     <TableCell
@@ -212,7 +231,8 @@ export function ClientTable({
                       <ClientRowMenu id={client} />
                     </TableCell>
                   </TableRow>
-                ))}
+                  );
+                })}
           </TableBody>
         </Table>
       </TableContainer>

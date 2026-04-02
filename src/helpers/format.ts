@@ -13,12 +13,16 @@ export const formatePhone = (phone: string) => {
   return number;
 };
 
-export const firstUpperChar = (str: string) => {
-  if (str === ' ') {
-    return str
+export const firstUpperChar = (str: string | null | undefined) => {
+  if (str == null) {
+    return "";
   }
-  return str.trim()[0].toUpperCase() + str.trim().substring(1);
-}
+  const t = str.trim();
+  if (t.length === 0) {
+    return "";
+  }
+  return t[0].toUpperCase() + t.slice(1);
+};
   
 
 export const saveToExcel = (data: {[key: string]: any}, sheetName = 'Data', fileName: string = 'data') => {

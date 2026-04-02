@@ -6,11 +6,13 @@ import {
   MenuItem,
   Autocomplete,
   Box,
+  Chip,
   TextField,
   Stack,
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   programsType,
   actionsRowsPerPageDefault,
@@ -25,10 +27,10 @@ import {
   getAllActions,
 } from "../../../store/actionStore";
 import { selectAllClients } from "../../../store/clientsStore";
+import { firstUpperChar } from "../../../helpers/format";
 import { Loading } from "../../atoms/Loading/Loading";
 import { ActionTable } from "../ActionTable/ActionTable";
 import { ActionCardList } from "../ActionCardList/ActionCardList";
-import { Search } from "../Search/Search";
 
 import styles from "./ActionList.module.css";
 
@@ -44,16 +46,18 @@ export interface SortI {
 const ACTIONS_ROWS_LS_KEY = "admin.actions.rowsPerPage";
 
 function parseActionsRowsPerPage(raw: string): number {
-  const n = parseInt(raw, 10);
+  const n = parseInt(String(raw).trim(), 10);
   if (
     Number.isFinite(n) &&
-    actionsRowsPerPageOptions.includes(
-      n as (typeof actionsRowsPerPageOptions)[number]
-    )
+    (actionsRowsPerPageOptions as readonly number[]).includes(n)
   ) {
     return n;
   }
   return actionsRowsPerPageDefault;
+}
+
+function canonicalActionsRowsPerPageStr(raw: string): string {
+  return String(parseActionsRowsPerPage(raw));
 }
 
 export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
@@ -66,6 +70,13 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
   );
   const limit = parseActionsRowsPerPage(limitStr);
   const [page, setPage] = useState(0);
+
+  useEffect(() => {
+    const next = canonicalActionsRowsPerPageStr(limitStr);
+    if (next !== limitStr) {
+      setLimitStr(next);
+    }
+  }, [limitStr, setLimitStr]);
   const [programType, setProgramType] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [selectClient, setSelectClient] = useState("");
@@ -81,25 +92,30 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
   const totalItems = useSelector(selectTotalActions);
   const isLoading = useSelector(selectIsLoadingActions);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isLoading) {
-      dispatch(
-        getAllActions({
-          token,
-          page,
-          limit,
-          filters: {
-            client_id: clientIdSelected || "",
-            program_type: programType || "0",
-            project_name: searchValue,
-          },
-          sort: sortParams,
-          period: timeFilter,
-        })
-      );
+    if (clientId) {
+      setClientIdSelected(clientId);
+      setSelectClient("");
     }
-    return () => {};
+  }, [clientId]);
+
+  useEffect(() => {
+    dispatch(
+      getAllActions({
+        token,
+        page,
+        limit,
+        filters: {
+          client_id: clientIdSelected || "",
+          program_type: programType || "0",
+          project_name: searchValue,
+        },
+        sort: sortParams,
+        period: timeFilter,
+      })
+    );
   }, [
     dispatch,
     page,
@@ -110,14 +126,16 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
     timeFilter,
     sortParams,
     clientIdSelected,
+    token,
   ]);
 
   const searchClients = (value: string) => {
-    const clientList = Object.values(clients).filter(
-      (client) =>
-        client.first_name.includes(value) || client.last_name.includes(value)
-    );
-    return clientList;
+    const q = value.trim().toLowerCase();
+    return Object.values(clients).filter((client) => {
+      const fn = String(client.first_name ?? "").toLowerCase();
+      const ln = String(client.last_name ?? "").toLowerCase();
+      return !q || fn.includes(q) || ln.includes(q);
+    });
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -125,7 +143,14 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
   };
 
   const handleChangeLimit = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLimitStr(event.target.value);
+    const n = parseInt(String(event.target.value).trim(), 10);
+    if (
+      !Number.isFinite(n) ||
+      !(actionsRowsPerPageOptions as readonly number[]).includes(n)
+    ) {
+      return;
+    }
+    setLimitStr(String(n));
     setPage(0);
   };
 
@@ -141,7 +166,9 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
   const handleDeleteFilterUser = () => {
     setClientIdSelected("");
     setSearchValue("");
+    setSelectClient("");
     setPage(0);
+    navigate("/actions");
   };
 
   const showNotAction = () => {
@@ -215,12 +242,72 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
             alignItems: "center",
           }}
         >
-          {clientIdSelected ? (
-            <Search
-              value={searchValue}
-              handleChange={setSearchValue}
-              filterUser={clients[clientIdSelected].last_name}
-              deleteFilterUser={handleDeleteFilterUser}
+          {clientIdSelected && clients[clientIdSelected] ? (
+            <Autocomplete
+              fullWidth
+              autoComplete
+              autoHighlight
+              value={null}
+              inputValue={selectClient}
+              onInputChange={(event, newInputValue) => {
+                setSelectClient(newInputValue);
+              }}
+              onChange={(event, user) => {
+                if (user) {
+                  const id = user.id.toString();
+                  setClientIdSelected(id);
+                  setSelectClient("");
+                  setSearchValue("");
+                  setPage(0);
+                  navigate(`/actions/${id}`);
+                }
+              }}
+              options={searchClients(selectClient)}
+              getOptionLabel={(option) =>
+                `${option.ordinal} ${option.last_name}`
+              }
+              renderOption={(props, option) => (
+                <Box component="li" {...props}>
+                  {option.last_name} {option.first_name}
+                </Box>
+              )}
+              renderInput={(params) => {
+                const chipLabel = [
+                  firstUpperChar(clients[clientIdSelected].last_name ?? ""),
+                  firstUpperChar(clients[clientIdSelected].first_name ?? ""),
+                ]
+                  .filter(Boolean)
+                  .join(" ");
+                return (
+                  <TextField
+                    id={params.id}
+                    disabled={params.disabled}
+                    fullWidth={params.fullWidth}
+                    size={params.size}
+                    InputLabelProps={params.InputLabelProps}
+                    label="Найти другого пользователя"
+                    inputProps={{
+                      ...params.inputProps,
+                      autoComplete: "new-password",
+                    }}
+                    InputProps={{
+                      ...params.InputProps,
+                      startAdornment: (
+                        <>
+                          <Chip
+                            label={chipLabel}
+                            size="small"
+                            tabIndex={-1}
+                            onDelete={handleDeleteFilterUser}
+                            sx={{ mr: 0.5, maxWidth: { xs: "42%", sm: 200 } }}
+                          />
+                          {params.InputProps.startAdornment}
+                        </>
+                      ),
+                    }}
+                  />
+                );
+              }}
             />
           ) : (
             <Autocomplete
@@ -246,12 +333,17 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
               )}
               renderInput={(params) => (
                 <TextField
-                  {...params}
+                  id={params.id}
+                  disabled={params.disabled}
+                  fullWidth={params.fullWidth}
+                  size={params.size}
+                  InputLabelProps={params.InputLabelProps}
                   label="Выберите пользователя"
                   inputProps={{
                     ...params.inputProps,
                     autoComplete: "new-password",
                   }}
+                  InputProps={params.InputProps}
                 />
               )}
             />

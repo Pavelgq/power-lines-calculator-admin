@@ -7,6 +7,7 @@ import useLocalStorage from "../../../hooks/useLocalStorage";
 import { useSortableData } from "../../../hooks/useSortableData";
 import { useWindowSize } from "../../../hooks/useWindowsSize";
 import { ClientDataInterface } from "../../../interfaces/client.interface";
+import { firstUpperChar } from "../../../helpers/format";
 import { selectAllClients } from "../../../store/clientsStore";
 import { ClientCardList } from "../ClientCardList/ClientCardList";
 import { Search } from "../Search/Search";
@@ -40,7 +41,13 @@ export function ClientsList({
 
   useEffect(() => {
     if (clientId && Object.prototype.hasOwnProperty.call(data, clientId)) {
-      setSearchValue(`${data[clientId].last_name}`); // ${data[clientId].first_name}
+      const row = data[clientId];
+      setSearchValue(
+        [row.last_name, row.first_name]
+          .map((s) => String(s ?? "").trim())
+          .filter(Boolean)
+          .join(" ")
+      );
     }
   }, []);
 
@@ -90,8 +97,18 @@ export function ClientsList({
           <Search
             value={searchValue}
             handleChange={setSearchValue}
-            filterUser={clientId && data[clientId].last_name}
+            filterUser={
+              clientId && data[clientId]
+                ? [
+                    firstUpperChar(data[clientId].last_name ?? ""),
+                    firstUpperChar(data[clientId].first_name ?? ""),
+                  ]
+                    .filter(Boolean)
+                    .join(" ")
+                : undefined
+            }
             deleteFilterUser={handleDeleteFilterUser}
+            placeholderWhenFiltered="Уточнить по ФИО или компании"
           />
         </Box>
         <Box

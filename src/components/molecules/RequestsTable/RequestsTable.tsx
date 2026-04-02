@@ -17,10 +17,11 @@ import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { useMemo, useRef } from "react";
 import moment from "moment";
-import { SearchMatchText } from "../../atoms/SearchMatchText/SearchMatchText";
+import { TableSearchMatchText } from "../../atoms/TableCellValue/TableCellValue";
 import { useTableSearchHighlights } from "../../../hooks/useTableSearchHighlights";
 import { REQUESTS_TABLE_HIGHLIGHT_NAME } from "../../../helpers/cssCustomHighlight";
 import { firstUpperChar } from "../../../helpers/format";
+import { isTableCellEmpty } from "../../../helpers/tableDisplay";
 import {
   selectAllClients,
   selectIsLoadingClient,
@@ -111,7 +112,30 @@ export function RequestsTable({
             {items &&
               items
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((client, index, arr) => (
+                .map((client, index, arr) => {
+                  const lastName = data[client].last_name ?? "";
+                  const firstName = data[client].first_name ?? "";
+                  const fioLinked =
+                    !isTableCellEmpty(lastName) ||
+                    !isTableCellEmpty(firstName);
+                  const fioContent = (
+                    <>
+                      <TableSearchMatchText
+                        text={lastName}
+                        query={searchValue}
+                        format={(s) => (s ? firstUpperChar(s) : "")}
+                      />
+                      <br />
+                      <TableSearchMatchText
+                        text={firstName}
+                        query={searchValue}
+                        format={(s) => (s ? firstUpperChar(s) : "")}
+                      />
+                    </>
+                  );
+                  const showLinkedFio =
+                    Boolean(data[client].valid_until) && fioLinked;
+                  return (
                   <TableRow
                     key={client}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -143,38 +167,15 @@ export function RequestsTable({
                       className="no-wrap-text fix-table-cell"
                     >
                       <Typography variant="body2" component="h3">
-                        {data[client].valid_until ? (
-                          <Link to={`/actions/${client}`}>
-                            <SearchMatchText
-                              text={data[client].last_name ?? ""}
-                              query={searchValue}
-                              format={(s) => (s ? firstUpperChar(s) : "")}
-                            />
-                            <br />
-                            {data[client].first_name ? (
-                              <SearchMatchText
-                                text={data[client].first_name}
-                                query={searchValue}
-                                format={(s) => (s ? firstUpperChar(s) : "")}
-                              />
-                            ) : null}
+                        {showLinkedFio ? (
+                          <Link
+                            to={`/actions/${client}`}
+                            style={{ textDecoration: "none" }}
+                          >
+                            {fioContent}
                           </Link>
                         ) : (
-                          <>
-                            <SearchMatchText
-                              text={data[client].last_name ?? ""}
-                              query={searchValue}
-                              format={(s) => (s ? firstUpperChar(s) : "")}
-                            />
-                            <br />
-                            {data[client].first_name ? (
-                              <SearchMatchText
-                                text={data[client].first_name}
-                                query={searchValue}
-                                format={(s) => (s ? firstUpperChar(s) : "")}
-                              />
-                            ) : null}
-                          </>
+                          fioContent
                         )}
                       </Typography>
                     </TableCell>
@@ -185,7 +186,7 @@ export function RequestsTable({
                       sx={{ maxWidth: columns[2].width }}
                       // className="no-wrap-text fix-table-cell"
                     >
-                      <SearchMatchText
+                      <TableSearchMatchText
                         text={data[client].company ?? ""}
                         query={searchValue}
                       />
@@ -208,14 +209,14 @@ export function RequestsTable({
                     >
                       <MuiLink href={`tel:${data[client].phone_number}`}>
                         <Typography noWrap variant="body2">
-                          {
-                            /* {formatePhone(data[client].phone_number)} */
-                            data[client].phone_number
-                          }
+                          {data[client].phone_number}
                         </Typography>
                       </MuiLink>
-                      <MuiLink href={`tel:${data[client].email}`}>
-                        {data[client].email}
+                      <br />
+                      <MuiLink href={`mailto:${data[client].email}`}>
+                        <Typography variant="body2">
+                          {data[client].email}
+                        </Typography>
                       </MuiLink>
                     </TableCell>
                     <TableCell
@@ -246,7 +247,8 @@ export function RequestsTable({
                       <RequestRowMenu id={client} />
                     </TableCell>
                   </TableRow>
-                ))}
+                  );
+                })}
           </TableBody>
         </Table>
       </TableContainer>

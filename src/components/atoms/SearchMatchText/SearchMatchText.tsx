@@ -1,9 +1,13 @@
 import React, { useMemo } from "react";
 import { isCustomHighlightSupported } from "../../../helpers/cssCustomHighlight";
+import { TABLE_EMPTY_VALUE } from "../../../helpers/tableDisplay";
 
 import styles from "./SearchMatchText.module.css";
 
 function renderMarkFallback(display: string, query: string): React.ReactNode {
+  if (display === TABLE_EMPTY_VALUE) {
+    return display;
+  }
   const q = query.trim();
   if (!q) return display;
   const lower = display.toLowerCase();
@@ -56,6 +60,14 @@ export function SearchMatchText({
 }: SearchMatchTextProps): JSX.Element {
   const supported = useMemo(() => isCustomHighlightSupported(), []);
   const display = format(text ?? "");
+
+  if (display === TABLE_EMPTY_VALUE) {
+    return (
+      <span className={className} data-search-exclude>
+        {TABLE_EMPTY_VALUE}
+      </span>
+    );
+  }
 
   if (!supported) {
     return (

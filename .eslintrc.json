@@ -36,7 +36,8 @@
         "react/jsx-filename-extension": "off",
         "no-shadow": "off",
         "@typescript-eslint/no-shadow": ["error"],
-        "import/no-cycle": "off"
+        "import/no-cycle": "off",
+        "react/jsx-no-duplicate-props": ["error", { "ignoreCase": false }]
     },
     "settings": {
         "import/resolver": {

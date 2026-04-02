@@ -23,6 +23,11 @@ export function clearTableSearchHighlights(name = CLIENT_TABLE_HIGHLIGHT_NAME): 
   }
 }
 
+function textNodeUnderSearchExclude(textNode: Text): boolean {
+  const p = textNode.parentElement;
+  return p != null && p.closest("[data-search-exclude]") != null;
+}
+
 function collectRangesInHost(host: Element, queryLower: string): Range[] {
   const ranges: Range[] = [];
   const qLen = queryLower.length;
@@ -31,17 +36,19 @@ function collectRangesInHost(host: Element, queryLower: string): Range[] {
   const walker = document.createTreeWalker(host, NodeFilter.SHOW_TEXT);
   let node = walker.nextNode() as Text | null;
   while (node) {
-    const text = node.textContent ?? "";
-    const lower = text.toLowerCase();
-    let from = 0;
-    let idx = lower.indexOf(queryLower, from);
-    while (idx !== -1) {
-      const r = document.createRange();
-      r.setStart(node, idx);
-      r.setEnd(node, idx + qLen);
-      ranges.push(r);
-      from = idx + qLen;
-      idx = lower.indexOf(queryLower, from);
+    if (!textNodeUnderSearchExclude(node)) {
+      const text = node.textContent ?? "";
+      const lower = text.toLowerCase();
+      let from = 0;
+      let idx = lower.indexOf(queryLower, from);
+      while (idx !== -1) {
+        const r = document.createRange();
+        r.setStart(node, idx);
+        r.setEnd(node, idx + qLen);
+        ranges.push(r);
+        from = idx + qLen;
+        idx = lower.indexOf(queryLower, from);
+      }
     }
     node = walker.nextNode() as Text | null;
   }

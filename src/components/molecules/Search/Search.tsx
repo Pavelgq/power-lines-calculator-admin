@@ -7,6 +7,7 @@ export interface SearchProps {
   handleChange: (newValue: string) => void;
   filterUser?: string;
   deleteFilterUser?: () => void;
+  placeholderWhenFiltered?: string;
 }
 
 export function Search({
@@ -14,6 +15,7 @@ export function Search({
   handleChange,
   filterUser = "",
   deleteFilterUser,
+  placeholderWhenFiltered,
 }: SearchProps): JSX.Element {
   return (
     <TextField
@@ -21,18 +23,24 @@ export function Search({
       type="search"
       variant="outlined"
       id="input-search"
-      value={!filterUser ? value : ""}
+      value={value}
+      placeholder={
+        filterUser
+          ? placeholderWhenFiltered ?? "Дополнительный поиск…"
+          : undefined
+      }
       InputProps={{
         startAdornment: (
           <>
-            {filterUser && (
+            {filterUser ? (
               <Chip
                 key={filterUser}
                 tabIndex={-1}
                 label={filterUser}
                 onDelete={deleteFilterUser}
+                sx={{ mr: 0.5, maxWidth: { xs: "55%", sm: "50%" } }}
               />
-            )}
+            ) : null}
             <InputAdornment position="start">
               <SearchIcon />
             </InputAdornment>

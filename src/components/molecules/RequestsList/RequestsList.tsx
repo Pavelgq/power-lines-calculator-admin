@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSortableData } from "../../../hooks/useSortableData";
 import { clientSearchFields } from "../../../data/clientsData";
+import { firstUpperChar } from "../../../helpers/format";
 import { ClientDataInterface } from "../../../interfaces/client.interface";
 import { selectAllClients, selectAllIds } from "../../../store/clientsStore";
 import { RequestsTable } from "../RequestsTable/RequestsTable";
@@ -94,7 +95,13 @@ export function RequestsList({
 
   useEffect(() => {
     if (clientId && Object.prototype.hasOwnProperty.call(data, clientId)) {
-      setSearchValue(`${data[clientId].last_name}`); // ${data[clientId].first_name}
+      const row = data[clientId];
+      setSearchValue(
+        [row.last_name, row.first_name]
+          .map((s) => String(s ?? "").trim())
+          .filter(Boolean)
+          .join(" ")
+      );
     }
   }, []);
 
@@ -122,8 +129,18 @@ export function RequestsList({
         <Search
           value={searchValue}
           handleChange={setSearchValue}
-          filterUser={clientId && data[clientId].last_name}
+          filterUser={
+            clientId && data[clientId]
+              ? [
+                  firstUpperChar(data[clientId].last_name ?? ""),
+                  firstUpperChar(data[clientId].first_name ?? ""),
+                ]
+                  .filter(Boolean)
+                  .join(" ")
+              : undefined
+          }
           deleteFilterUser={handleDeleteFilterUser}
+          placeholderWhenFiltered="Уточнить по ФИО или компании"
         />
       </Box>
       <Box sx={{ width: "100%", minWidth: 0 }}>

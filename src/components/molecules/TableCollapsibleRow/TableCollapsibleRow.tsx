@@ -18,6 +18,8 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { firstUpperChar } from "../../../helpers/format";
+import { TableCellValue } from "../../atoms/TableCellValue/TableCellValue";
+import { isTableCellEmpty } from "../../../helpers/tableDisplay";
 import {
   ProgramType,
   Categories,
@@ -54,10 +56,41 @@ export function TableCollapsibleRow({
         sx={{ maxWidth: columns[1].width }}
         className="no-wrap-text fix-table-cell"
       >
-        <Link to={`/clients/${action.client_id}`}>
-          {firstUpperChar(clients[action.client_id].last_name)} <br />
-          {firstUpperChar(clients[action.client_id].first_name)}
-        </Link>
+        {(() => {
+          const rowClient = clients[action.client_id];
+          const ln = rowClient?.last_name;
+          const fn = rowClient?.first_name;
+          const linked =
+            rowClient &&
+            (!isTableCellEmpty(ln) || !isTableCellEmpty(fn));
+          const fio = (
+            <>
+              <TableCellValue
+                component="span"
+                variant="body2"
+                value={ln}
+                format={(raw) => firstUpperChar(raw)}
+              />
+              <br />
+              <TableCellValue
+                component="span"
+                variant="body2"
+                value={fn}
+                format={(raw) => firstUpperChar(raw)}
+              />
+            </>
+          );
+          return linked ? (
+            <Link
+              to={`/clients/${action.client_id}`}
+              style={{ textDecoration: "none" }}
+            >
+              {fio}
+            </Link>
+          ) : (
+            fio
+          );
+        })()}
       </TableCell>
       <TableCell
         component="th"
@@ -126,9 +159,6 @@ export function TableCollapsibleRow({
       </TableCell>
 
       <TableCell component="th" scope="row" align="center">
-        <Typography variant="body2">
-          {/* {ProgramType[action.program_type]} */}
-        </Typography>
         <Typography variant="body2">
           {Categories[action.type] as string}
         </Typography>
