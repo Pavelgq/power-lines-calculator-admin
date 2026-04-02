@@ -1,39 +1,18 @@
 import { Grid, Typography } from "@mui/material";
 import { ProgramType } from "../../../interfaces/action.interface";
+import { ProgramParams } from "../../../domain/programParams";
 
 export interface ActionParamInterface {
   params: string | undefined;
   type: ProgramType;
 }
 
-export const sheldMainParams = {
-  param1: "Напряжение",
-  param1Dim: "кВ",
-  param2: "Длина линии",
-  param2Dim: "м",
-  param3: "",
-  param4: "",
-};
-
-export const cableMainParams = {
-  param1: "Напряжение",
-  param1Dim: "кВ",
-  param2: "Длина линии",
-  param2Dim: "м",
-  param3: "",
-  param4: "",
-};
-
-export const pipeMainParams = {
-  param1: "Диаметр кабеля",
-  param1Dim: "мм",
-  param2: "Число кабелей в трубе",
-  param2Dim: "",
-  param3: "Тип кабеля",
-  param4: "Способ прокладки",
-};
-
-export const ProgramParams = [pipeMainParams, sheldMainParams, cableMainParams];
+export {
+  ProgramParams,
+  pipeMainParams,
+  sheldMainParams,
+  cableMainParams,
+} from "../../../domain/programParams";
 
 export function ActionParam({
   params,
@@ -44,35 +23,33 @@ export function ActionParam({
       return <div> </div>;
     }
     const json = JSON.parse(params as string);
-    const result = [pipeMainParams, sheldMainParams, cableMainParams];
+    const defs = ProgramParams[type - 1];
 
     return (
       <>
         {json.param3 && (
           <Grid item>
             <Typography variant="body2">
-              {result[type - 1].param3}: {json.param3}
+              {defs.param3}: {json.param3}
             </Typography>
           </Grid>
         )}
         <Grid item>
           <Typography variant="body2">
-            {result[type - 1].param1}: {json.param1}{" "}
-            {result[type - 1].param1Dim}
+            {defs.param1}: {json.param1} {defs.param1Dim}
           </Typography>
         </Grid>
         {json.param4 && (
           <Grid item>
             <Typography variant="body2">
-              {result[type - 1].param4}: {json.param4}
+              {defs.param4}: {json.param4}
             </Typography>
           </Grid>
         )}
         {json.param2 && (
           <Grid item>
             <Typography variant="body2">
-              {result[type - 1].param2}: {json.param2}{" "}
-              {result[type - 1]?.param2Dim}
+              {defs.param2}: {json.param2} {defs?.param2Dim}
             </Typography>
           </Grid>
         )}
