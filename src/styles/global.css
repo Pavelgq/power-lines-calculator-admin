@@ -1,6 +1,8 @@
-
-
-
+::highlight(powerlines-client-table-search),
+::highlight(powerlines-requests-table-search) {
+  background-color: rgba(255, 235, 120, 0.55);
+  color: inherit;
+}
 
 .no-wrap-text {
    white-space: nowrap;

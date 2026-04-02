@@ -15,7 +15,11 @@ import {
 import { useSelector } from "react-redux";
 
 import { Link, useLocation } from "react-router-dom";
+import { useMemo, useRef } from "react";
 import moment from "moment";
+import { SearchMatchText } from "../../atoms/SearchMatchText/SearchMatchText";
+import { useTableSearchHighlights } from "../../../hooks/useTableSearchHighlights";
+import { REQUESTS_TABLE_HIGHLIGHT_NAME } from "../../../helpers/cssCustomHighlight";
 import { firstUpperChar } from "../../../helpers/format";
 import {
   selectAllClients,
@@ -42,6 +46,20 @@ export function RequestsTable({
   const location = useLocation();
   const data = useSelector(selectAllClients);
   const isLoading = useSelector(selectIsLoadingClient);
+  const tableBodyRef = useRef<HTMLTableSectionElement>(null);
+  const highlightLayoutKey = useMemo(
+    () =>
+      items
+        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+        .join(","),
+    [items, page, rowsPerPage]
+  );
+  useTableSearchHighlights(
+    tableBodyRef,
+    searchValue,
+    highlightLayoutKey,
+    REQUESTS_TABLE_HIGHLIGHT_NAME
+  );
 
   if (isLoading) {
     return <Loading />;
@@ -89,7 +107,7 @@ export function RequestsTable({
                 ))}
             </TableRow>
           </TableHead>
-          <TableBody>
+          <TableBody ref={tableBodyRef}>
             {items &&
               items
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -127,17 +145,35 @@ export function RequestsTable({
                       <Typography variant="body2" component="h3">
                         {data[client].valid_until ? (
                           <Link to={`/actions/${client}`}>
-                            {firstUpperChar(data[client].last_name)}
+                            <SearchMatchText
+                              text={data[client].last_name ?? ""}
+                              query={searchValue}
+                              format={(s) => (s ? firstUpperChar(s) : "")}
+                            />
                             <br />
-                            {data[client].first_name &&
-                              firstUpperChar(data[client].first_name)}
+                            {data[client].first_name ? (
+                              <SearchMatchText
+                                text={data[client].first_name}
+                                query={searchValue}
+                                format={(s) => (s ? firstUpperChar(s) : "")}
+                              />
+                            ) : null}
                           </Link>
                         ) : (
                           <>
-                            {firstUpperChar(data[client].last_name)}
+                            <SearchMatchText
+                              text={data[client].last_name ?? ""}
+                              query={searchValue}
+                              format={(s) => (s ? firstUpperChar(s) : "")}
+                            />
                             <br />
-                            {data[client].first_name &&
-                              firstUpperChar(data[client].first_name)}
+                            {data[client].first_name ? (
+                              <SearchMatchText
+                                text={data[client].first_name}
+                                query={searchValue}
+                                format={(s) => (s ? firstUpperChar(s) : "")}
+                              />
+                            ) : null}
                           </>
                         )}
                       </Typography>
@@ -149,7 +185,10 @@ export function RequestsTable({
                       sx={{ maxWidth: columns[2].width }}
                       // className="no-wrap-text fix-table-cell"
                     >
-                      {data[client].company}
+                      <SearchMatchText
+                        text={data[client].company ?? ""}
+                        query={searchValue}
+                      />
                     </TableCell>
                     <TableCell
                       component="th"

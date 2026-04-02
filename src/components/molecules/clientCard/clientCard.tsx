@@ -21,6 +21,7 @@ import { ClientKey } from "../ClientKey/ClientKey";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import { deleteClientFetch } from "../../../store/clientsStore";
 import { AlertDialog } from "../AlertDialog/AlertDialog";
+import { SearchMatchText } from "../../atoms/SearchMatchText/SearchMatchText";
 import { formatePhone } from "../../../helpers/format";
 import { ClientRowMenu } from "../ClientRowMenu/ClientRowMenu";
 
@@ -29,6 +30,7 @@ import styles from "./ClientCard.module.css";
 export function ClientCard({
   client,
   color = "white",
+  searchValue = "",
 }: ClientCardProps): JSX.Element {
   const [token] = useLocalStorage("token");
   const dispatch = useDispatch();
@@ -40,13 +42,19 @@ export function ClientCard({
           <Grid container item justifyContent="space-between">
             <Grid item style={{ height: 100 }}>
               <Typography variant="h5" component="h3">
-                {client.first_name} {client.last_name}
+                <SearchMatchText
+                  text={`${client.first_name ?? ""} ${client.last_name ?? ""}`.trim()}
+                  query={searchValue}
+                />
               </Typography>
               <Typography gutterBottom variant="body2" color="text.secondary">
                 {client.office_position}
               </Typography>
               <Typography variant="body1" color="text.secondary">
-                {client.company}
+                <SearchMatchText
+                  text={client.company ?? ""}
+                  query={searchValue}
+                />
               </Typography>
             </Grid>
             <Grid item>

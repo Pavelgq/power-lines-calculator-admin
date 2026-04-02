@@ -1,32 +1,41 @@
 import { Grid } from "@mui/material";
 import { useSelector } from "react-redux";
+import { useMemo, useRef } from "react";
 import { ClientCard } from "../..";
 import {
   selectAllClients,
-  selectAllIds,
   selectIsLoadingClient,
 } from "../../../store/clientsStore";
 import { Loading } from "../../atoms/Loading/Loading";
+import { ClientTableProps } from "../ClientTable/ClientTable.props";
+import { useTableSearchHighlights } from "../../../hooks/useTableSearchHighlights";
 
-interface ClientCardListProps {
-  items: number[];
-}
-
-export function ClientCardList({ items }: ClientCardListProps) {
+export function ClientCardList({
+  items,
+  searchValue = "",
+}: ClientTableProps) {
   const data = useSelector(selectAllClients);
   const isLoading = useSelector(selectIsLoadingClient);
+  const listRootRef = useRef<HTMLDivElement>(null);
+  const highlightLayoutKey = useMemo(() => items.join(","), [items]);
+  useTableSearchHighlights(listRootRef, searchValue, highlightLayoutKey);
 
   if (isLoading) {
     return <Loading />;
   }
   return (
-    <Grid container gap={2}>
-      {items.length &&
-        items.map((clientId: number) => (
-          <Grid item key={clientId}>
-            <ClientCard client={data[clientId]} />
-          </Grid>
-        ))}
-    </Grid>
+    <div ref={listRootRef}>
+      <Grid container gap={2}>
+        {items.length > 0 &&
+          items.map((clientId: number) => (
+            <Grid item key={clientId}>
+              <ClientCard
+                client={data[clientId]}
+                searchValue={searchValue}
+              />
+            </Grid>
+          ))}
+      </Grid>
+    </div>
   );
 }

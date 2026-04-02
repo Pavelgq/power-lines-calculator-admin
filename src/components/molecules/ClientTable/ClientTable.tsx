@@ -16,8 +16,11 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import { Link, useLocation } from "react-router-dom";
+import { useMemo, useRef } from "react";
 import cn from "classnames";
 import { ClientKey } from "../..";
+import { SearchMatchText } from "../../atoms/SearchMatchText/SearchMatchText";
+import { useTableSearchHighlights } from "../../../hooks/useTableSearchHighlights";
 import { firstUpperChar, formatePhone } from "../../../helpers/format";
 import { ClientTableProps } from "./ClientTable.props";
 import {
@@ -48,6 +51,15 @@ export function ClientTable({
   const isLoading = useSelector(selectIsLoadingClient);
   const [token] = useLocalStorage("token");
   const dispatch = useDispatch();
+  const tableBodyRef = useRef<HTMLTableSectionElement>(null);
+  const highlightLayoutKey = useMemo(
+    () =>
+      items
+        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+        .join(","),
+    [items, page, rowsPerPage]
+  );
+  useTableSearchHighlights(tableBodyRef, searchValue, highlightLayoutKey);
 
   if (isLoading) {
     return <Loading />;
@@ -98,7 +110,7 @@ export function ClientTable({
                 ))}
             </TableRow>
           </TableHead>
-          <TableBody>
+          <TableBody ref={tableBodyRef}>
             {items &&
               items
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -131,9 +143,17 @@ export function ClientTable({
                     >
                       <Typography variant="body2" component="h3">
                         <Link to={`/actions/${client}`}>
-                          {firstUpperChar(data[client].last_name)}
+                          <SearchMatchText
+                            text={data[client].last_name ?? ""}
+                            query={searchValue}
+                            format={(s) => (s ? firstUpperChar(s) : "")}
+                          />
                           <br />
-                          {firstUpperChar(data[client].first_name)}
+                          <SearchMatchText
+                            text={data[client].first_name ?? ""}
+                            query={searchValue}
+                            format={(s) => (s ? firstUpperChar(s) : "")}
+                          />
                         </Link>
                       </Typography>
                     </TableCell>
@@ -144,7 +164,10 @@ export function ClientTable({
                       sx={{ maxWidth: columns[2].width }}
                       // className="no-wrap-text fix-table-cell"
                     >
-                      {data[client].company}
+                      <SearchMatchText
+                        text={data[client].company ?? ""}
+                        query={searchValue}
+                      />
                     </TableCell>
                     <TableCell
                       component="th"
