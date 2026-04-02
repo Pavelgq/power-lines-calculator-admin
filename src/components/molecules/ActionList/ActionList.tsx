@@ -18,6 +18,7 @@ import {
   actionsRowsPerPageDefault,
   actionsRowsPerPageOptions,
 } from "../../../data/actionData";
+import { rowsPerPageFromSelectValue } from "../../../helpers/rowsPerPageStorage";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import { useWindowSize } from "../../../hooks/useWindowsSize";
 import {
@@ -142,12 +143,12 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
     setPage(newPage);
   };
 
-  const handleChangeLimit = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const n = parseInt(String(event.target.value).trim(), 10);
-    if (
-      !Number.isFinite(n) ||
-      !(actionsRowsPerPageOptions as readonly number[]).includes(n)
-    ) {
+  const handleChangeLimit = (event: { target: { value: unknown } }) => {
+    const n = rowsPerPageFromSelectValue(
+      event.target.value,
+      actionsRowsPerPageOptions
+    );
+    if (n === null) {
       return;
     }
     setLimitStr(String(n));

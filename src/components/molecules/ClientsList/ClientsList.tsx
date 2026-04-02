@@ -8,6 +8,13 @@ import { useSortableData } from "../../../hooks/useSortableData";
 import { useWindowSize } from "../../../hooks/useWindowsSize";
 import { ClientDataInterface } from "../../../interfaces/client.interface";
 import { firstUpperChar } from "../../../helpers/format";
+import {
+  canonicalListTableRowsStr,
+  CLIENTS_ROWS_LS_KEY,
+  parseListTableRowsPerPage,
+  rowsPerPageFromSelectValue,
+  listTableRowsPerPageOptions,
+} from "../../../helpers/rowsPerPageStorage";
 import { selectAllClients } from "../../../store/clientsStore";
 import { ClientCardList } from "../ClientCardList/ClientCardList";
 import { Search } from "../Search/Search";
@@ -25,7 +32,18 @@ export function ClientsList({
   const [selectClient, setSelectClient] = useState(0);
   const [openAddClientDialog, setOpenAddClientDialog] = useState(false);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPageStr, setRowsPerPageStr] = useLocalStorage(
+    CLIENTS_ROWS_LS_KEY,
+    String(listTableRowsPerPageOptions[0])
+  );
+  const rowsPerPage = parseListTableRowsPerPage(rowsPerPageStr);
+
+  useEffect(() => {
+    const next = canonicalListTableRowsStr(rowsPerPageStr);
+    if (next !== rowsPerPageStr) {
+      setRowsPerPageStr(next);
+    }
+  }, [rowsPerPageStr, setRowsPerPageStr]);
 
   const [searchValue, setSearchValue] = useState("");
   const [timeFilter, setTimeFilter] = useState("all");
@@ -55,10 +73,17 @@ export function ClientsList({
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+  const handleChangeRowsPerPage = (event: {
+    target: { value: unknown };
+  }) => {
+    const n = rowsPerPageFromSelectValue(
+      event.target.value,
+      listTableRowsPerPageOptions
+    );
+    if (n === null) {
+      return;
+    }
+    setRowsPerPageStr(String(n));
     setPage(0);
   };
 

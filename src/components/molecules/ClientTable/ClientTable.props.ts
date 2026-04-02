@@ -12,5 +12,6 @@ export interface ClientTableProps {
   page: number;
   handleChangePage: (event: unknown, newPage: number) => void;
   rowsPerPage: number;
-  handleChangeRowsPerPage: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  /** MUI TablePagination отдаёт событие Select, не нативный input */
+  handleChangeRowsPerPage: (event: { target: { value: unknown } }) => void;
 }

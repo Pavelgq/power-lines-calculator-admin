@@ -5,6 +5,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSortableData } from "../../../hooks/useSortableData";
 import { clientSearchFields } from "../../../data/clientsData";
 import { firstUpperChar } from "../../../helpers/format";
+import {
+  canonicalListTableRowsStr,
+  REQUESTS_ROWS_LS_KEY,
+  parseListTableRowsPerPage,
+  rowsPerPageFromSelectValue,
+  listTableRowsPerPageOptions,
+} from "../../../helpers/rowsPerPageStorage";
+import useLocalStorage from "../../../hooks/useLocalStorage";
 import { ClientDataInterface } from "../../../interfaces/client.interface";
 import { selectAllClients, selectAllIds } from "../../../store/clientsStore";
 import { RequestsTable } from "../RequestsTable/RequestsTable";
@@ -81,7 +89,18 @@ export function RequestsList({
   const navigate = useNavigate();
   const { clientId } = useParams() || "";
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPageStr, setRowsPerPageStr] = useLocalStorage(
+    REQUESTS_ROWS_LS_KEY,
+    String(listTableRowsPerPageOptions[0])
+  );
+  const rowsPerPage = parseListTableRowsPerPage(rowsPerPageStr);
+
+  useEffect(() => {
+    const next = canonicalListTableRowsStr(rowsPerPageStr);
+    if (next !== rowsPerPageStr) {
+      setRowsPerPageStr(next);
+    }
+  }, [rowsPerPageStr, setRowsPerPageStr]);
 
   const [searchValue, setSearchValue] = useState("");
   const [timeFilter, setTimeFilter] = useState("all");
@@ -109,10 +128,17 @@ export function RequestsList({
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+  const handleChangeRowsPerPage = (event: {
+    target: { value: unknown };
+  }) => {
+    const n = rowsPerPageFromSelectValue(
+      event.target.value,
+      listTableRowsPerPageOptions
+    );
+    if (n === null) {
+      return;
+    }
+    setRowsPerPageStr(String(n));
     setPage(0);
   };
 
