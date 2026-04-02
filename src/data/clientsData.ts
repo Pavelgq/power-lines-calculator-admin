@@ -3,6 +3,8 @@ import { ClientColumnI } from "../interfaces/client.interface";
 
 
 export const clientFields = ['ordinal', 'last_name', 'company', 'office_position', 'contacts', 'acceptKey', 'actions'];
+
+export const clientSearchFields = ["last_name", "first_name", "company"] as const;
 export const requestFields = ['ordinal',  'last_name', 'company', 'office_position', 'contacts', 'date', 'actions'];
 export const columns: ClientColumnI[] = [
   {

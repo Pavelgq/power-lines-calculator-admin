@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import { useSortableData } from "../../../hooks/useSortableData";
+import { clientSearchFields } from "../../../data/clientsData";
 import { useWindowSize } from "../../../hooks/useWindowsSize";
 import { ClientDataInterface } from "../../../interfaces/client.interface";
 import { selectAllClients, selectAllIds } from "../../../store/clientsStore";
@@ -86,8 +87,6 @@ export const columns = [
   },
 ];
 
-const searchFields = columns.filter((el) => el.search).map((el) => el.field);
-
 export function RequestsList({
   Component,
   selectForIds,
@@ -110,7 +109,7 @@ export function RequestsList({
 
   const { items, sortConfig, sortingField } = useSortableData<{
     [id: string]: ClientDataInterface;
-  }>(allIds, data, searchValue, searchFields, timeFilter);
+  }>(allIds, data, searchValue, clientSearchFields, timeFilter);
 
   useEffect(() => {
     if (clientId && Object.prototype.hasOwnProperty.call(data, clientId)) {

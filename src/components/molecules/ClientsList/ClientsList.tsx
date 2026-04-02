@@ -2,7 +2,7 @@ import { Grid, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { columns } from "../../../data/clientsData";
+import { clientSearchFields, columns } from "../../../data/clientsData";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import { useSortableData } from "../../../hooks/useSortableData";
 import { useWindowSize } from "../../../hooks/useWindowsSize";
@@ -13,8 +13,6 @@ import { Search } from "../Search/Search";
 import { ClientListProps } from "./ClientList.props";
 
 import styles from "./ClientsList.module.css";
-
-const searchFields = columns.filter((el) => el.search).map((el) => el.field);
 
 export function ClientsList({
   Component,
@@ -38,7 +36,7 @@ export function ClientsList({
 
   const { items, sortConfig, sortingField } = useSortableData<{
     [id: string]: ClientDataInterface;
-  }>(allIds, data, searchValue, searchFields, timeFilter);
+  }>(allIds, data, searchValue, clientSearchFields, timeFilter);
 
   useEffect(() => {
     if (clientId && Object.prototype.hasOwnProperty.call(data, clientId)) {

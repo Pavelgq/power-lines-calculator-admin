@@ -1,11 +1,24 @@
 import { useState, useMemo } from "react";
 import { checkTimeInterval, isNumber } from "../helpers/filter";
 
+function clientMatchesSearchQuery(
+  record: Record<string, unknown> | undefined,
+  searchFields: readonly string[],
+  queryLower: string
+): boolean {
+  const haystack = searchFields
+    .map((field) => String(record?.[field] ?? "").trim())
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+  return haystack.includes(queryLower);
+}
+
 export const useSortableData = <T extends { [id: string]: any }>(
   items: (keyof T)[],
   sortData: T,
   searchValue: string,
-  searchFields: string[],
+  searchFields: readonly string[],
   timeInterval: string,
   config: {
     field: string;
@@ -16,20 +29,11 @@ export const useSortableData = <T extends { [id: string]: any }>(
 
   const sortedItems = useMemo(() => {
     let sortableItems = [...items];
-    if (searchValue) {
-      sortableItems = sortableItems.filter((id) => {
-        for (let i = 0; i < searchFields.length; i += 1) {
-          const currentField = searchFields[i];
-          if (
-            sortData[id][currentField]
-              .toLowerCase()
-              .includes(searchValue.toLowerCase())
-          ) {
-            return true;
-          }
-        }
-        return false;
-      });
+    const query = searchValue.trim().toLowerCase();
+    if (query) {
+      sortableItems = sortableItems.filter((id) =>
+        clientMatchesSearchQuery(sortData[id], searchFields, query)
+      );
     }
 
     if (timeInterval !== "all" && timeInterval !== 'not') {
@@ -68,7 +72,7 @@ export const useSortableData = <T extends { [id: string]: any }>(
       });
     }
     return sortableItems.map((el) => Number(el));
-  }, [items, sortConfig, searchValue, timeInterval]);
+  }, [items, sortConfig, searchValue, timeInterval, sortData, searchFields]);
 
   const sortingField = (field: string) => {
     let direction: "desc" | "asc" | undefined =
