@@ -1,4 +1,4 @@
-import { Grid, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { Box, MenuItem, Select, SelectChangeEvent, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -73,43 +73,35 @@ export function ClientsList({
   };
 
   return (
-    <Grid container spacing={2} direction="column">
-      <Grid
-        container
-        item
-        wrap="wrap"
-        justifyContent="center"
-        alignItems="center"
-        direction="row"
-        columns={12}
+    <Stack spacing={2} sx={{ width: "100%", minWidth: 0, boxSizing: "border-box" }}>
+      <Stack
+        direction={{ xs: "column", md: "row" }}
         spacing={2}
+        alignItems="stretch"
+        sx={{ width: "100%", minWidth: 0, boxSizing: "border-box" }}
       >
-        {/* <Grid item xs={2} justifyContent="space-between" alignItems="center">
-          <Container className={styles.noPadding}>
-            <Button
-              type="submit"
-              variant="contained"
-              size="small"
-              onClick={handleOpenCreate}
-            >
-              Добавить пользователя
-            </Button>
-            <CreateClientForm
-              title="Добавить"
-              open={openAddClientDialog}
-              setOpen={setOpenAddClientDialog}
-            />
-          </Container>
-        </Grid> */}
-        <Grid item md={10} xs={12}>
+        <Box
+          sx={{
+            flex: { md: "1 1 0%" },
+            minWidth: 0,
+            width: "100%",
+          }}
+        >
           <Search
             value={searchValue}
             handleChange={setSearchValue}
             filterUser={clientId && data[clientId].last_name}
             deleteFilterUser={handleDeleteFilterUser}
           />
-        </Grid>
-        <Grid item md={2} xs={12}>
+        </Box>
+        <Box
+          sx={{
+            flex: { md: "0 0 auto" },
+            minWidth: 0,
+            width: "100%",
+            maxWidth: { md: 220 },
+          }}
+        >
           <Select
             fullWidth
             className={styles.select}
@@ -125,9 +117,9 @@ export function ClientsList({
             <MenuItem value="year">за год</MenuItem>
             <MenuItem value="not">нет ключа</MenuItem>
           </Select>
-        </Grid>
-      </Grid>
-      <Grid item>
+        </Box>
+      </Stack>
+      <Box sx={{ width: "100%", minWidth: 0 }}>
         <Component
           items={items}
           searchValue={searchValue}
@@ -139,7 +131,7 @@ export function ClientsList({
           rowsPerPage={rowsPerPage}
           handleChangeRowsPerPage={handleChangeRowsPerPage}
         />
-      </Grid>
-    </Grid>
+      </Box>
+    </Stack>
   );
 }

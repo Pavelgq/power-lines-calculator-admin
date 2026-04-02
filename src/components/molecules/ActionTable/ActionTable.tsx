@@ -19,7 +19,11 @@ import {
 } from "../../../store/actionStore";
 import styles from "./ActionTable.module.css";
 import { TableCollapsibleRow } from "../TableCollapsibleRow/TableCollapsibleRow";
-import { columns, headerColumns } from "../../../data/actionData";
+import {
+  columns,
+  headerColumns,
+  actionsRowsPerPageOptions,
+} from "../../../data/actionData";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 
 export function ActionTable({
@@ -97,7 +101,7 @@ export function ActionTable({
       </TableContainer>
       <div className={styles.wrapper}>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[...actionsRowsPerPageOptions]}
           component="div"
           count={Number(total)}
           rowsPerPage={limit}

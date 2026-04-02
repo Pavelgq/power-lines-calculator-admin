@@ -30,7 +30,14 @@ export function Requests(): JSX.Element {
 
   return (
     <main>
-      <Container>
+      <Container
+        maxWidth="lg"
+        sx={{
+          px: { xs: 2, sm: 3 },
+          py: { xs: 1, sm: 2 },
+          boxSizing: "border-box",
+        }}
+      >
         {windowsX > 1050 ? (
           <RequestsList
             Component={RequestsTable}

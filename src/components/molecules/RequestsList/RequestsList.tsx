@@ -1,28 +1,14 @@
-import {
-  Button,
-  Container,
-  Grid,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-} from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import useLocalStorage from "../../../hooks/useLocalStorage";
 import { useSortableData } from "../../../hooks/useSortableData";
 import { clientSearchFields } from "../../../data/clientsData";
-import { useWindowSize } from "../../../hooks/useWindowsSize";
 import { ClientDataInterface } from "../../../interfaces/client.interface";
 import { selectAllClients, selectAllIds } from "../../../store/clientsStore";
-import { ClientCardList } from "../ClientCardList/ClientCardList";
-import { ClientTable } from "../ClientTable/ClientTable";
-import { CreateClientForm } from "../CreateClientForm/CreateClientForm";
 import { RequestsTable } from "../RequestsTable/RequestsTable";
 import { Search } from "../Search/Search";
 import { RequestsListProps } from "./RequestsList.props";
-
-import styles from "./ClientsList.module.css";
 
 export const columns = [
   {
@@ -93,16 +79,11 @@ export function RequestsList({
 }: RequestsListProps): JSX.Element {
   const navigate = useNavigate();
   const { clientId } = useParams() || "";
-  const [windowsX, windowsY] = useWindowSize();
-  const [selectClient, setSelectClient] = useState(0);
-  const [openAddClientDialog, setOpenAddClientDialog] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [searchValue, setSearchValue] = useState("");
   const [timeFilter, setTimeFilter] = useState("all");
-
-  const [token] = useLocalStorage("token");
 
   const data = useSelector(selectAllClients);
   const allIds = useSelector(selectForIds);
@@ -136,25 +117,16 @@ export function RequestsList({
   };
 
   return (
-    <Grid container spacing={2} direction="column" paddingLeft={0}>
-      <Grid
-        container
-        item
-        wrap="nowrap"
-        justifyContent="center"
-        alignItems="center"
-        spacing={2}
-      >
-        <Grid item xs={12}>
-          <Search
-            value={searchValue}
-            handleChange={setSearchValue}
-            filterUser={clientId && data[clientId].last_name}
-            deleteFilterUser={handleDeleteFilterUser}
-          />
-        </Grid>
-      </Grid>
-      <Grid item>
+    <Stack spacing={2} sx={{ width: "100%", minWidth: 0, boxSizing: "border-box" }}>
+      <Box sx={{ width: "100%", minWidth: 0 }}>
+        <Search
+          value={searchValue}
+          handleChange={setSearchValue}
+          filterUser={clientId && data[clientId].last_name}
+          deleteFilterUser={handleDeleteFilterUser}
+        />
+      </Box>
+      <Box sx={{ width: "100%", minWidth: 0 }}>
         <Component
           items={items}
           searchValue={searchValue}
@@ -166,7 +138,7 @@ export function RequestsList({
           rowsPerPage={rowsPerPage}
           handleChangeRowsPerPage={handleChangeRowsPerPage}
         />
-      </Grid>
-    </Grid>
+      </Box>
+    </Stack>
   );
 }

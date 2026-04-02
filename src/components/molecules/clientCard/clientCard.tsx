@@ -8,100 +8,121 @@ import {
   ListItemAvatar,
   Avatar,
   ListItemText,
-  CardActions,
-  Button,
-  Grid,
+  Box,
+  Stack,
 } from "@mui/material";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import ContactIcon from "@mui/icons-material/PermContactCalendar";
-import { useState } from "react";
 import { ClientCardProps } from "./ClientCard.props";
 import { ClientKey } from "../ClientKey/ClientKey";
-import useLocalStorage from "../../../hooks/useLocalStorage";
-import { deleteClientFetch } from "../../../store/clientsStore";
-import { AlertDialog } from "../AlertDialog/AlertDialog";
 import { SearchMatchText } from "../../atoms/SearchMatchText/SearchMatchText";
-import { formatePhone } from "../../../helpers/format";
 import { ClientRowMenu } from "../ClientRowMenu/ClientRowMenu";
-
-import styles from "./ClientCard.module.css";
 
 export function ClientCard({
   client,
-  color = "white",
   searchValue = "",
 }: ClientCardProps): JSX.Element {
-  const [token] = useLocalStorage("token");
-  const dispatch = useDispatch();
-
   return (
-    <Card sx={{ maxWidth: 320 }}>
-      <CardContent>
-        <Grid container>
-          <Grid container item justifyContent="space-between">
-            <Grid item style={{ height: 100 }}>
-              <Typography variant="h5" component="h3">
+    <Card
+      elevation={2}
+      sx={{
+        width: "100%",
+        maxWidth: "100%",
+        borderRadius: 2,
+        overflow: "visible",
+      }}
+    >
+      <CardContent sx={{ p: 2, "&:last-child": { pb: 2 } }}>
+        <Stack spacing={2}>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="flex-start"
+            spacing={1}
+          >
+            <Box sx={{ minWidth: 0, flex: 1 }}>
+              <Typography
+                variant="h6"
+                component="h3"
+                sx={{
+                  fontWeight: 600,
+                  lineHeight: 1.3,
+                  wordBreak: "break-word",
+                }}
+              >
                 <SearchMatchText
                   text={`${client.first_name ?? ""} ${client.last_name ?? ""}`.trim()}
                   query={searchValue}
                 />
               </Typography>
-              <Typography gutterBottom variant="body2" color="text.secondary">
-                {client.office_position}
-              </Typography>
-              <Typography variant="body1" color="text.secondary">
-                <SearchMatchText
-                  text={client.company ?? ""}
-                  query={searchValue}
-                />
-              </Typography>
-            </Grid>
-            <Grid item>
-              <ClientRowMenu id={client.id} />
-            </Grid>
-          </Grid>
-          <Grid container item justifyContent="center">
-            <Grid item>
-              <List
-                sx={{
-                  width: "100%",
-                  maxWidth: 360,
-                  bgcolor: "background.paper",
-                }}
-              >
-                <ListItem>
-                  <ListItemAvatar>
-                    <Avatar>
-                      <ContactIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={
-                      <MuiLink href={`tel:${client.phone_number}`}>
-                        {client.phone_number}
-                      </MuiLink>
-                    }
-                    secondary={
-                      <MuiLink href={`mailto:${client.email}`}>
-                        {client.email}
-                      </MuiLink>
-                    }
+              {client.office_position ? (
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mt: 0.5, wordBreak: "break-word" }}
+                >
+                  {client.office_position}
+                </Typography>
+              ) : null}
+              {client.company ? (
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mt: 0.5, wordBreak: "break-word" }}
+                >
+                  <SearchMatchText
+                    text={client.company}
+                    query={searchValue}
                   />
-                </ListItem>
-              </List>
-            </Grid>
-            <Grid item>
-              <Typography variant="body2">
-                <ClientKey
-                  clientId={Number(client.id)}
-                  keyValue={client.client_key}
-                  lifetime={client.valid_until}
-                />
-              </Typography>
-            </Grid>
-          </Grid>
-        </Grid>
+                </Typography>
+              ) : null}
+            </Box>
+            <Box sx={{ flexShrink: 0, ml: 0.5 }}>
+              <ClientRowMenu id={client.id} />
+            </Box>
+          </Stack>
+
+          <List
+            disablePadding
+            sx={{
+              width: "100%",
+              bgcolor: "action.hover",
+              borderRadius: 1,
+              overflow: "hidden",
+            }}
+          >
+            <ListItem alignItems="flex-start" sx={{ py: 1.5 }}>
+              <ListItemAvatar sx={{ minWidth: 48 }}>
+                <Avatar sx={{ width: 36, height: 36 }}>
+                  <ContactIcon fontSize="small" />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primaryTypographyProps={{ variant: "body2", component: "div" }}
+                secondaryTypographyProps={{ variant: "body2", component: "div" }}
+                primary={
+                  <MuiLink href={`tel:${client.phone_number}`} underline="hover">
+                    {client.phone_number}
+                  </MuiLink>
+                }
+                secondary={
+                  <MuiLink href={`mailto:${client.email}`} underline="hover">
+                    {client.email}
+                  </MuiLink>
+                }
+              />
+            </ListItem>
+          </List>
+
+          <Box sx={{ width: "100%" }}>
+            <Typography variant="body2" component="div">
+              <ClientKey
+                clientId={Number(client.id)}
+                keyValue={client.client_key}
+                lifetime={client.valid_until}
+              />
+            </Typography>
+          </Box>
+        </Stack>
       </CardContent>
     </Card>
   );

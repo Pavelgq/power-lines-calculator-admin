@@ -8,85 +8,112 @@ import {
   ListItemAvatar,
   Avatar,
   ListItemText,
-  CardActions,
-  Button,
-  Grid,
+  Box,
+  Stack,
 } from "@mui/material";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import ContactIcon from "@mui/icons-material/PermContactCalendar";
-import { useState } from "react";
 import { RequestsCardProps } from "./RequestsCard.props";
 import { ClientKey } from "../ClientKey/ClientKey";
-import useLocalStorage from "../../../hooks/useLocalStorage";
-import { deleteClientFetch } from "../../../store/clientsStore";
-import { AlertDialog } from "../AlertDialog/AlertDialog";
-import { formatePhone } from "../../../helpers/format";
-import { ClientRowMenu } from "../ClientRowMenu/ClientRowMenu";
-
-import styles from "./ClientCard.module.css";
 import { RequestRowMenu } from "../RequestRowMenu/RequestRowMenu";
 
-export function RequestsCard({
-  client,
-  color = "white",
-}: RequestsCardProps): JSX.Element {
-  const [token] = useLocalStorage("token");
-  const dispatch = useDispatch();
-
+export function RequestsCard({ client }: RequestsCardProps): JSX.Element {
   return (
-    <Card sx={{ maxWidth: 320 }}>
-      <CardContent>
-        <Grid container alignContent="flex-end" alignItems="flex-end">
-          <Grid container item justifyContent="space-between" wrap="nowrap">
-            <Grid item style={{ height: 100 }}>
-              <Typography variant="h5" component="h3">
-                {client.first_name} {client.last_name}
-              </Typography>
-              <Typography gutterBottom variant="body2" color="text.secondary">
-                {client.office_position}
-              </Typography>
-              <Typography variant="body1" color="text.secondary">
-                {client.company}
-              </Typography>
-            </Grid>
-          </Grid>
-          <Grid container item>
-            <Grid item>
-              <List
+    <Card
+      elevation={2}
+      sx={{
+        width: "100%",
+        maxWidth: "100%",
+        borderRadius: 2,
+        overflow: "visible",
+      }}
+    >
+      <CardContent sx={{ p: 2, "&:last-child": { pb: 2 } }}>
+        <Stack spacing={2}>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="flex-start"
+            spacing={1}
+          >
+            <Box sx={{ minWidth: 0, flex: 1 }}>
+              <Typography
+                variant="h6"
+                component="h3"
                 sx={{
-                  width: "100%",
-                  maxWidth: 360,
-                  bgcolor: "background.paper",
+                  fontWeight: 600,
+                  lineHeight: 1.3,
+                  wordBreak: "break-word",
                 }}
               >
-                <ListItem>
-                  <ListItemAvatar>
-                    <Avatar>
-                      <ContactIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={
-                      <MuiLink href={`tel:${client.phone_number}`}>
-                        {client.phone_number}
-                      </MuiLink>
-                    }
-                    secondary={
-                      <MuiLink href={`mailto:${client.email}`}>
-                        {client.email}
-                      </MuiLink>
-                    }
-                  />
-                </ListItem>
-              </List>
-            </Grid>
-          </Grid>
-        </Grid>
+                {client.first_name} {client.last_name}
+              </Typography>
+              {client.office_position ? (
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mt: 0.5, wordBreak: "break-word" }}
+                >
+                  {client.office_position}
+                </Typography>
+              ) : null}
+              {client.company ? (
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mt: 0.5, wordBreak: "break-word" }}
+                >
+                  {client.company}
+                </Typography>
+              ) : null}
+            </Box>
+            <Box sx={{ flexShrink: 0, ml: 0.5 }}>
+              <RequestRowMenu id={client.id} />
+            </Box>
+          </Stack>
+
+          <List
+            disablePadding
+            sx={{
+              width: "100%",
+              bgcolor: "action.hover",
+              borderRadius: 1,
+              overflow: "hidden",
+            }}
+          >
+            <ListItem alignItems="flex-start" sx={{ py: 1.5 }}>
+              <ListItemAvatar sx={{ minWidth: 48 }}>
+                <Avatar sx={{ width: 36, height: 36 }}>
+                  <ContactIcon fontSize="small" />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primaryTypographyProps={{ variant: "body2", component: "div" }}
+                secondaryTypographyProps={{ variant: "body2", component: "div" }}
+                primary={
+                  <MuiLink href={`tel:${client.phone_number}`} underline="hover">
+                    {client.phone_number}
+                  </MuiLink>
+                }
+                secondary={
+                  <MuiLink href={`mailto:${client.email}`} underline="hover">
+                    {client.email}
+                  </MuiLink>
+                }
+              />
+            </ListItem>
+          </List>
+
+          <Box sx={{ width: "100%" }}>
+            <Typography variant="body2" component="div">
+              <ClientKey
+                clientId={Number(client.id)}
+                keyValue={client.client_key}
+                lifetime={client.valid_until}
+              />
+            </Typography>
+          </Box>
+        </Stack>
       </CardContent>
-      <CardActions>
-        <RequestRowMenu id={client.id} />
-      </CardActions>
     </Card>
   );
 }

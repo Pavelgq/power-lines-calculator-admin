@@ -1,3 +1,10 @@
+#root,
+main {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
 ::highlight(powerlines-client-table-search),
 ::highlight(powerlines-requests-table-search) {
   background-color: rgba(255, 235, 120, 0.55);

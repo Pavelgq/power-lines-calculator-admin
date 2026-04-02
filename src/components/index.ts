@@ -7,6 +7,8 @@ export * from "./atoms/Loading/Loading";
 
 export * from "./molecules/ActionList/ActionList";
 export * from "./molecules/ActionParam/ActionParam";
+export * from "./molecules/ActionCard/ActionCard";
+export * from "./molecules/ActionCardList/ActionCardList";
 export * from "./molecules/ActionTable/ActionTable";
 export * from "./molecules/AdminRowMenu/AdminRowMenu";
 export * from "./molecules/AdminsTable/AdminsTable";

@@ -1,17 +1,21 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import {
   SelectChangeEvent,
-  Grid,
   Button,
   Select,
   MenuItem,
   Autocomplete,
   Box,
   TextField,
+  Stack,
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { programsType } from "../../../data/actionData";
+import {
+  programsType,
+  actionsRowsPerPageDefault,
+  actionsRowsPerPageOptions,
+} from "../../../data/actionData";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import { useWindowSize } from "../../../hooks/useWindowsSize";
 import {
@@ -23,6 +27,7 @@ import {
 import { selectAllClients } from "../../../store/clientsStore";
 import { Loading } from "../../atoms/Loading/Loading";
 import { ActionTable } from "../ActionTable/ActionTable";
+import { ActionCardList } from "../ActionCardList/ActionCardList";
 import { Search } from "../Search/Search";
 
 import styles from "./ActionList.module.css";
@@ -36,12 +41,31 @@ export interface SortI {
   dir: "asc" | "desc";
 }
 
+const ACTIONS_ROWS_LS_KEY = "admin.actions.rowsPerPage";
+
+function parseActionsRowsPerPage(raw: string): number {
+  const n = parseInt(raw, 10);
+  if (
+    Number.isFinite(n) &&
+    actionsRowsPerPageOptions.includes(
+      n as (typeof actionsRowsPerPageOptions)[number]
+    )
+  ) {
+    return n;
+  }
+  return actionsRowsPerPageDefault;
+}
+
 export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
-  const [windowsX, windowsY] = useWindowSize();
+  const [windowsX] = useWindowSize();
 
   const [token] = useLocalStorage("token");
+  const [limitStr, setLimitStr] = useLocalStorage(
+    ACTIONS_ROWS_LS_KEY,
+    String(actionsRowsPerPageDefault)
+  );
+  const limit = parseActionsRowsPerPage(limitStr);
   const [page, setPage] = useState(0);
-  const [limit, setLimit] = useState(5);
   const [programType, setProgramType] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [selectClient, setSelectClient] = useState("");
@@ -101,7 +125,7 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
   };
 
   const handleChangeLimit = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLimit(parseInt(event.target.value, 10));
+    setLimitStr(event.target.value);
     setPage(0);
   };
 
@@ -127,20 +151,52 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
     return <span className={styles.notFound}>Действий не найдено</span>;
   };
 
+  const listProps = {
+    data: clientActions,
+    limit,
+    page,
+    total: totalItems,
+    sort: sortParams,
+    programType,
+    handleSort: setSortParams,
+    handleChangePage,
+    handleChangeLimit,
+  };
+
+  let actionsListBody: JSX.Element;
+  if (!clientActions?.length) {
+    actionsListBody = showNotAction();
+  } else if (windowsX > 1050) {
+    actionsListBody = <ActionTable {...listProps} />;
+  } else {
+    actionsListBody = <ActionCardList {...listProps} />;
+  }
+
   return (
-    <Grid container spacing={2} direction="column">
-      <Grid
-        container
-        item
-        spacing={{ xs: 1, sm: 2 }}
-        alignItems="center"
-        justifyContent="space-between"
-        direction="row"
-        // wrap="nowrap"
+    <Stack spacing={2} sx={{ width: "100%", minWidth: 0, boxSizing: "border-box" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          flexWrap: "wrap",
+          alignItems: { xs: "stretch", md: "center" },
+          gap: 2,
+          width: "100%",
+          minWidth: 0,
+        }}
       >
-        {programsType.map((p) => (
-          <Grid item key={p.name}>
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            gap: 1.5,
+            width: { xs: "100%", md: "auto" },
+          }}
+        >
+          {programsType.map((p) => (
             <Button
+              key={p.name}
               type="submit"
               variant="contained"
               size="small"
@@ -148,9 +204,17 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
             >
               {p.name}
             </Button>
-          </Grid>
-        ))}
-        <Grid item xs={12} sm={12} md={5} lg={6}>
+          ))}
+        </Box>
+        <Box
+          sx={{
+            flex: { md: "1 1 260px" },
+            minWidth: 0,
+            width: { xs: "100%", md: "auto" },
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
           {clientIdSelected ? (
             <Search
               value={searchValue}
@@ -160,6 +224,7 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
             />
           ) : (
             <Autocomplete
+              fullWidth
               autoComplete
               autoHighlight
               value={clients[clientIdSelected]}
@@ -185,14 +250,21 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
                   label="Выберите пользователя"
                   inputProps={{
                     ...params.inputProps,
-                    autoComplete: "new-password", // disable autocomplete and autofill
+                    autoComplete: "new-password",
                   }}
                 />
               )}
             />
           )}
-        </Grid>
-        <Grid item xs={12} sm={12} md={2} lg={2}>
+        </Box>
+        <Box
+          sx={{
+            width: { xs: "100%", md: 200 },
+            flexShrink: 0,
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
           <Select
             fullWidth
             defaultValue="all"
@@ -206,26 +278,10 @@ export function ActionList({ clientId }: ClientActionsProps): JSX.Element {
             <MenuItem value="quarter">Квартал</MenuItem>
             <MenuItem value="year">Год</MenuItem>
           </Select>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
 
-      <Grid item>
-        {clientActions?.length ? (
-          <ActionTable
-            data={clientActions}
-            limit={limit}
-            page={page}
-            total={totalItems}
-            sort={sortParams}
-            programType={programType}
-            handleSort={setSortParams}
-            handleChangePage={handleChangePage}
-            handleChangeLimit={handleChangeLimit}
-          />
-        ) : (
-          showNotAction()
-        )}
-      </Grid>
-    </Grid>
+      <Box sx={{ width: "100%", minWidth: 0 }}>{actionsListBody}</Box>
+    </Stack>
   );
 }

@@ -1,5 +1,8 @@
 import { ActionColumnParamsI } from "../interfaces/action.interface";
 
+export const actionsRowsPerPageDefault = 5;
+export const actionsRowsPerPageOptions = [5, 10, 25, 50] as const;
+
 export const programsType = [
   {
     name: "Все",
