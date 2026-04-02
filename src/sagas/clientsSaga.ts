@@ -1,8 +1,9 @@
-import { AxiosResponseHeaders } from "axios";
-import { call, put, takeEvery, fork, all } from "redux-saga/effects";
+import { AxiosResponse } from "axios";
+import { call, put, takeEvery, all } from "redux-saga/effects";
 import { Client } from "../api/client";
 import { ClientDataInterface } from "../interfaces/client.interface";
 import { AnswerInterface } from "../interfaces/common.interface";
+import { exportClientsToExcel } from "../helpers/excelExport";
 import {
   getClientsFailure,
   getClientsSuccess,
@@ -21,10 +22,13 @@ import {
 
 function* getClientsFetchWorker(action: { payload: any; type: string }) {
   try {
-    const client = new Client();
+    const api = new Client();
     const { token } = action.payload;
-    const res: AxiosResponseHeaders = yield call(client.getAllClients, token);
-    const clientsData: ClientDataInterface[] = yield res.data;
+    const res: AxiosResponse<ClientDataInterface[]> = yield call(
+      api.getAllClients.bind(api),
+      token
+    );
+    const clientsData = res.data;
     yield put(getClientsSuccess(clientsData));
   } catch (e) {
     yield put(getClientsFailure(e));
@@ -33,14 +37,14 @@ function* getClientsFetchWorker(action: { payload: any; type: string }) {
 
 function* getOneClientFetchWorker(action: { payload: any; type: string }) {
   try {
-    const client = new Client();
+    const api = new Client();
     const { token, id } = action.payload;
-    const res: AxiosResponseHeaders = yield call(
-      client.getOneClient,
+    const res: AxiosResponse<ClientDataInterface> = yield call(
+      api.getOneClient.bind(api),
       token,
       id
     );
-    const clientsData: ClientDataInterface = yield res.data;
+    const clientsData = res.data;
     yield put(getOneClientSuccess(clientsData));
   } catch (e) {
     yield put(getOneClientFailure(e));
@@ -49,15 +53,21 @@ function* getOneClientFetchWorker(action: { payload: any; type: string }) {
 
 function* createClientsFetchWorker(action: { payload: any; type: string }) {
   try {
-    const client = new Client();
+    const api = new Client();
     const { token, data: clientData } = action.payload;
-    const candidate: AxiosResponseHeaders = yield call(
-      client.createClient,
+    const candidate: AxiosResponse<AnswerInterface> = yield call(
+      api.createClient.bind(api),
       token,
       clientData
     );
-    const res: AnswerInterface = yield candidate.data;
-    yield put(createClientSuccess(res));
+    const raw = candidate.data as unknown as
+      | { data: ClientDataInterface }
+      | ClientDataInterface;
+    const createdClient =
+      raw && typeof raw === "object" && "data" in raw && raw.data
+        ? raw.data
+        : (raw as ClientDataInterface);
+    yield put(createClientSuccess({ data: createdClient }));
     yield put(getClientsFetch({ token }));
   } catch (e) {
     yield put(createClientFailure(e));
@@ -66,15 +76,15 @@ function* createClientsFetchWorker(action: { payload: any; type: string }) {
 
 function* updateClientFetchWorker(action: { payload: any; type: string }) {
   try {
-    const client = new Client();
+    const api = new Client();
     const { token, clientId, clientData } = action.payload;
-    const candidate: AxiosResponseHeaders = yield call(
-      client.updateClient,
+    const candidate: AxiosResponse<AnswerInterface> = yield call(
+      api.updateClient.bind(api),
       token,
       clientId,
       clientData
     );
-    const res: AnswerInterface = yield candidate.data;
+    const res = candidate.data;
     yield put(updateClientSuccess({ ...res, ...clientData }));
   } catch (error) {
     yield put(updateClientFailure(error));
@@ -83,14 +93,14 @@ function* updateClientFetchWorker(action: { payload: any; type: string }) {
 
 function* deleteClientFetchWorker(action: { payload: any; type: string }) {
   try {
-    const client = new Client();
+    const api = new Client();
     const { token, id } = action.payload;
-    const candidate: AxiosResponseHeaders = yield call(
-      client.deleteClient,
+    const candidate: AxiosResponse<AnswerInterface> = yield call(
+      api.deleteClient.bind(api),
       token,
       id
     );
-    const res: AnswerInterface = yield candidate.data;
+    const res = candidate.data;
     yield put(deleteClientSuccess({ ...res, id }));
     yield put(getClientsFetch({ token }));
   } catch (error) {
@@ -100,14 +110,14 @@ function* deleteClientFetchWorker(action: { payload: any; type: string }) {
 
 function* acceptRequestFetchWorker(action: { payload: any; type: string }) {
   try {
-    const client = new Client();
-    const { token, clientId, clientData} = action.payload;
-    const candidate: AxiosResponseHeaders = yield call(
-      client.acceptRequest,
+    const api = new Client();
+    const { token, clientId, clientData } = action.payload;
+    const candidate: AxiosResponse<AnswerInterface> = yield call(
+      api.acceptRequest.bind(api),
       token,
-      clientId,
+      clientId
     );
-    const res: AnswerInterface = yield candidate.data;
+    const res = candidate.data;
     yield put(updateClientSuccess({ ...res, ...clientData }));
   } catch (error) {
     yield put(updateClientFailure(error));
@@ -116,14 +126,14 @@ function* acceptRequestFetchWorker(action: { payload: any; type: string }) {
 
 function* rejectRequestFetchWorker(action: { payload: any; type: string }) {
   try {
-    const client = new Client();
+    const api = new Client();
     const { token, id } = action.payload;
-    const candidate: AxiosResponseHeaders = yield call(
-      client.rejectRequest,
+    const candidate: AxiosResponse<AnswerInterface> = yield call(
+      api.rejectRequest.bind(api),
       token,
       id
     );
-    const res: AnswerInterface = yield candidate.data;
+    const res = candidate.data;
     yield put(deleteClientSuccess({ ...res, id }));
     yield put(getClientsFetch({ token }));
   } catch (error) {
@@ -131,18 +141,21 @@ function* rejectRequestFetchWorker(action: { payload: any; type: string }) {
   }
 }
 
-function* downloadClientsFetchWorker(action: {payload: any; type: string}) {
+function* downloadClientsFetchWorker(action: {
+  type: string;
+  payload: { token: string };
+}) {
   try {
-    const client = new Client();
-    const { token } = action.payload; 
-    const res: AxiosResponseHeaders = yield call(
-      client.downloadClients,
+    const api = new Client();
+    const { token } = action.payload;
+    const res: AxiosResponse<ClientDataInterface[]> = yield call(
+      api.downloadClients.bind(api),
       token
     );
-    // console.log("downloadClientsActions", res, { data: token });
-    yield put(downloadClientsSuccess({ data: res.data, message: 'Файл загружен' }));
+    exportClientsToExcel(res.data);
+    yield put(downloadClientsSuccess({ message: "Файл загружен" }));
   } catch (error) {
-    yield put(downloadClientsFailure(error))
+    yield put(downloadClientsFailure(error));
   }
 }
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, Navigate, Outlet } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { MainLayout } from "../components/templates/MainLayout/MainLayout";
 import { ROLES } from "../interfaces/admin.interface";
 
@@ -12,8 +12,7 @@ import { Requests } from "../pages/Requests/Requests";
 import { AccessDenied } from "../pages/AccessDenied/AccessDenied";
 import { NotFound } from "../pages/NotFound/NotFound";
 
-export function RoutesList(props: any): JSX.Element {
-  const { isLoggedIn } = props;
+export function RoutesList(): JSX.Element {
   return (
     <Routes>
       <Route path="/login" element={<Authentication />} />

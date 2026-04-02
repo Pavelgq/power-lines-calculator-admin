@@ -1,10 +1,15 @@
-import { saveAs } from "file-saver";
-import { createSlice } from "@reduxjs/toolkit";
-import moment from "moment";
-import { ActionFullInterface, Categories, ProgramType, ProgramTypeName } from "../interfaces/action.interface";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ActionFullInterface } from "../interfaces/action.interface";
 import { RootState } from "./store";
-import { saveToExcel, saveToExcelBySheet } from "../helpers/format";
-import { ProgramParams } from "../components/molecules/ActionParam/ActionParam";
+
+export type GetAllActionsPayload = {
+  token: string;
+  page?: number;
+  limit?: number;
+  filters: Record<string, string>;
+  sort: { field: string; dir: string };
+  period: string;
+};
 
 export interface ActionStoreI {
   data: ActionFullInterface[] | null;
@@ -27,97 +32,83 @@ export const actionSlice = createSlice({
   name: "actions",
   initialState,
   reducers: {
-    createClientAction(state, action) {
+    createClientAction(state) {
       state.isLoading = true;
     },
     createClientActionSuccess(
       state,
-      action: {
-        payload: {
-          data: ActionFullInterface;
-          message: string;
-        };
-      }
+      action: PayloadAction<{
+        data: ActionFullInterface;
+        message: string;
+      }>
     ) {
       state.data?.push(action.payload.data);
       state.total_items = Number(state.total_items) + 1;
       state.message = action.payload.message;
       state.isLoading = false;
     },
-    createClientActionFailure(state, action) {
+    createClientActionFailure(state, _action: PayloadAction<unknown>) {
       state.isLoading = false;
     },
-    getAllActions(state, action) {
+    getAllActions(state, _action: PayloadAction<GetAllActionsPayload>) {
       state.isLoading = true;
     },
-    getAllActionsSuccess(state, action) {
-      console.log("getAllActionsSuccess", action);
+    getAllActionsSuccess(
+      state,
+      action: PayloadAction<{
+        data: ActionFullInterface[];
+        total_items: number;
+      }>
+    ) {
       state.data = action.payload.data;
       state.total_items = action.payload.total_items;
       state.isLoading = false;
     },
-    getAllActionsFailure(state, action) {
+    getAllActionsFailure(state, _action: PayloadAction<unknown>) {
       state.isLoading = false;
     },
-    getClientActions(state) {
+    getClientActions(
+      state,
+      _action: PayloadAction<{ token: string; clientId: number }>
+    ) {
       state.isLoading = true;
     },
-    getClientActionsSuccess(state, action) {
+    getClientActionsSuccess(
+      state,
+      _action: PayloadAction<ActionFullInterface[]>
+    ) {
       state.isLoading = false;
     },
-    getClientActionsFailure(state, action) {
+    getClientActionsFailure(state, _action: PayloadAction<unknown>) {
       state.isLoading = false;
     },
-    getActionFile(state, action) {
-      // state.isLoading = true;
+    getActionFile(
+      state,
+      _action: PayloadAction<{ path: string }>
+    ) {
+      state.isLoading = true;
     },
-    getActionFileSuccess(state, action) {
-      state.isLoading = false;
-      const blob = new Blob([JSON.stringify(action.payload.data)], {
-        type: "text/plain;charset=utf-8",
-      });
-      const path = action.payload.path.split(".");
-      saveAs(blob, `${path[0]}.txt`);
-    },
-    getActionFileFailure(state, action) {
+    getActionFileSuccess(state) {
       state.isLoading = false;
     },
-    downloadActionsFetch: (state, action) => {
+    getActionFileFailure(state, _action: PayloadAction<unknown>) {
+      state.isLoading = false;
     },
-    downloadActionsSuccess: (state, action) => {
-      const {programType} = action.payload;
-      const newData = action.payload.data
-      .map((el:ActionFullInterface & {first_name: string, last_name: string, company: string}, index: number) => {
-        const paramsJson = el.params && JSON.parse(el.params);
-        const param1 = paramsJson?.param1 || '';
-        const param2 = paramsJson?.param2 || '';
-        const param3 = paramsJson?.param3 || '';
-        const param4 = paramsJson?.param4 || '';
-        const programNumber = Number(el.program_type) - 1;
-        const paramsTemplate1 = el.params && `${ProgramParams[programNumber].param1}: ${param1}${ProgramParams[programNumber].param1Dim}`;
-        const paramsTemplate2 = el.params && `${ProgramParams[programNumber].param2}: ${param2}${ProgramParams[programNumber].param2Dim}`;
-        const paramsTemplate3 = el.params && param3 && `${ProgramParams[programNumber].param3}: ${param3}`;
-        const paramsTemplate4 = el.params && param4 && `${ProgramParams[programNumber].param4}: ${param4}`;
-        return {
-          id: index + 1,
-          'Имя': el.first_name,
-          'Фамилия': el.last_name,
-          'Компания': el.company,
-          'Дата': moment(el.date).format('DD MMMM YYYY'),
-          'Время': moment(el.date).format('HH:mm'),
-          'Использованный код': el.accept_key,
-          'Программа': ProgramType[el.program_type],
-          'Параметр1': paramsTemplate1,
-          'Параметр2': paramsTemplate2,
-          ...(paramsTemplate3 ? {'Параметр3': paramsTemplate3} : {}),
-          ...(paramsTemplate4 ? {'Параметр4': paramsTemplate4} : {})
-        }
-      })
-      saveToExcel( newData, ProgramType[programType], ProgramTypeName[programType])
+    downloadActionsFetch: (
+      _state,
+      _action: PayloadAction<{ token: string; programType: number }>
+    ) => {},
+    downloadActionsSuccess: (
+      state,
+      action: PayloadAction<{ message?: string }>
+    ) => {
+      state.message = action.payload.message ?? "";
     },
-    downloadActionsFailure: (state, action) => {
-    }
-  }
+    downloadActionsFailure: (
+      _state,
+      _action: PayloadAction<unknown>
+    ) => {},
+  },
 });
 
 export const {
@@ -135,7 +126,7 @@ export const {
   getActionFileFailure,
   downloadActionsFetch,
   downloadActionsSuccess,
-  downloadActionsFailure
+  downloadActionsFailure,
 } = actionSlice.actions;
 
 export default actionSlice.reducer;

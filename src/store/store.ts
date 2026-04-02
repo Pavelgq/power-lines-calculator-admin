@@ -15,7 +15,8 @@ export const store = configureStore({
     actions: actionReducer,
     accept: acceptReducer,
   },
-  middleware: [saga],
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(saga),
 });
 
 saga.run(rootSaga);

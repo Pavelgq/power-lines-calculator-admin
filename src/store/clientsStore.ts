@@ -1,10 +1,7 @@
-import { saveAs } from "file-saver";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import moment from "moment";
-import { string } from "yup/lib/locale";
 import { ClientDataInterface } from "../interfaces/client.interface";
 import { RootState } from "./store";
-import { saveToExcel } from "../helpers/format";
 
 interface ClientStateI {
   data: { [id: string]: ClientDataInterface };
@@ -38,38 +35,49 @@ export const clientsSlice = createSlice({
     ) => {
       state.data[action.payload.id].isAccept = action.payload.isAccept;
     },
-    getClientsFetch: (state, action) => {
+    getClientsFetch: (state, _action: PayloadAction<{ token: string }>) => {
       state.isLoading = true;
     },
-    getClientsSuccess: (state, action) => {
+    getClientsSuccess: (state, action: PayloadAction<ClientDataInterface[]>) => {
       state.allIds = [];
-      action.payload.forEach((c: ClientDataInterface, index: number) => {
+      action.payload.forEach((c: ClientDataInterface) => {
         state.allIds.push(c.id);
       });
       state.data = {};
       action.payload.forEach((c: ClientDataInterface) => {
         Object.assign(state.data, { [c.id]: c });
-        // state.data[c.id].isAccept = true;
       });
       state.isLoading = false;
     },
-    getClientsFailure: (state, action) => {
-      state.error = action.payload;
+    getClientsFailure: (state, action: PayloadAction<unknown>) => {
+      state.error = action.payload as Error;
       state.isLoading = false;
     },
-    getOneClientFetch: (state, action) => {
+    getOneClientFetch: (
+      state,
+      _action: PayloadAction<{ token: string; id: number }>
+    ) => {
       state.isLoading = true;
     },
-    getOneClientSuccess: (state, action) => {
+    getOneClientSuccess: (
+      state,
+      _action: PayloadAction<ClientDataInterface>
+    ) => {
       state.isLoading = false;
     },
-    getOneClientFailure: (state, action) => {
+    getOneClientFailure: (state, _action: PayloadAction<unknown>) => {
       state.isLoading = false;
     },
-    createClientsFetch: (state, action) => {
+    createClientsFetch: (
+      state,
+      _action: PayloadAction<{ data: ClientDataInterface; token: string }>
+    ) => {
       state.isLoading = true;
     },
-    createClientSuccess: (state, action) => {
+    createClientSuccess: (
+      state,
+      action: PayloadAction<{ data: ClientDataInterface }>
+    ) => {
       state.allIds.push(action.payload.data.id);
       state.data[action.payload.data.id] = {
         ...action.payload.data,
@@ -77,79 +85,100 @@ export const clientsSlice = createSlice({
       };
       state.isLoading = false;
     },
-    createClientFailure: (state, action) => {
+    createClientFailure: (state, _action: PayloadAction<unknown>) => {
       state.isLoading = false;
     },
-    updateClientsFetch: (state, action) => {
+    updateClientsFetch: (
+      state,
+      _action: PayloadAction<{
+        token: string;
+        clientId: number;
+        clientData: ClientDataInterface;
+      }>
+    ) => {
       state.isLoading = true;
     },
-    updateClientSuccess: (state, action) => {
+    updateClientSuccess: (
+      state,
+      action: PayloadAction<ClientDataInterface & { id: number; message?: string }>
+    ) => {
       state.isLoading = false;
       state.data[action.payload.id] = action.payload;
-      state.message = action.payload.message;
+      state.message = action.payload.message ?? "";
     },
-    updateClientFailure: (state, action) => {
+    updateClientFailure: (state, _action: PayloadAction<unknown>) => {
       state.isLoading = false;
     },
-    deleteClientFetch: (state, action) => {
+    deleteClientFetch: (
+      state,
+      _action: PayloadAction<{ token: string; id: number }>
+    ) => {
       state.isLoading = true;
     },
-    deleteClientSuccess: (state, action) => {
-      const i = state.allIds.indexOf(action.payload.clientId);
+    deleteClientSuccess: (
+      state,
+      action: PayloadAction<{ clientId?: number; id?: number }>
+    ) => {
+      const clientId = action.payload.clientId ?? action.payload.id;
+      if (clientId == null) {
+        state.isLoading = false;
+        return;
+      }
+      const i = state.allIds.indexOf(clientId);
       if (i !== -1) {
         state.allIds.splice(i, 1);
       }
-      delete state.data[action.payload.clientId];
+      delete state.data[clientId];
       state.isLoading = false;
     },
-    deleteClientFailure: (state, action) => {
+    deleteClientFailure: (state, _action: PayloadAction<unknown>) => {
       state.isLoading = false;
     },
-    acceptRequestFetch: (state, action) => {
+    acceptRequestFetch: (
+      state,
+      _action: PayloadAction<{
+        token: string;
+        clientId: number;
+        clientData: ClientDataInterface;
+      }>
+    ) => {
       state.isLoading = true;
     },
-    rejectRequestFetch: (state, action) => {
+    rejectRequestFetch: (
+      state,
+      _action: PayloadAction<{ token: string; id: number }>
+    ) => {
       state.isLoading = true;
     },
-    downloadClientsFetch: (state, action) => {
+    downloadClientsFetch: (
+      _state,
+      _action: PayloadAction<{ token: string }>
+    ) => {},
+    downloadClientsSuccess: (
+      state,
+      action: PayloadAction<{ message?: string }>
+    ) => {
+      state.message = action.payload.message ?? "";
     },
-    downloadClientsSuccess: (state, action) => {
-      const newData = action.payload.data
-      .filter((el: ClientDataInterface ) => !el.request)
-      .map((el:ClientDataInterface & {client_key: string, valid_until: string}, index: number) => ({
-          id: index + 1,
-          'Имя': el.first_name,
-          'Фамилия': el.last_name,
-          'Компания': el.company,
-          'Должность': el.office_position,
-          'Телефон': el.phone_number,
-          'e-main': el.email,
-          'Дата': moment(el.creation_date).format('DD MMMM YYYY'),
-          'Время': moment(el.creation_date).format('HH:mm'),
-          'Ключ': el.client_key,
-          'Срок дейсвия ключа': moment(el.valid_until).format('DD MMMM YYYY')
-        }))
-
-      saveToExcel(newData)
-    },
-    downloadClientsFailure: (state, action) => {
-    }
+    downloadClientsFailure: (_state, _action: PayloadAction<unknown>) => {},
   },
   extraReducers: {
     "accept/createAcceptKeySuccess": (state, action) => {
       const { clientId } = action.payload;
       state.data[clientId].isAccept = true;
       state.data[clientId].update = moment().format();
-      state.data[clientId].client_key = action.payload?.key || state.data[clientId].client_key;
+      state.data[clientId].client_key =
+        action.payload?.key || state.data[clientId].client_key;
       state.data[clientId].valid_until = action.payload.validDate;
     },
     "accept/changeAcceptKeySuccess": (state, action) => {
       const { clientId } = action.payload;
       state.data[clientId].isAccept = true;
       state.data[clientId].update = moment().format();
-      state.data[clientId].client_key = action.payload?.key || state.data[clientId].client_key;
+      state.data[clientId].client_key =
+        action.payload?.key || state.data[clientId].client_key;
       state.data[clientId].valid_until = action.payload.validDate;
-    }
+    },
   },
 });
 
@@ -174,7 +203,7 @@ export const {
   rejectRequestFetch,
   downloadClientsFetch,
   downloadClientsSuccess,
-  downloadClientsFailure
+  downloadClientsFailure,
 } = clientsSlice.actions;
 
 export default clientsSlice.reducer;
@@ -182,8 +211,14 @@ export default clientsSlice.reducer;
 export const selectAllClients = (state: RootState) => state.clients.data;
 export const selectAllIds = (state: RootState) => state.clients.allIds;
 
-export const selectAcceptClients = (state: RootState) => Object.keys(state.clients.data).filter(id => !state.clients.data[id].request);
-export const selectRequestClients = (state: RootState) => Object.keys(state.clients.data).filter(id => state.clients.data[id].request);
+export const selectAcceptClients = (state: RootState) =>
+  Object.keys(state.clients.data).filter(
+    (id) => !state.clients.data[id].request
+  );
+export const selectRequestClients = (state: RootState) =>
+  Object.keys(state.clients.data).filter(
+    (id) => state.clients.data[id].request
+  );
 
 export const selectIsLoadingClient = (state: RootState) =>
   state.clients.isLoading;
